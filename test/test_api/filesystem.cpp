@@ -2,7 +2,7 @@
 #include "filesystem.h"
 #include "util.h"
 
-namespace ionir::test::fs {
+namespace ionshared::test::fs {
     const std::string rootPath = "../..";
 
     const std::string testPath = "test";

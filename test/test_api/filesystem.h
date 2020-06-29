@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-namespace ionir::test::fs {
+namespace ionshared::test::fs {
     /**
      * Resolves a path relative to the root directory
      * of the project.
