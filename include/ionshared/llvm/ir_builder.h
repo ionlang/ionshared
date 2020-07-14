@@ -1,9 +1,9 @@
 #pragma once
 
 #include <llvm/IR/IRBuilder.h>
-#include <ionir/misc/wrapper.h>
+#include <ionshared/misc/wrapper.h>
 
-namespace ionir {
+namespace ionshared {
     class IrBuilder : public Wrapper<llvm::IRBuilder<>> {
     public:
         explicit IrBuilder(llvm::IRBuilder<> value);

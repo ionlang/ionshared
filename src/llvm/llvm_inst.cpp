@@ -1,6 +1,6 @@
-#include <ionir/llvm/llvm_inst.h>
+#include <ionshared/llvm/llvm_inst.h>
 
-namespace ionir {
+namespace ionshared {
     LlvmInst::LlvmInst(llvm::Instruction *value) : SafeWrapper(value) {
         //
     }

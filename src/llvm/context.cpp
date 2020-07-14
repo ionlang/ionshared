@@ -1,6 +1,6 @@
-#include <ionir/llvm/context.h>
+#include <ionshared/llvm/context.h>
 
-namespace ionir {
+namespace ionshared {
     Context::Context(llvm::LLVMContext *context) : Wrapper(context) {
         //
     }

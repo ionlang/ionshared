@@ -1,10 +1,10 @@
 #pragma once
 
 #include <llvm/IR/Instruction.h>
-#include <ionir/misc/wrapper.h>
-#include "ionir/misc/safe_wrapper.h"
+#include <ionshared/misc/wrapper.h>
+#include <ionshared/misc/safe_wrapper.h>
 
-namespace ionir {
+namespace ionshared {
     class LlvmInst : public SafeWrapper<llvm::Instruction *> {
     public:
         explicit LlvmInst(llvm::Instruction *value);

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <llvm/Support/raw_os_ostream.h>
-#include <ionir/llvm/llvm_module.h>
+#include <ionshared/llvm/llvm_module.h>
 
-namespace ionir {
+namespace ionshared {
     LlvmModule::LlvmModule(llvm::Module *module, Context *context) : Wrapper(module), context(context) {
         //
     }

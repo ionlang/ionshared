@@ -56,7 +56,7 @@ add_definitions(${LLVM_DEFINITIONS})
 
 # Set source files.
 file(
-    GLOB_RECURSE SOURCES "include/ionshared/*.h" "src/*.cpp" "src/*.h"
+    GLOB_RECURSE SOURCES "include/${PROJECT_NAME}/*.h" "src/*.cpp" "src/*.h"
 )
 
 # Specify that this project is a library.
@@ -81,7 +81,7 @@ llvm_map_components_to_libnames(llvm_libs all)
 # Link against LLVM libraries.
 target_link_libraries("${PROJECT_NAME}" LLVM)
 
-# TODO: Adding subdirs eitherway.
+# TODO: Adding subdirs either way.
 add_subdirectory(libs/googletest)
 add_subdirectory(test)
 
@@ -96,18 +96,18 @@ endif ()
 # Setup install target.
 install(
     TARGETS "${PROJECT_NAME}"
-    EXPORT ionshared-config LIBRARY
+    EXPORT ${PROJECT_NAME}-config LIBRARY
     DESTINATION ${CMAKE_INSTALL_LIBDIR} # Destination is relative to ${CMAKE_INSTALL_PREFIX}.
 )
 
 install(
-    EXPORT ionshared-config
-    NAMESPACE ionshared::
+    EXPORT ${PROJECT_NAME}-config
+    NAMESPACE ${PROJECT_NAME}::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 install(
-    DIRECTORY include/ionshared/
+    DIRECTORY include/${PROJECT_NAME}/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
     FILES_MATCHING PATTERN "*.h" PATTERN "LICENSE" # Match only header files & LICENSE file.
 )

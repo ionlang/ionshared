@@ -1,9 +1,8 @@
 #include "test_api/util.h"
-#include "test_api/compare.h"
 #include "test_api/filesystem.h"
 #include "test_api/const.h"
 
-using namespace ionir::test;
+using namespace ionshared::test;
 
 TEST(TestApiTest, TrimSimpleString) {
     EXPECT_EQ(util::trim(" test "), "test");
@@ -19,16 +18,6 @@ TEST(TestApiTest, LeftTrimString) {
 
 TEST(TestApiTest, RightTrimString) {
     EXPECT_EQ(util::rightTrim("  hello world  "), "  hello world");
-}
-
-TEST(TestApiTest, CompareStrings) {
-    // Compare strings without extra spacing.
-    EXPECT_TRUE(compare::strings("test", "test"));
-    EXPECT_FALSE(compare::strings("hello", "world"));
-
-    // Compare strings with extra spacing.
-    EXPECT_TRUE(compare::strings("  test  ", "test"));
-    EXPECT_TRUE(compare::strings("test", "  test  "));
 }
 
 TEST(TestApiTest, JoinPaths) {
