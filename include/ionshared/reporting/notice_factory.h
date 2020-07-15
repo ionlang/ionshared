@@ -2,7 +2,7 @@
 
 #include "notice.h"
 
-namespace ionir {
+namespace ionshared {
     class NoticeFactory {
     private:
         NoticeContext context;

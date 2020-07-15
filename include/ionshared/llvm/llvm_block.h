@@ -2,13 +2,13 @@
 
 #include <optional>
 #include <llvm/IR/BasicBlock.h>
-#include <ionir/misc/wrapper.h>
-#include <ionir/misc/helpers.h>
+#include <ionshared/misc/wrapper.h>
+#include <ionshared/misc/safe_wrapper.h>
+#include <ionshared/misc/helpers.h>
 #include "ir_builder.h"
 #include "llvm_inst.h"
-#include "ionir/misc/safe_wrapper.h"
 
-namespace ionir {
+namespace ionshared {
     class LlvmBlock : public SafeWrapper<llvm::BasicBlock *> {
     private:
         OptPtr<IrBuilder> cachedBuilder;

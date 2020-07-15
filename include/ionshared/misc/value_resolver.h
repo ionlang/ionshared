@@ -3,7 +3,7 @@
 #include <optional>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Constant.h>
-#include <ionshared/construct/value/integer.h>
+//#include <ionshared/construct/value/integer.h>
 
 namespace ionshared {
     class ValueResolver {
@@ -13,6 +13,7 @@ namespace ionshared {
     public:
         ValueResolver(llvm::Module *module);
 
-        std::optional<llvm::Constant *> tryResolveInt(IntegerKind kind, long value, bool isSigned = true);
+        // TODO
+//        std::optional<llvm::Constant *> tryResolveInt(IntegerKind kind, long value, bool isSigned = true);
     };
 }

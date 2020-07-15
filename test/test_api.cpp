@@ -1,6 +1,7 @@
 #include "test_api/util.h"
 #include "test_api/filesystem.h"
 #include "test_api/const.h"
+#include "pch.h"
 
 using namespace ionshared::test;
 

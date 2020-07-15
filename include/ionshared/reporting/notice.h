@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace ionir {
+namespace ionshared {
     enum class NoticeType {
         Warning,
 
