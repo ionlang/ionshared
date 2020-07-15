@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace ionir::test::constant {
+namespace ionshared::test::constant {
     const std::string foo = "foo";
 
     const std::string bar = "bar";

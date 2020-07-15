@@ -4,7 +4,7 @@
 #include <ionir/misc/wrapper.h>
 #include <ionir/misc/helpers.h>
 
-namespace ionir {
+namespace ionshared {
     enum class ScopeKind {
         Block
     };

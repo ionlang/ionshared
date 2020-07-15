@@ -5,7 +5,7 @@
 #include <ionir/container/map.h>
 #include <ionir/misc/helpers.h>
 
-namespace ionir {
+namespace ionshared {
     template<typename T>
     using SymbolTable = Map<std::string, T>;
 

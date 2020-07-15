@@ -6,7 +6,7 @@ enable_testing()
 #    PATHS "../libs/googletest/googletest/generated"
 #)
 
-project(ionir_tests)
+project(ionshared_tests)
 
 file(
     GLOB_RECURSE SOURCES
@@ -14,14 +14,14 @@ file(
     "*.cpp"
 )
 
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCCE_DIR})
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(
     ${PROJECT_NAME} PUBLIC
     gtest
-    ionir
+    ionshared
 )
 
 # Specify additional include directories to look for imports.

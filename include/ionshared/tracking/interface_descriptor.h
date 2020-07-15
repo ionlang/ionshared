@@ -6,7 +6,7 @@
 #include "field_descriptor.h"
 #include "symbol_table.h"
 
-namespace ionir {
+namespace ionshared {
     class InterfaceDescriptor {
     private:
         std::string name;

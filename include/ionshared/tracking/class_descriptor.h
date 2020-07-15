@@ -2,7 +2,7 @@
 
 #include "interface_descriptor.h"
 
-namespace ionir {
+namespace ionshared {
     class ClassDescriptor : public InterfaceDescriptor {
     private:
         std::optional<Ptr<ClassDescriptor>> parent;

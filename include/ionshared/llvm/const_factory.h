@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ionir {
+namespace ionshared {
     class ConstFactory {
         // TODO
     };

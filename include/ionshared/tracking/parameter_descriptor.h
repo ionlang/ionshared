@@ -2,7 +2,7 @@
 
 #include "local_var_descriptor.h"
 
-namespace ionir {
+namespace ionshared {
     struct ParameterDescriptor : LocalVariableDescriptor {
         //
     };

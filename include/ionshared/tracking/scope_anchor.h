@@ -4,7 +4,7 @@
 #include <ionir/tracking/symbol_table.h>
 #include <ionir/misc/type_factory.h>
 
-namespace ionir {
+namespace ionshared {
     // TODO: Implement concepts to ensure T is or derives of Construct.
     template<typename T = Construct>
     class ScopeAnchor {

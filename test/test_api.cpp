@@ -40,12 +40,12 @@ TEST(TestApiTest, ReadFileContents) {
     std::optional<std::string> contents = fs::readFileContents(fs::resolvePath("test/data/test.txt"));
 
     EXPECT_TRUE(contents.has_value());
-    EXPECT_EQ(*contents, ionir::test::constant::foobar + "\n");
+    EXPECT_EQ(*contents, ionshared::test::constant::foobar + "\n");
 }
 
 TEST(TestApiTest, ReadTestFile) {
     std::optional<std::string> contents = fs::readTestFile("data/test.txt");
 
     EXPECT_TRUE(contents.has_value());
-    EXPECT_EQ(*contents, ionir::test::constant::foobar + "\n");
+    EXPECT_EQ(*contents, ionshared::test::constant::foobar + "\n");
 }

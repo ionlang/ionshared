@@ -4,7 +4,6 @@
 #include <exception>
 #include <optional>
 #include <stack>
-#include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
     template<typename T>

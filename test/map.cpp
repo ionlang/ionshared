@@ -2,7 +2,7 @@
 #include "test_api/const.h"
 #include "pch.h"
 
-using namespace ionir;
+using namespace ionshared;
 
 const int value = 1;
 

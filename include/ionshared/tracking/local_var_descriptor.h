@@ -3,7 +3,7 @@
 #include <string>
 #include <ionir/construct/type.h>
 
-namespace ionir {
+namespace ionshared {
     struct LocalVariableDescriptor {
         std::string name;
 

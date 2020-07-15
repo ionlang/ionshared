@@ -1,5 +1,4 @@
 #include <optional>
-#include <ionshared/container/stack.h>
 #include "pch.h"
 
 using namespace ionshared;
