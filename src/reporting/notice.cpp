@@ -2,7 +2,7 @@
 
 namespace ionshared {
     std::string Notice::getText(NoticeType type) {
-        // TODO: Hard-coded, use a map instead.
+        // TODO: Hard-coded, use a map instead?
         switch (type) {
             case NoticeType::Warning: {
                 return "Warning";

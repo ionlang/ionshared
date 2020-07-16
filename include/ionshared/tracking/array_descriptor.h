@@ -2,7 +2,7 @@
 
 #include <ionir/construct/type.h>
 
-namespace ionir {
+namespace ionshared {
     struct ArrayDescriptor {
         Ptr<Type> type;
 
