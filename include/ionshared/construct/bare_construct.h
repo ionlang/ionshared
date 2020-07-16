@@ -5,7 +5,7 @@
 
 namespace ionshared {
     template<typename T>
-    class BareConstruct : private std::enable_shared_from_this<BareConstruct<T>> {
+    class BareConstruct : public std::enable_shared_from_this<BareConstruct<T>> {
     private:
         T constructKind;
 
