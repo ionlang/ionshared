@@ -2,19 +2,22 @@
 
 #include <memory>
 #include <ionshared/misc/helpers.h>
+#include <ionshared/passes/bare_pass.h>
 
 namespace ionshared {
-    template<typename T>
-    class BareConstruct : public std::enable_shared_from_this<BareConstruct<T>> {
+    template<typename TConstruct, typename TConstructKind>
+    class BaseConstruct : public std::enable_shared_from_this<BaseConstruct<TConstruct, TConstructKind>> {
     private:
-        T constructKind;
+        TConstructKind constructKind;
 
     public:
-        explicit BareConstruct(T kind) : constructKind(kind) {
+        explicit BaseConstruct(TConstructKind kind) : constructKind(kind) {
             //
         }
 
-        virtual bool equals(Ptr<BareConstruct<T>> other) {
+        virtual void accept(BarePass<TConstruct> visitor) = 0;
+
+        virtual bool equals(Ptr<BaseConstruct<TConstruct, TConstructKind>> other) {
             return other == this->shared_from_this();
         }
 
@@ -25,12 +28,42 @@ namespace ionshared {
             throw std::runtime_error("Not implemented");
         }
 
-        T getConstructKind() const {
+        TConstructKind getConstructKind() const {
             return this->constructKind;
         }
 
-        Ptr<BareConstruct<T>> getPtr() {
+        Ptr<BaseConstruct<TConstruct, TConstructKind>> getBarePtr() {
             return this->shared_from_this();
         }
+
+        Ptr<TConstruct> getPtr() {
+            return this->nativeCast();
+        }
+
+        /**
+         * Used to cast pointers to related types, for example casting
+         * void* to the appropriate type.
+         */
+        template<typename TLike>
+        Ptr<TLike> staticCast() {
+            return std::static_pointer_cast<TLike>(this->getPtr());
+        }
+
+        /**
+         * Used to convert pointers and references at runtime.
+         * Should be generally used for casting a pointer or reference
+         * up or down an inheritance chain (inheritance hierarchy).
+         */
+        template<class TLike>
+        Ptr<TLike> dynamicCast() {
+            return std::dynamic_pointer_cast<TLike>(this->getPtr());
+        }
+
+        Ptr<TConstruct> nativeCast() {
+            return this->dynamicCast<TConstruct>();
+        }
     };
+
+    template<typename T>
+    using Ast = std::vector<Ptr<T>>;
 }

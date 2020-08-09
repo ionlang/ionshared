@@ -2,8 +2,8 @@
 
 #include <list>
 #include <string>
-#include <ionir/container/map.h>
-#include <ionir/misc/helpers.h>
+#include <ionshared/container/map.h>
+#include <ionshared/misc/helpers.h>
 
 namespace ionshared {
     template<typename T>

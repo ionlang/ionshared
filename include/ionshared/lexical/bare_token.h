@@ -48,7 +48,7 @@ namespace ionshared {
         }
 
         bool operator!=(const BareToken<T> &other) const {
-            return !(*this == other);
+            return *this != other;
         }
     };
 
