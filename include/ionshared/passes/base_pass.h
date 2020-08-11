@@ -1,11 +1,10 @@
 #pragma once
 
 #include <ionshared/misc/helpers.h>
-#include <ionshared/construct/bare_construct.h>
 
 namespace ionshared {
     template<typename T>
-    class BarePass {
+    class BasePass {
     public:
         /**
          * Invoked when the pass is about to process the AST.

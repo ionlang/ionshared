@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include <ionshared/misc/helpers.h>
-#include <ionshared/construct/bare_construct.h>
+#include <ionshared/construct/base_construct.h>
 
 namespace ionshared {
     enum class PassPriority {
@@ -29,7 +29,7 @@ namespace ionshared {
     };
 
     template<typename TPass, typename TConstruct>
-    class BarePassManager {
+    class BasePassManager {
     private:
         /**
          * Internal container on which pass manager items will
@@ -38,7 +38,7 @@ namespace ionshared {
         std::vector <PassManagerItem<TPass>> passes;
 
     public:
-        explicit BarePassManager(std::vector<PassManagerItem<TPass>> passes = {}) : passes(passes) {
+        explicit BasePassManager(std::vector<PassManagerItem<TPass>> passes = {}) : passes(passes) {
             //
         }
 

@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <ionshared/misc/helpers.h>
-#include <ionshared/passes/bare_pass.h>
+#include <ionshared/passes/base_pass.h>
 
 namespace ionshared {
     template<typename TConstruct, typename TConstructKind>
@@ -15,7 +15,7 @@ namespace ionshared {
             //
         }
 
-        virtual void accept(BarePass<TConstruct> visitor) = 0;
+        virtual void accept(BasePass<TConstruct> visitor) = 0;
 
         virtual bool equals(Ptr<BaseConstruct<TConstruct, TConstructKind>> other) {
             return other == this->shared_from_this();
@@ -56,7 +56,7 @@ namespace ionshared {
          */
         template<class TLike>
         Ptr<TLike> dynamicCast() {
-            return std::dynamic_pointer_cast<TLike>(this->getPtr());
+            return std::dynamic_pointer_cast<TLike>(this->shared_from_this());
         }
 
         Ptr<TConstruct> nativeCast() {

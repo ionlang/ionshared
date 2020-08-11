@@ -7,6 +7,7 @@
 #include <regex>
 #include <string_view>
 #include <cmath>
+#include <ionshared/tracking/symbol_table.h>
 #include "helpers.h"
 
 namespace ionshared {
@@ -97,6 +98,16 @@ namespace ionshared {
         template<typename T>
         static bool hasValue(std::optional<T *> pointer) noexcept {
             return pointer.has_value() && *pointer != nullptr;
+        }
+
+        template<typename T>
+        static ionshared::PtrSymbolTable<T> makePtrSymbolTable(ionshared::SymbolTable<ionshared::Ptr<T>> symbolTable) {
+            return std::make_shared<ionshared::SymbolTable<ionshared::Ptr<T>>>(symbolTable);
+        }
+
+        template<typename T>
+        static ionshared::PtrSymbolTable<T> makePtrSymbolTable() {
+            return std::make_shared<ionshared::SymbolTable<ionshared::Ptr<T>>>();
         }
     };
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <ionir/construct/construct.h>
-#include <ionir/misc/wrapper.h>
-#include <ionir/misc/helpers.h>
+#include <ionshared/construct/base_construct.h>
+#include <ionshared/misc/wrapper.h>
+#include <ionshared/misc/helpers.h>
 
 namespace ionshared {
     enum class ScopeKind {
