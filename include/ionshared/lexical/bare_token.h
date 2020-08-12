@@ -48,7 +48,8 @@ namespace ionshared {
         }
 
         bool operator!=(const BareToken<T> &other) const {
-            return *this != other;
+            // Simplifying this causes a SIGSEGV (segmentation fault).
+            return !(*this == other);
         }
     };
 
