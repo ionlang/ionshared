@@ -26,6 +26,17 @@ namespace ionshared {
          */
         static std::regex createPureRegex(std::string value);
 
+        static bool withinRange(long value, long from, long to);
+
+        static std::string joinStringVector(std::vector<std::string> vector);
+
+        /**
+         * Returns the number of binary digits, called bits, necessary
+         * to represent an integer as a binary number. See more information
+         * at: https://en.wikipedia.org/wiki/Bit-length.
+         */
+        static uint32_t calculateBitLength(int64_t number);
+
         template<typename T, typename U>
         static bool instanceOf(T *value) {
             return dynamic_cast<U *>(value) != nullptr;
@@ -42,9 +53,26 @@ namespace ionshared {
             return std::nullopt;
         }
 
-        static bool withinRange(long value, long from, long to);
+        template<typename ... Args>
+        static std::optional<std::string> formatString(const std::string &format, Args ... args) {
+            // Extra space for '\0'.
+            size_t size = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1;
 
-        static std::string joinStringVector(std::vector<std::string> vector);
+            if (size <= 0) {
+                return std::nullopt;
+            }
+
+            std::unique_ptr<char[]> buffer = std::unique_ptr<char[]>(new char[size]);
+
+            std::snprintf(buffer.get(), size, format.c_str(), args ...);
+
+            return std::string(buffer.get(), buffer.get() + size - 1);
+        }
+
+        template<typename ... Args>
+        static std::runtime_error quickError(const std::string &formattedMessage, Args ... args) {
+            return std::runtime_error(Util::formatString(formattedMessage, args ...));
+        }
 
         template<typename T>
         static std::vector<T> sliceVector(std::vector<T> subject, uint32_t start, uint32_t length) {
@@ -56,13 +84,6 @@ namespace ionshared {
 
             return std::vector<T>(subject->begin() + start, subject->begin() + end);
         }
-
-        /**
-         * Returns the number of binary digits, called bits, necessary
-         * to represent an integer as a binary number. See more information
-         * at: https://en.wikipedia.org/wiki/Bit-length.
-         */
-        static uint32_t calculateBitLength(int64_t number);
 
         template<typename TKey, typename TValue>
         static bool mapContains(std::map<TKey, TValue> map, TKey key) {

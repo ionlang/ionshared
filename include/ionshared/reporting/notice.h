@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <ionshared/misc/helpers.h>
+#include <ionshared/container/stack.h>
 
 namespace ionshared {
     enum class NoticeType {
@@ -42,5 +44,5 @@ namespace ionshared {
         std::string createTrace() const;
     };
 
-    typedef std::vector<Notice> StackTrace;
+    typedef Ptr<Stack<Notice>> NoticeStack;
 }

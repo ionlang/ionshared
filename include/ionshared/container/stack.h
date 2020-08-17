@@ -4,13 +4,13 @@
 #include <exception>
 #include <optional>
 #include <stack>
+#include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
     template<typename T>
     class Stack : public Wrapper<std::stack<T>> {
     public:
-        Stack(std::stack<T> value = std::stack<T>())
-            : Wrapper<std::stack<T>>(value) {
+        Stack(std::stack<T> value = std::stack<T>()) : Wrapper<std::stack<T>>(value) {
             //
         }
 
@@ -56,7 +56,7 @@ namespace ionshared {
             return result;
         }
 
-        bool isEmpty() const {
+        [[nodiscard]] bool isEmpty() const {
             return this->value.empty();
         }
 
@@ -70,7 +70,7 @@ namespace ionshared {
             }
         }
 
-        size_t size() const {
+        [[nodiscard]] size_t getSize() const {
             return this->value.size();
         }
     };
