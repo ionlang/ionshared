@@ -1,4 +1,4 @@
-#include <ionshared/reporting/notice.h>
+#include <ionshared/error_handling/notice.h>
 
 namespace ionshared {
     std::string Notice::getText(NoticeType type) {
@@ -27,19 +27,19 @@ namespace ionshared {
         //
     }
 
-    NoticeContext Notice::getContext() const {
+    NoticeContext Notice::getContext() const noexcept {
         return this->context;
     }
 
-    NoticeType Notice::getType() const {
+    NoticeType Notice::getType() const noexcept {
         return this->type;
     }
 
-    std::string Notice::getMessage() const {
+    std::string Notice::getMessage() const noexcept {
         return this->message;
     }
 
-    std::string Notice::createTrace() const {
+    std::string Notice::createTrace() const noexcept {
         return this->context.filePath + ":" + std::to_string(this->context.lineNumber) + ":" +
             std::to_string(this->context.position) + " | " + Notice::getText(this->type) + ": " + this->message;
     }

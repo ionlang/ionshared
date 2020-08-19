@@ -31,18 +31,18 @@ namespace ionshared {
         std::string message;
 
     public:
-        static std::string getText(NoticeType type);
+        [[nodiscard]] static std::string getText(NoticeType type);
 
         Notice(NoticeContext context, NoticeType type, std::string message);
 
-        NoticeContext getContext() const;
+        [[nodiscard]] NoticeContext getContext() const noexcept;
 
-        NoticeType getType() const;
+        [[nodiscard]] NoticeType getType() const noexcept;
 
-        std::string getMessage() const;
+        [[nodiscard]] std::string getMessage() const noexcept;
 
-        std::string createTrace() const;
+        [[nodiscard]] std::string createTrace() const noexcept;
     };
 
-    typedef Ptr<Stack<Notice>> NoticeStack;
+    typedef Stack<Notice> NoticeStack;
 }

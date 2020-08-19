@@ -1,4 +1,4 @@
-#include <ionshared/reporting/notice_factory.h>
+#include <ionshared/error_handling/notice_factory.h>
 
 namespace ionshared {
     NoticeFactory::NoticeFactory(NoticeContext context) : context(context) {
