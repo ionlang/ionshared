@@ -69,9 +69,33 @@ namespace ionshared {
             return std::string(buffer.get(), buffer.get() + size - 1);
         }
 
+        /**
+         * Convert all std::strings to const char* using constexpr if (C++17).
+         */
+        template<typename T>
+        static auto convertString(T&& t) {
+            if constexpr (std::is_same<std::remove_cv_t<std::remove_reference_t<T>>, std::string>::value) {
+                return std::forward<T>(t).c_str();
+            }
+            else {
+                return std::forward<T>(t);
+            }
+        }
+
         template<typename ... Args>
-        static std::runtime_error quickError(const std::string &formattedMessage, Args ... args) {
-            return std::runtime_error(Util::formatString(formattedMessage, args ...));
+        static std::optional<std::string> formatStringA(std::string format, Args &&...args) {
+            return Util::formatString(format, Util::convertString(std::forward<Args>(args))...);
+        }
+
+        template<typename ... Args>
+        static std::runtime_error quickError(std::string format, Args &&...args) {
+            auto formattedString = Util::formatStringA(format, args...);
+
+            if (!formattedString.has_value()) {
+                throw std::runtime_error("Could not format string");
+            }
+
+            return std::runtime_error(*formattedString);
         }
 
         template<typename T>
