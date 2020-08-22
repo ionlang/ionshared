@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <exception>
+#include <stdexcept>
 #include <optional>
 #include <stack>
 #include <ionshared/misc/wrapper.h>
