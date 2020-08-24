@@ -4,8 +4,8 @@
 #include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
-    class Context : public Wrapper<llvm::LLVMContext *> {
+    class LlvmContext : public Wrapper<llvm::LLVMContext *> {
     public:
-        explicit Context(llvm::LLVMContext *context);
+        explicit LlvmContext(llvm::LLVMContext *context);
     };
 }

@@ -3,15 +3,15 @@
 #include <string>
 #include <llvm/IR/Module.h>
 #include <ionshared/misc/wrapper.h>
-#include "context.h"
+#include "llvm_context.h"
 
 namespace ionshared {
     class LlvmModule : public Wrapper<llvm::Module *> {
     private:
-        Context *context;
+        LlvmContext *context;
 
     public:
-        LlvmModule(llvm::Module *module, Context *context);
+        LlvmModule(llvm::Module *module, LlvmContext *context);
 
         explicit LlvmModule(llvm::Module *module);
 
@@ -19,7 +19,7 @@ namespace ionshared {
 
         std::string getId() const;
 
-        Context *getContext() const;
+        LlvmContext *getContext() const;
 
         std::string getAsString() const;
 

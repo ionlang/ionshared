@@ -3,12 +3,12 @@
 #include <ionshared/llvm/llvm_module.h>
 
 namespace ionshared {
-    LlvmModule::LlvmModule(llvm::Module *module, Context *context) : Wrapper(module), context(context) {
+    LlvmModule::LlvmModule(llvm::Module *module, LlvmContext *context) : Wrapper(module), context(context) {
         //
     }
 
     LlvmModule::LlvmModule(llvm::Module *module)
-        : LlvmModule(module, new Context(&module->getContext())) {
+        : LlvmModule(module, new LlvmContext(&module->getContext())) {
         //
     }
 
@@ -21,7 +21,7 @@ namespace ionshared {
         return this->value->getModuleIdentifier();
     }
 
-    Context *LlvmModule::getContext() const {
+    LlvmContext *LlvmModule::getContext() const {
         return this->context;
     }
 

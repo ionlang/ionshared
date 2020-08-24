@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <memory>
 #include <ionshared/misc/helpers.h>
 #include <ionshared/passes/base_pass.h>
