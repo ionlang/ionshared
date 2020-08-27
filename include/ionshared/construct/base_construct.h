@@ -47,7 +47,7 @@ namespace ionshared {
          */
         template<typename TLike>
         Ptr<TLike> staticCast() {
-            return std::static_pointer_cast<TLike>(this->getPtr());
+            return std::static_pointer_cast<TLike>(this->shared_from_this());
         }
 
         /**

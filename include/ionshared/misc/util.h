@@ -154,5 +154,14 @@ namespace ionshared {
         static ionshared::PtrSymbolTable<T> makePtrSymbolTable() {
             return std::make_shared<ionshared::SymbolTable<ionshared::Ptr<T>>>();
         }
+
+        template<typename T>
+        static std::string getPointerAddressString(T *pointer) {
+            std::ostringstream stream;
+
+            stream << pointer;
+
+            return stream.str();
+        }
     };
 }
