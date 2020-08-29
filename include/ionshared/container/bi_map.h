@@ -13,8 +13,9 @@ namespace ionshared {
         Map<TSecond, TFirst> secondMap;
 
     public:
-        explicit BiMap(std::map<TFirst, TSecond> value = {})
-            :  firstMap(Map<TFirst, TSecond>(value)), secondMap(Map<TSecond, TFirst>(Util::flipMap<TFirst, TSecond>(value))) {
+        explicit BiMap(std::map<TFirst, TSecond> value = {}) :
+            firstMap(Map<TFirst, TSecond>(value)),
+            secondMap(Map<TSecond, TFirst>(util::flipMap<TFirst, TSecond>(value))) {
             //
         }
 

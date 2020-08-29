@@ -1,17 +1,17 @@
 #include <sstream>
 #include <ionshared/misc/util.h>
 
-namespace ionshared {
-    bool Util::stringStartsWith(std::string subject, std::string value) {
+namespace ionshared::util {
+    bool stringStartsWith(std::string subject, std::string value) {
         return subject.rfind(value, 0) == 0;
     }
 
-    std::string Util::escapeRegex(std::string subject) {
+    std::string escapeRegex(std::string subject) {
         std::string result;
 
         for (char &character : subject) {
             // Determine if the character is denoted special.
-            if (Util::specialChars.find(character) != Util::specialChars.npos) {
+            if (util::specialChars.find(character) != util::specialChars.npos) {
                 // If so, escape the character and append it to the result.
                 result += "\\" + std::string(1, character);
 
@@ -25,15 +25,15 @@ namespace ionshared {
         return result;
     }
 
-    std::regex Util::createPureRegex(std::string value) {
-        return std::regex(Util::escapeRegex(value));
+    std::regex createPureRegex(std::string value) {
+        return std::regex(util::escapeRegex(value));
     }
 
-    bool Util::withinRange(long value, long from, long to) {
+    bool withinRange(long value, long from, long to) {
         return value >= from && value <= to;
     }
 
-    std::string Util::joinStringVector(std::vector<std::string> vector) {
+    std::string joinStringVector(std::vector<std::string> vector) {
         if (vector.empty()) {
             return "";
         }
@@ -51,7 +51,7 @@ namespace ionshared {
         return result.str();
     }
 
-    uint32_t Util::calculateBitLength(int64_t number) {
+    uint32_t calculateBitLength(int64_t number) {
         if (number < 0) {
             throw std::runtime_error("Number cannot be less than zero");
         }

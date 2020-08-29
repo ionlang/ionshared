@@ -145,11 +145,11 @@ namespace ionshared {
         }
 
         std::optional<uint32_t> locate(T item) const {
-            return Util::locateInVector(this->items, item);
+            return util::locateInVector(this->items, item);
         }
 
         std::vector<T> slice(uint32_t start, uint32_t length) {
-            return Util::sliceVector<T>(this, start, length);
+            return util::sliceVector<T>(this, start, length);
         }
     };
 }

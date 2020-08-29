@@ -13,7 +13,7 @@ namespace ionshared {
         PtrSymbolTable<T> symbolTable;
 
     public:
-        explicit ScopeAnchor(PtrSymbolTable<T> symbolTable = Util::makePtrSymbolTable<T>())
+        explicit ScopeAnchor(PtrSymbolTable<T> symbolTable = util::makePtrSymbolTable<T>())
             : symbolTable(symbolTable) {
             //
         }
