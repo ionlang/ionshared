@@ -3,7 +3,9 @@
 #include <ionshared/llvm/llvm_module.h>
 
 namespace ionshared {
-    LlvmModule::LlvmModule(llvm::Module *module, LlvmContext *context) : Wrapper(module), context(context) {
+    LlvmModule::LlvmModule(llvm::Module *module, LlvmContext *context) :
+        Wrapper(module),
+        context(context) {
         //
     }
 
@@ -19,6 +21,10 @@ namespace ionshared {
     std::string LlvmModule::getId() const {
         // TODO: Can it possibly be null?
         return this->value->getModuleIdentifier();
+    }
+
+    void LlvmModule::setId(std::string id) {
+        this->value->setModuleIdentifier(id);
     }
 
     LlvmContext *LlvmModule::getContext() const {

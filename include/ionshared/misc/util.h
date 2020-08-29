@@ -65,6 +65,11 @@ namespace ionshared::util {
         return std::nullopt;
     }
 
+    template<typename T>
+    bool vectorContains(std::vector<T> vector, T item) {
+        return util::locateInVector(vector, item) != std::nullopt;
+    }
+
     template<typename ... Args>
     std::optional<std::string> formatString(const std::string &format, Args ... args) {
         // Extra space for '\0'.

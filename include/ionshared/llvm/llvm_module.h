@@ -17,14 +17,25 @@ namespace ionshared {
 
         ~LlvmModule();
 
-        std::string getId() const;
+        [[nodiscard]] std::string getId() const;
 
-        LlvmContext *getContext() const;
+        void setId(std::string id);
 
-        std::string getAsString() const;
+        [[nodiscard]] LlvmContext *getContext() const;
+
+        [[nodiscard]] std::string getAsString() const;
 
         void print();
 
         void printToLlvmErrs() const;
     };
+
+    typedef std::vector<LlvmModule> LlvmProgram;
+
+    typedef std::vector<llvm::Module *> LlvmNativeProgram;
+
+    /**
+     * String representing emitted LLVM IR code.
+     */
+    typedef std::string LlvmIrString;
 }

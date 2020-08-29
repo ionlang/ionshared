@@ -1,7 +1,9 @@
 #include <ionshared/llvm/llvm_block.h>
 
 namespace ionshared {
-    LlvmBlock::LlvmBlock(llvm::BasicBlock *value) : SafeWrapper(value), cachedBuilder(std::nullopt) {
+    LlvmBlock::LlvmBlock(llvm::BasicBlock *value) :
+        SafeWrapper(value),
+        cachedBuilder(std::nullopt) {
         //
     }
 
