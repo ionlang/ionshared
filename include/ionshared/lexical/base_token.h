@@ -5,7 +5,7 @@
 
 namespace ionshared {
     template<typename T>
-    class BareToken {
+    class BaseToken {
     private:
         T kind;
 
@@ -16,43 +16,46 @@ namespace ionshared {
         uint32_t lineNumber;
 
     public:
-        BareToken(T kind, std::string value, uint32_t startPosition = 0, uint32_t lineNumber = 0)
-            : kind(kind), value(value), startPosition(startPosition), lineNumber(lineNumber) {
+        BaseToken(T kind, std::string value, uint32_t startPosition = 0, uint32_t lineNumber = 0) :
+            kind(kind),
+            value(value),
+            startPosition(startPosition),
+            lineNumber(lineNumber) {
             //
         }
 
-        T getKind() const noexcept {
+        [[nodiscard]] T getKind() const noexcept {
             return this->kind;
         }
 
-        std::string getValue() const noexcept {
+        [[nodiscard]] std::string getValue() const noexcept {
             return this->value;
         }
 
-        uint32_t getStartPosition() const noexcept {
+        [[nodiscard]] uint32_t getStartPosition() const noexcept {
             return this->startPosition;
         }
 
-        uint32_t getEndPosition() const noexcept {
+        [[nodiscard]] uint32_t getEndPosition() const noexcept {
             return this->startPosition + this->value.length();
         }
 
-        uint32_t getLineNumber() const noexcept {
+        [[nodiscard]] uint32_t getLineNumber() const noexcept {
             return this->lineNumber;
         }
 
-        bool operator==(const BareToken<T> &other) const {
+        bool operator==(const BaseToken<T> &other) const {
             return this->value == other.value &&
                 this->kind == other.kind &&
                 this->startPosition == other.startPosition;
         }
 
-        bool operator!=(const BareToken<T> &other) const {
+        bool operator!=(const BaseToken<T> &other) const {
             // Simplifying this causes a SIGSEGV (segmentation fault).
             return !(*this == other);
         }
     };
 
     template<typename T>
-    using BareTokenStream = Iterable<BareToken<T>>;
+    using BaseTokenStream = Iterable<BaseToken<T>>;
 }

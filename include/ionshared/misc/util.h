@@ -154,7 +154,7 @@ namespace ionshared::util {
 
     template<typename T>
     bool hasValue(OptPtr<T> pointer) noexcept {
-        return pointer.has_value() && pointer != nullptr;
+        return pointer.has_value() && *pointer != nullptr;
     }
 
     template<typename T>

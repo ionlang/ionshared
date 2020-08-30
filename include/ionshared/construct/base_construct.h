@@ -12,32 +12,33 @@ namespace ionshared {
         TConstructKind constructKind;
 
     public:
-        explicit BaseConstruct(TConstructKind kind) : constructKind(kind) {
+        explicit BaseConstruct(TConstructKind kind) :
+            constructKind(kind) {
             //
         }
 
         virtual void accept(BasePass<TConstruct> visitor) = 0;
 
-        virtual bool equals(Ptr<BaseConstruct<TConstruct, TConstructKind>> other) {
+        [[nodiscard]] virtual bool equals(Ptr<BaseConstruct<TConstruct, TConstructKind>> other) {
             return other == this->shared_from_this();
         }
 
-        bool isLeafNode() {
+        [[nodiscard]] bool isLeafNode() {
             // TODO
             //return this->getChildNodes().empty();
 
             throw std::runtime_error("Not implemented");
         }
 
-        TConstructKind getConstructKind() const {
+        [[nodiscard]] TConstructKind getConstructKind() const {
             return this->constructKind;
         }
 
-        Ptr<BaseConstruct<TConstruct, TConstructKind>> getBarePtr() {
+        [[nodiscard]] Ptr<BaseConstruct<TConstruct, TConstructKind>> getBarePtr() {
             return this->shared_from_this();
         }
 
-        Ptr<TConstruct> getPtr() {
+        [[nodiscard]] Ptr<TConstruct> getPtr() {
             return this->nativeCast();
         }
 
@@ -46,7 +47,7 @@ namespace ionshared {
          * void* to the appropriate type.
          */
         template<typename TLike>
-        Ptr<TLike> staticCast() {
+        [[nodiscard]] Ptr<TLike> staticCast() {
             return std::static_pointer_cast<TLike>(this->shared_from_this());
         }
 
@@ -56,11 +57,11 @@ namespace ionshared {
          * up or down an inheritance chain (inheritance hierarchy).
          */
         template<class TLike>
-        Ptr<TLike> dynamicCast() {
+        [[nodiscard]] Ptr<TLike> dynamicCast() {
             return std::dynamic_pointer_cast<TLike>(this->shared_from_this());
         }
 
-        Ptr<TConstruct> nativeCast() {
+        [[nodiscard]] Ptr<TConstruct> nativeCast() {
             return this->dynamicCast<TConstruct>();
         }
     };
