@@ -119,7 +119,7 @@ namespace ionshared::util {
     std::vector<T> sliceVector(std::vector<T> subject, uint32_t start, uint32_t length) {
         uint32_t end = start + length;
 
-        if (subject->size() < end) {
+        if (subject->getSize() < end) {
             throw std::out_of_range("Not enough items in vector");
         }
 

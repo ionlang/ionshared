@@ -1,7 +1,8 @@
 #include <ionshared/misc/named.h>
 
 namespace ionshared {
-    Named::Named(std::string id) : id(id) {
+    Named::Named(std::string id) :
+        id(id) {
         //
     }
 

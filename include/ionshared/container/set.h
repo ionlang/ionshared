@@ -6,7 +6,8 @@ namespace ionshared {
     template<typename T>
     class Set : public Wrapper<std::set<T>> {
     public:
-        Set(std::set<T> value = {}) : Wrapper<std::set<T>>(value) {
+        explicit Set(std::set<T> value = {}) :
+            Wrapper<std::set<T>>(value) {
             //
         }
 
@@ -25,11 +26,11 @@ namespace ionshared {
             return true;
         }
 
-        bool contains(T item) const {
+        [[nodiscard]] bool contains(T item) const {
             return this->value.find(item) != this->value.end();
         }
 
-        size_t size() const {
+        [[nodiscard]] size_t getSize() const {
             return this->value.size();
         }
 

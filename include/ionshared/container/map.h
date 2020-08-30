@@ -2,15 +2,14 @@
 
 #include <map>
 #include <optional>
-
-// TODO: Fix path. Use <>.
-#include "../misc/wrapper.h"
+#include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
     template<typename TKey, typename TValue>
     class Map : public Wrapper<std::map<TKey, TValue>> {
     public:
-        Map(std::map<TKey, TValue> value = {}) : Wrapper<std::map<TKey, TValue>>(value) {
+        explicit Map(std::map<TKey, TValue> value = {}) :
+            Wrapper<std::map<TKey, TValue>>(value) {
             //
         }
 
@@ -18,7 +17,7 @@ namespace ionshared {
             return this->value[key];
         }
 
-        bool contains(TKey key) const {
+        [[nodiscard]] bool contains(TKey key) const {
             return this->value.find(key) != this->value.end();
         }
 
@@ -48,7 +47,7 @@ namespace ionshared {
             return this->value[key];
         }
 
-        TValue lookupOr(TKey key, TValue defaultValue) {
+        [[nodiscard]] TValue lookupOr(TKey key, TValue defaultValue) {
             std::optional<TValue> value = this->lookup(key);
 
             if (!value.has_value()) {
@@ -62,11 +61,11 @@ namespace ionshared {
             this->value.clear();
         }
 
-        size_t getSize() const {
+        [[nodiscard]] size_t getSize() const {
             return this->value.size();
         }
 
-        bool isEmpty() const {
+        [[nodiscard]] bool isEmpty() const {
             return this->value.empty();
         }
     };

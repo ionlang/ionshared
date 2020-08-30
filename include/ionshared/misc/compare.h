@@ -34,7 +34,7 @@ namespace ionshared::test::compare {
     template<unsigned int N>
     void tokenSets(std::array<Token, N> expected, std::vector<Token> actual) {
         // Both sets should have the same length.
-        EXPECT_EQ(expected.size(), actual.size());
+        EXPECT_EQ(expected.getSize(), actual.getSize());
 
         // Compare results by iterating over both expected and actual, resulting tokens.
         int i = 0;

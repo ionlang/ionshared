@@ -36,9 +36,9 @@ TEST(SetContainerTest, Contains) {
 TEST(SetContainerTest, Clear) {
     Set<std::string> set = Set<std::string>({test::constant::foo});
 
-    EXPECT_EQ(set.size(), 1);
+    EXPECT_EQ(set.getSize(), 1);
     set.clear();
-    EXPECT_EQ(set.size(), 0);
+    EXPECT_EQ(set.getSize(), 0);
 }
 
 // TODO: Add more tests.
