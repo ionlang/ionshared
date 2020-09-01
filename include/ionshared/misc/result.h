@@ -2,6 +2,7 @@
 
 #include <variant>
 #include <optional>
+#include <ionshared/misc/helpers.h>
 
 namespace ionshared {
     template<typename TValue, typename TError>
@@ -47,4 +48,7 @@ namespace ionshared {
             return std::nullopt;
         }
     };
+
+    template<typename TValue, typename TError>
+    using PtrResult = Ptr<Result<TValue, TError>>;
 }

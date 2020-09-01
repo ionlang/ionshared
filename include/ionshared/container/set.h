@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
     template<typename T>
@@ -24,6 +25,15 @@ namespace ionshared {
             this->value.insert(item);
 
             return true;
+        }
+
+        bool remove(T item) {
+            if (this->contains(item)) {
+                this->value.erase(item);
+            }
+
+            // TODO: Redundant check.
+            return this->contains(item);
         }
 
         [[nodiscard]] bool contains(T item) const {
