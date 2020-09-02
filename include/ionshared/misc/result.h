@@ -11,6 +11,12 @@ namespace ionshared {
         std::variant<TValue, TError> valueOrError;
 
     public:
+        template<typename T>
+        Result(T value) :
+            valueOrError(value) {
+            //
+        }
+
         explicit Result(std::variant<TValue, TError> valueOrError) :
             valueOrError(valueOrError) {
             //
@@ -22,6 +28,10 @@ namespace ionshared {
 
         Result<TValue, TError> &operator=(TError error) {
             this->valueOrError = error;
+        }
+
+        TValue &operator*() {
+            return *this->getValue();
         }
 
         [[nodiscard]] bool hasValue() const noexcept {
