@@ -1,9 +1,18 @@
+#include <sstream>
 #include <ionshared/error_handling/notice.h>
 
 namespace ionshared {
-    std::string Notice::getText(NoticeType type) {
+    std::string Notice::findNoticeTypeText(NoticeType type) {
         // TODO: Hard-coded, use a map instead?
         switch (type) {
+            case NoticeType::InternalError: {
+                return "Internal Error";
+            }
+
+            case NoticeType::Info: {
+                return "Info";
+            }
+
             case NoticeType::Warning: {
                 return "Warning";
             }
@@ -22,13 +31,11 @@ namespace ionshared {
         }
     }
 
-    Notice::Notice(NoticeContext context, NoticeType type, std::string message)
-        : context(context), type(type), message(message) {
+    Notice::Notice(NoticeType type, std::string message, std::optional<SourceLocation> location) :
+        type(type),
+        message(message),
+        location(location) {
         //
-    }
-
-    NoticeContext Notice::getContext() const noexcept {
-        return this->context;
     }
 
     NoticeType Notice::getType() const noexcept {
@@ -39,8 +46,23 @@ namespace ionshared {
         return this->message;
     }
 
+    std::optional<SourceLocation> Notice::getLocation() const noexcept {
+        return this->location;
+    }
+
     std::string Notice::createTrace() const noexcept {
-        return this->context.filePath + ":" + std::to_string(this->context.lineNumber) + ":" +
-            std::to_string(this->context.position) + " | " + Notice::getText(this->type) + ": " + this->message;
+        std::stringstream trace;
+
+        if (this->location.has_value()) {
+            Span column = this->getLocation()->getColumn();
+
+            // TODO: File path.
+            trace << /*this->location.filePath +*/ ":" + std::to_string(this->location->getLineNumber()) + ":" +
+                std::to_string(column.getStartPosition()) + "-" + std::to_string(column.getEndPosition()) + " | ";
+        }
+
+        trace << Notice::findNoticeTypeText(this->getType()) + ": " + this->getMessage();
+
+        return trace.str();
     }
 }

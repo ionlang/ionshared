@@ -4,9 +4,14 @@
 #include <vector>
 #include <ionshared/misc/helpers.h>
 #include <ionshared/container/stack.h>
+#include "source_location.h"
 
 namespace ionshared {
     enum class NoticeType {
+        InternalError,
+
+        Info,
+
         Warning,
 
         Error,
@@ -14,32 +19,28 @@ namespace ionshared {
         Fatal
     };
 
-    struct NoticeContext {
-        std::string filePath;
-
-        uint32_t lineNumber;
-
-        uint32_t position;
-    };
-
     class Notice {
     private:
-        NoticeContext context;
-
         NoticeType type;
 
         std::string message;
 
+        std::optional<SourceLocation> location;
+
     public:
-        [[nodiscard]] static std::string getText(NoticeType type);
+        [[nodiscard]] static std::string findNoticeTypeText(NoticeType type);
 
-        Notice(NoticeContext context, NoticeType type, std::string message);
-
-        [[nodiscard]] NoticeContext getContext() const noexcept;
+        Notice(
+            NoticeType type,
+            std::string message,
+            std::optional<SourceLocation> location = std::nullopt
+        );
 
         [[nodiscard]] NoticeType getType() const noexcept;
 
         [[nodiscard]] std::string getMessage() const noexcept;
+
+        [[nodiscard]] std::optional<SourceLocation> getLocation() const noexcept;
 
         [[nodiscard]] std::string createTrace() const noexcept;
     };

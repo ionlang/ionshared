@@ -30,7 +30,7 @@ namespace ionshared {
             this->valueOrError = error;
         }
 
-        TValue &operator*() {
+        TValue operator*() {
             return *this->getValue();
         }
 
@@ -38,15 +38,15 @@ namespace ionshared {
             return this->valueOrError;
         }
 
-        [[nodiscard]] std::optional<TValue> getValue() const noexcept {
+        [[nodiscard]] std::optional<TValue> getValue() const {
             if (this->hasValue()) {
-                return this->valueOrError;
+                return std::get<TValue>(this->valueOrError);
             }
 
             return std::nullopt;
         }
 
-        [[nodiscard]] TValue getValueOr(TValue alternative) const noexcept {
+        [[nodiscard]] TValue getValueOr(TValue alternative) const {
             if (this->hasValue()) {
                 return this->getValue();
             }
@@ -54,22 +54,13 @@ namespace ionshared {
             return alternative;
         }
 
-        [[nodiscard]] TValue getValueOrNullptr() const noexcept {
-            return this->getValueOr(nullptr);
-        }
-
-        [[nodiscard]] bool holdsValue() const noexcept {
+        [[nodiscard]] bool hasValue() const noexcept {
             return std::holds_alternative<TValue>(this->valueOrError);
         }
 
-        [[nodiscard]] bool hasValue() const noexcept {
-            return this->holdsValue()
-                && this->valueOrError != nullptr;
-        }
-
-        [[nodiscard]] std::optional<TError> getError() const noexcept {
+        [[nodiscard]] std::optional<TError> getError() const {
             if (!this->hasValue()) {
-                return this->valueOrError;
+                std::get<TError>(this->valueOrError);
             }
 
             return std::nullopt;
