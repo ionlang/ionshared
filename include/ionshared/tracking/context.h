@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <ionshared/tracking/symbol_table.h>
-#include <ionshared/tracking/scope_anchor.h>
+#include <ionshared/tracking/scoped.h>
 
 namespace ionshared {
     template<typename T>
@@ -56,7 +56,7 @@ namespace ionshared {
         }
 
         void appendScope(
-            const ionshared::Ptr<ionshared::ScopeAnchor<T>> &scopeAnchor
+            const ionshared::Ptr<ionshared::Scoped<T>> &scopeAnchor
         ) noexcept {
             this->appendScope(scopeAnchor->getSymbolTable());
         }

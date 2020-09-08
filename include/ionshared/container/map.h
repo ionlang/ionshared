@@ -39,7 +39,7 @@ namespace ionshared {
             return this->value.erase(key);
         }
 
-        std::optional<TValue> lookup(TKey key) {
+        [[nodiscard]] std::optional<TValue> lookup(TKey key) {
             if (!this->contains(key)) {
                 return std::nullopt;
             }
