@@ -12,7 +12,7 @@ namespace ionshared {
             //
         }
 
-        bool insert(T item) {
+        bool add(T item) {
             if (this->contains(item)) {
                 return false;
             }
@@ -32,7 +32,7 @@ namespace ionshared {
                 this->value.erase(item);
             }
 
-            // TODO: Redundant check.
+            // TODO: Redundant check?
             return this->contains(item);
         }
 

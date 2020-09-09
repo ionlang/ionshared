@@ -46,6 +46,10 @@ namespace ionshared {
             return std::nullopt;
         }
 
+        /**
+         * Returns the stored value if it exists, otherwise returns the
+         * provided alternative value.
+         */
         [[nodiscard]] TValue getValueOr(TValue alternative) const {
             if (this->hasValue()) {
                 return this->getValue();

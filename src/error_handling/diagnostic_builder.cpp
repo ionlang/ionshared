@@ -18,7 +18,7 @@ namespace ionshared {
         return this->noticeStack;
     }
 
-    void DiagnosticBuilder::setNoticeStack(ionshared::Ptr<NoticeStack> noticeStack) noexcept {
+    void DiagnosticBuilder::setNoticeStack(Ptr<NoticeStack> noticeStack) noexcept {
         this->noticeStack = noticeStack;
     }
 

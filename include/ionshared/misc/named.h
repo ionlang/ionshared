@@ -10,8 +10,8 @@ namespace ionshared {
     public:
         explicit Named(std::string id);
 
-        std::string getId() const;
+        [[nodiscard]] std::string getId() const noexcept;
 
-        void setId(std::string id);
+        void setId(std::string id) noexcept;
     };
 }

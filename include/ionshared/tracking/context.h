@@ -6,7 +6,7 @@
 
 namespace ionshared {
     template<typename T>
-    using Scope = ionshared::PtrSymbolTable<T>;
+    using Scope = PtrSymbolTable<T>;
 
     template<typename T>
     class Context {
@@ -43,7 +43,7 @@ namespace ionshared {
 
         void appendScope(const Scope<T> &scope) noexcept {
             // Scope is already on the scopes vector.
-            if (ionshared::util::locateInVector(this->scopes, scope) != std::nullopt) {
+            if (util::locateInVector(this->scopes, scope) != std::nullopt) {
                 return;
             }
 
@@ -55,9 +55,7 @@ namespace ionshared {
             this->scopes.insert(this->scopes.begin(), scope);
         }
 
-        void appendScope(
-            const ionshared::Ptr<ionshared::Scoped<T>> &scopeAnchor
-        ) noexcept {
+        void appendScope(const Ptr<ionshared::Scoped<T>> &scopeAnchor) noexcept {
             this->appendScope(scopeAnchor->getSymbolTable());
         }
 
@@ -75,7 +73,7 @@ namespace ionshared {
          * Attempt to locate the nearest (starting from most recent
          * scopes) construct by it's id in the scope symbol tables.
          */
-        [[nodiscard]] ionshared::OptPtr<T> findNearest(const std::string &id) {
+        [[nodiscard]] OptPtr<T> findNearest(const std::string &id) {
             /**
              * Scopes vector is already in the correct order because
              * whenever a new scope is pushed, it is added at the beginning

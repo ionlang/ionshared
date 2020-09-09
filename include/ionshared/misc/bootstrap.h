@@ -17,15 +17,15 @@ namespace ionshared::test::bootstrap {
 
     [[nodiscard]] Parser parser(std::vector<Token> tokens);
 
-    [[nodiscard]] ionshared::Ptr<ionshared::LlvmModule> llvmModule(
+    [[nodiscard]] Ptr<ionshared::LlvmModule> llvmModule(
         const std::string &identifier = "test"
     );
 
-    [[nodiscard]] ionshared::Ptr<LlvmCodegenPass> llvmCodegenPass(
-        const ionshared::Ptr<ionshared::LlvmModule> &module = llvmModule()
+    [[nodiscard]] Ptr<LlvmCodegenPass> llvmCodegenPass(
+        const Ptr<ionshared::LlvmModule> &module = llvmModule()
     );
 
-    [[nodiscard]] ionshared::Ptr<Function> emptyFunction(
-        std::vector<ionshared::Ptr<Inst>> insts = {}
+    [[nodiscard]] Ptr<Function> emptyFunction(
+        std::vector<Ptr<Inst>> insts = {}
     );
 }

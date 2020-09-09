@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <queue>
 #include <functional>
 #include <ionshared/construct/base_construct.h>
@@ -12,7 +13,7 @@ namespace ionshared {
 
     // TODO: Implement concepts to ensure T is or derives of Construct.
     template<typename T>
-    class Scoped : public std::enable_shared_from_this<Scoped<T>> {
+    class Scoped {
     private:
         PtrSymbolTable<T> symbolTable;
 
@@ -23,7 +24,8 @@ namespace ionshared {
             PtrSymbolTable<T> symbolTable = util::makePtrSymbolTable<T>(),
             OptPtr<Scoped<T>> parent = std::nullopt
         ) :
-            symbolTable(symbolTable) {
+            symbolTable(symbolTable),
+            parent(parent) {
             //
         }
 
@@ -43,15 +45,15 @@ namespace ionshared {
             return util::hasValue(this->parent);
         }
 
-        void traverseScopes(TraversalCallback<Ptr<Scoped<T>>> callback) {
-            std::queue<Ptr<Scoped<T>>> queue =
-                std::queue<Ptr<Scoped<T>>>(this->shared_from_this());
+        void traverseScopes(TraversalCallback<Scoped<T>> callback) {
+            std::queue<Scoped<T>> queue = std::queue<Scoped<T>>(*this);
 
             while (!queue.empty()) {
-                Ptr<Scoped<T>> scope = queue.front();
+                Scoped<T> scope = queue.front();
 
                 queue.pop();
 
+                // TODO: CRITICAL! Since it's being  passed as
                 if (!callback(scope)) {
                     break;
                 }
@@ -64,8 +66,8 @@ namespace ionshared {
         [[nodiscard]] std::optional<T> findNearestSymbol(std::string key) {
             std::optional<T> result = std::nullopt;
 
-            this->traverseScopes([&, this](Ptr<Scoped<T>> scope) -> bool {
-                    ionshared::OptPtr<T> symbol = scope->getSymbolTable()->lookup(key);
+            this->traverseScopes([&, this](Scoped<T> scope) -> bool {
+                    ionshared::OptPtr<T> symbol = scope.getSymbolTable()->lookup(key);
 
                     if (util::hasValue(symbol)) {
                         result = symbol;

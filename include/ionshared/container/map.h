@@ -13,15 +13,11 @@ namespace ionshared {
             //
         }
 
-        TValue &operator[](TKey key) {
-            return this->value[key];
-        }
-
         [[nodiscard]] bool contains(TKey key) const {
             return this->value.find(key) != this->value.end();
         }
 
-        bool insert(TKey key, TValue value, bool overwrite = false) {
+        bool set(TKey key, TValue value, bool overwrite = false) {
             if (this->contains(key) && !overwrite) {
                 return false;
             }

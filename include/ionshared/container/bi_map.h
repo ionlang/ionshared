@@ -20,8 +20,8 @@ namespace ionshared {
         }
 
         bool insert(TFirst first, TSecond second, bool overwrite = false) {
-            return this->firstMap.insert(first, second, overwrite)
-                && this->secondMap.insert(second, first, overwrite);
+            return this->firstMap.set(first, second, overwrite)
+                && this->secondMap.set(second, first, overwrite);
         }
 
         bool insert(TSecond second, TFirst first, bool overwrite = false) {

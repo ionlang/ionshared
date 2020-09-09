@@ -22,7 +22,7 @@ TEST(MapContainerTest, Contains) {
 TEST(MapContainerTest, Insert) {
     Map<std::string, int> map = Map<std::string, int>();
 
-    EXPECT_TRUE(map.insert(test::constant::foobar, value));
+    EXPECT_TRUE(map.set(test::constant::foobar, value));
     EXPECT_TRUE(map.contains(test::constant::foobar));
     EXPECT_EQ(map.unwrap()[test::constant::foobar], value);
 }
@@ -44,7 +44,7 @@ TEST(MapContainerTest, Size) {
 
     EXPECT_EQ(map.getSize(), 0);
 
-    map.insert(test::constant::foobar, value);
+    map.set(test::constant::foobar, value);
 
     EXPECT_EQ(map.getSize(), 1);
 }

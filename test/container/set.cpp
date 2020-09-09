@@ -20,9 +20,9 @@ TEST(SetContainerTest, Insert) {
     std::set<std::string> &underlyingSet = set.unwrap();
 
     EXPECT_EQ(underlyingSet.size(), 0);
-    EXPECT_TRUE(set.insert(test::constant::foobar));
+    EXPECT_TRUE(set.add(test::constant::foobar));
     EXPECT_EQ(underlyingSet.size(), 1);
-    EXPECT_FALSE(set.insert(test::constant::foobar));
+    EXPECT_FALSE(set.add(test::constant::foobar));
     EXPECT_EQ(underlyingSet.size(), 1);
 }
 

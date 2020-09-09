@@ -8,8 +8,17 @@
 
 namespace ionshared {
     enum class NoticeType {
+        /**
+         * An internal error of the compiler. These errors are meant
+         * to be debugged and fixed by the compiler developer(s).
+         * Internal compiler errors cannot be recovered from because
+         * they are essential.
+         */
         InternalError,
 
+        /**
+         * An information notice meant to inform the user.
+         */
         Info,
 
         Warning,
@@ -19,6 +28,10 @@ namespace ionshared {
         Fatal
     };
 
+    /**
+     * Holds valuable information about information messages, warnings,
+     * errors, etc. Contains the type of notice and the message.
+     */
     class Notice {
     private:
         NoticeType type;
@@ -42,6 +55,9 @@ namespace ionshared {
 
         [[nodiscard]] std::optional<SourceLocation> getLocation() const noexcept;
 
+        /**
+         * Create a visual trace of the notice in textual form.
+         */
         [[nodiscard]] std::string createTrace() const noexcept;
     };
 

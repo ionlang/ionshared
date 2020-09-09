@@ -5,15 +5,18 @@
 #include <queue>
 #include <ionshared/misc/helpers.h>
 #include <ionshared/construct/base_construct.h>
+#include "pass_info.h"
 
 namespace ionshared {
     enum class PassPriority {
         /**
-         * Highest priority. This precedence
-         * will be executed first.
+         * Highest priority. This precedence will be executed first.
          */
         Important,
 
+        /**
+         * The default priority.
+         */
         Normal,
 
         Low,
@@ -21,64 +24,88 @@ namespace ionshared {
         Lowest
     };
 
-    template<typename T>
-    struct PassManagerItem {
-        Ptr<T> pass;
-
-        PassPriority priority = PassPriority::Normal;
-    };
-
-    template<typename TPass, typename TConstruct>
+    /**
+     * Holds passes which will traverse the construct AST once
+     * invoked. Passes can be registered with prerequisites.
+     */
+    template<PassLike TPass, typename TConstruct>
+        requires std::derived_from<TPass, BasePass<TConstruct>>
     class BasePassManager {
+    public:
+        struct Item;
+
     private:
-        /**
-         * Internal container on which pass manager items will
-         * be both stored and processed from.
-         */
-        std::vector <PassManagerItem<TPass>> passes;
+        Set<PassId> initializedPasses;
+
+        std::vector<Item> passes;
 
     public:
-        explicit BasePassManager(std::vector<PassManagerItem<TPass>> passes = {}) : passes(passes) {
+        struct Item {
+            Ptr<TPass> pass;
+
+            PassInfo info;
+
+            PassPriority priority;
+        };
+
+        explicit BasePassManager(std::vector<Item> passes = {}) :
+            passes(passes),
+            initializedPasses() {
             //
         }
 
-        std::vector<PassManagerItem<TPass>> &getPasses() {
+        [[nodiscard]] const std::vector<Item> &getPasses() const noexcept {
             return this->passes;
         }
 
-        void setPasses(std::vector<PassManagerItem<TPass>> passes) {
+        void setPasses(std::vector<Item> passes) noexcept {
             this->passes = passes;
         }
 
-        /**
-         * Register a pass in the set. Returns whether the provided
-         * pass was successfully registered in the internal set.
-         *
-         */
-        void registerPass(PassManagerItem<TPass> item) {
-            this->passes.push_back(item);
-        }
+        bool registerPass(Ptr<TPass> pass, PassPriority priority = PassPriority::Normal) {
+            PassInfo info = PassInfo();
 
-        void registerPass(Ptr<TPass> pass) {
-            this->registerPass(PassManagerItem<TPass>{
-                pass
+            pass->initialize(info);
+
+            std::set<PassId> requirements = info.getRequirements().unwrap();
+
+            for (const auto &requirement : requirements) {
+                if (!this->initializedPasses.contains(requirement)) {
+                    return false;
+                }
+            }
+
+            // TODO: Handle invalidations.
+
+            this->initializedPasses.add(&TPass::id);
+
+            this->passes.push_back(Item{
+                pass,
+                info,
+                priority
             });
+
+            return true;
         }
 
+        /**
+         * Traverse all nodes and visit each one of them, and their
+         * child nodes if applicable.
+         */
         void run(const Ast<TConstruct> &ast) {
-            auto compare = [](PassManagerItem<TPass> left, PassManagerItem<TPass> right) {
+            auto compare = [](Item left, Item right) {
                 // TODO: Ensure correct order.
                 return left.priority > right.priority;
             };
 
             std::priority_queue<
-                PassManagerItem<TPass>,
-                std::vector<PassManagerItem<TPass>>,
+                Item,
+                std::vector<Item>,
                 decltype(compare)
             > runQueue(compare);
 
             // Push pass manager items onto the queue, thus ordering them.
-            for (const auto item : this->passes) {
+            for (const auto &item : this->passes) {
                 runQueue.push(item);
             }
 
@@ -87,7 +114,7 @@ namespace ionshared {
              * and start executing passes.
              */
             while (!runQueue.empty()) {
-                PassManagerItem<TPass> item = runQueue.top();
+                Item item = runQueue.top();
 
                 runQueue.pop();
 

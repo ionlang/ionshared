@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <stdexcept>
 #include <memory>
 #include <ionshared/misc/helpers.h>
@@ -65,6 +66,9 @@ namespace ionshared {
             return this->dynamicCast<TConstruct>();
         }
     };
+
+    template<typename TDerived, typename TConstruct, typename TConstructKind>
+    concept BaseConstructLike = std::derived_from<TDerived, BaseConstruct<TConstruct, TConstructKind>>;
 
     template<typename T>
     using Ast = std::vector<Ptr<T>>;

@@ -6,11 +6,11 @@ namespace ionshared {
         //
     }
 
-    std::string Named::getId() const {
+    std::string Named::getId() const noexcept {
         return this->id;
     }
 
-    void Named::setId(std::string id) {
+    void Named::setId(std::string id) noexcept {
         this->id = id;
     }
 }

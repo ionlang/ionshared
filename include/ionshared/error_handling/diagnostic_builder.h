@@ -12,7 +12,10 @@ namespace ionshared {
         std::optional<std::string> example;
     };
 
-class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder> {
+    /**
+     * Helper class to easily bootstrap notices and diagnostics.
+     */
+    class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder> {
     private:
         OptPtr<NoticeStack> noticeStack;
 
@@ -25,7 +28,7 @@ class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder>
 
         [[nodiscard]] OptPtr<NoticeStack> getNoticeStack() const noexcept;
 
-        void setNoticeStack(ionshared::Ptr<NoticeStack> sourceLocation) noexcept;
+        void setNoticeStack(Ptr<NoticeStack> sourceLocation) noexcept;
 
         [[nodiscard]] std::optional<Diagnostic> getDiagnosticBuffer() const noexcept;
 

@@ -13,7 +13,7 @@ namespace ionshared::fs {
     [[nodiscard]] std::string resolveTestPath(const std::string &path);
 
     /**
-     * Joins two paths with a directory separator.
+     * Join two paths with a directory separator character.
      */
     [[nodiscard]] std::string joinPaths(
         const std::string &pathA,

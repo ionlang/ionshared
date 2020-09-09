@@ -163,13 +163,13 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    ionshared::PtrSymbolTable<T> makePtrSymbolTable(ionshared::SymbolTable<ionshared::Ptr<T>> symbolTable) {
-        return std::make_shared<ionshared::SymbolTable<ionshared::Ptr<T>>>(symbolTable);
+    PtrSymbolTable<T> makePtrSymbolTable(SymbolTable<Ptr<T>> symbolTable) {
+        return std::make_shared<SymbolTable<Ptr<T>>>(symbolTable);
     }
 
     template<typename T>
-    ionshared::PtrSymbolTable<T> makePtrSymbolTable() {
-        return std::make_shared<ionshared::SymbolTable<ionshared::Ptr<T>>>();
+    PtrSymbolTable<T> makePtrSymbolTable() {
+        return std::make_shared<SymbolTable<Ptr<T>>>();
     }
 
     template<typename T>
