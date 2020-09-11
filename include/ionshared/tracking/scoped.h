@@ -17,12 +17,12 @@ namespace ionshared {
     private:
         PtrSymbolTable<T> symbolTable;
 
-        OptPtr<Scoped<T>> parent;
+        OptRef<Scoped<T>> parent;
 
     public:
         explicit Scoped(
             PtrSymbolTable<T> symbolTable = util::makePtrSymbolTable<T>(),
-            OptPtr<Scoped<T>> parent = std::nullopt
+            OptRef<Scoped<T>> parent = std::nullopt
         ) :
             symbolTable(symbolTable),
             parent(parent) {
@@ -37,19 +37,29 @@ namespace ionshared {
             this->symbolTable = symbolTable;
         }
 
-        [[nodiscard]] OptPtr<Scoped<T>> getParentScope() const noexcept {
+        [[nodiscard]] OptRef<Scoped<T>> getParentScope() const noexcept {
             return this->parent;
         }
 
-        [[nodiscard]] bool hasParentScope() const noexcept {
-            return util::hasValue(this->parent);
+        void setParentScope(OptRef<Scoped<T>> parent) noexcept {
+            this->parent = parent;
         }
 
-        void traverseScopes(TraversalCallback<Scoped<T>> callback) {
-            std::queue<Scoped<T>> queue = std::queue<Scoped<T>>(*this);
+        [[nodiscard]] bool hasParentScope() const noexcept {
+            return this->parent.has_value();
+        }
+
+        /**
+         * Traverses parent scopes starting from the nearest one, and
+         * including itself.
+         */
+        void traverseScopes(TraversalCallback<Scoped<T> &> callback) {
+            std::queue<Ref<Scoped<T>>> queue = {};
+
+            queue.push(*this);
 
             while (!queue.empty()) {
-                Scoped<T> scope = queue.front();
+                Scoped<T> &scope = queue.front();
 
                 queue.pop();
 
@@ -57,8 +67,8 @@ namespace ionshared {
                 if (!callback(scope)) {
                     break;
                 }
-                else if (scope->hasParentScope()) {
-                    queue.push(*scope->getParentScope());
+                else if (scope.hasParentScope()) {
+                    queue.push(scope.getParentScope().value());
                 }
             }
         }
@@ -66,7 +76,7 @@ namespace ionshared {
         [[nodiscard]] std::optional<T> findNearestSymbol(std::string key) {
             std::optional<T> result = std::nullopt;
 
-            this->traverseScopes([&, this](Scoped<T> scope) -> bool {
+            this->traverseScopes([&, this](Scoped<T> &scope) -> bool {
                     ionshared::OptPtr<T> symbol = scope.getSymbolTable()->lookup(key);
 
                     if (util::hasValue(symbol)) {

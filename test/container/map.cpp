@@ -4,17 +4,23 @@
 
 using namespace ionshared;
 
-const int value = 1;
+constexpr int value = 1;
 
 TEST(MapContainerTest, Initialize) {
-    Map<std::string, int> map = Map<std::string, int>({{test::constant::foobar, value}});
+    Map<std::string, int> map = Map<std::string, int>({{
+        test::constant::foobar,
+        value
+    }});
 
     EXPECT_EQ(map.unwrap().size(), 1);
     EXPECT_EQ(map.unwrap()[test::constant::foobar], value);
 }
 
 TEST(MapContainerTest, Contains) {
-    Map<std::string, int> map = Map<std::string, int>({{test::constant::foobar, value}});
+    Map<std::string, int> map = Map<std::string, int>({{
+        test::constant::foobar,
+        value
+    }});
 
     EXPECT_TRUE(map.contains(test::constant::foobar));
 }
@@ -28,7 +34,10 @@ TEST(MapContainerTest, Insert) {
 }
 
 TEST(MapContainerTest, Lookup) {
-    Map<std::string, int> map = Map<std::string, int>({{test::constant::foobar, value}});
+    Map<std::string, int> map = Map<std::string, int>({{
+        test::constant::foobar,
+        value
+    }});
 
     EXPECT_EQ(map.lookup(test::constant::foobar), value);
 }
@@ -50,7 +59,10 @@ TEST(MapContainerTest, Size) {
 }
 
 TEST(MapContainerTest, Remove) {
-    Map<std::string, int> map = Map<std::string, int>({{test::constant::foobar, value}});
+    Map<std::string, int> map = Map<std::string, int>({{
+        test::constant::foobar,
+        value
+    }});
 
     EXPECT_EQ(map.getSize(), 1);
     EXPECT_TRUE(map.remove(test::constant::foobar));

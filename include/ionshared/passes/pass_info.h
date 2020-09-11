@@ -1,29 +1,9 @@
 #pragma once
 
 #include <ionshared/container/tag_map.h>
+#include "pass_like.h"
 
 namespace ionshared {
-    class PassInfo;
-
-    template<const char> using constexprHelper = void;
-
-    template<typename T>
-    concept PassLike = requires(T t, PassInfo &info) {
-        /**
-        * Ensure that member 'id' is usable in a context that requires
-        * a constexpr.
-        */
-        typename constexprHelper<T::id>;
-
-        /**
-         * Specify that T must have a member named 'id' and require
-         * that the type of member 'id' is const char.
-         */
-        { T::id } -> std::same_as<const char>;
-
-        { t.initialize(info) } -> std::same_as<void>;
-    };
-
     typedef const char * PassId;
 
     class PassInfo {
@@ -49,5 +29,7 @@ namespace ionshared {
         bool addInvalidation() {
             return this->invalidations.add(T::id);
         }
+
+        // TODO: Invalidates all.
     };
 }

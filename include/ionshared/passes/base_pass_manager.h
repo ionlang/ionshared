@@ -28,14 +28,14 @@ namespace ionshared {
      * Holds passes which will traverse the construct AST once
      * invoked. Passes can be registered with prerequisites.
      */
-    template<PassLike TPass, typename TConstruct>
-        requires std::derived_from<TPass, BasePass<TConstruct>>
+    template<typename TPass, typename TConstruct>
+//        requires std::derived_from<TPass, BasePass<TConstruct>>
     class BasePassManager {
     public:
         struct Item;
 
     private:
-        Set<PassId> initializedPasses;
+        Set<PassId> registeredPasses;
 
         std::vector<Item> passes;
 
@@ -48,9 +48,9 @@ namespace ionshared {
             PassPriority priority;
         };
 
-        explicit BasePassManager(std::vector<Item> passes = {}) :
-            passes(passes),
-            initializedPasses() {
+        BasePassManager() :
+            passes(),
+            registeredPasses() {
             //
         }
 
@@ -62,7 +62,41 @@ namespace ionshared {
             this->passes = passes;
         }
 
-        bool registerPass(Ptr<TPass> pass, PassPriority priority = PassPriority::Normal) {
+        template<PassLike T>
+            requires std::derived_from<T, TPass>
+        [[nodiscard]] bool isRegistered() const {
+            return this->registeredPasses.contains(&T::id);
+        }
+
+        /**
+         * Register a pass without invoking the pass' initialization method.
+         * This will skip requirements and invalidations caused by the pass.
+         */
+        template<PassLike T>
+            requires std::derived_from<T, TPass>
+        bool registerPassWithoutInit(Ptr<T> pass, PassPriority priority = PassPriority::Normal) {
+            if (this->registeredPasses.contains(&T::id)) {
+                return false;
+            }
+
+            this->registeredPasses.add(&T::id);
+
+            this->passes.push_back(Item{
+                pass,
+                PassInfo(),
+                priority
+            });
+
+            return true;
+        }
+
+        /**
+         * Register a pass if it's requirements are met when the pass'
+         * initialization method is invoked.
+         */
+        template<PassLike T>
+            requires std::derived_from<T, TPass>
+        bool registerPass(Ptr<T> pass, PassPriority priority = PassPriority::Normal) {
             PassInfo info = PassInfo();
 
             pass->initialize(info);
@@ -70,22 +104,14 @@ namespace ionshared {
             std::set<PassId> requirements = info.getRequirements().unwrap();
 
             for (const auto &requirement : requirements) {
-                if (!this->initializedPasses.contains(requirement)) {
+                if (!this->registeredPasses.contains(requirement)) {
                     return false;
                 }
             }
 
             // TODO: Handle invalidations.
 
-            this->initializedPasses.add(&TPass::id);
-
-            this->passes.push_back(Item{
-                pass,
-                info,
-                priority
-            });
-
-            return true;
+            return this->registerPassWithoutInit<T>(pass, priority);
         }
 
         /**
