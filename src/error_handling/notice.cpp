@@ -54,11 +54,13 @@ namespace ionshared {
         std::stringstream trace;
 
         if (this->location.has_value()) {
+            Span lines = this->getLocation()->getLines();
             Span column = this->getLocation()->getColumn();
 
             // TODO: File path.
-            trace << /*this->location.filePath +*/ ":" + std::to_string(this->location->getLineNumber()) + ":" +
-                std::to_string(column.getStartPosition()) + "-" + std::to_string(column.getEndPosition()) + " | ";
+            trace << /*this->location.filePath +*/ ":" + std::to_string(lines.getStartPosition())
+                + "-" + std::to_string(lines.getEndPosition()) + ":" + std::to_string(column.getStartPosition())
+                + "-" + std::to_string(column.getEndPosition()) + " | ";
         }
 
         trace << Notice::findNoticeTypeText(this->getType()) + ": " + this->getMessage();

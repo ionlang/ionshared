@@ -18,6 +18,11 @@ namespace ionshared {
 
         [[nodiscard]] Set<PassId> getRequirements() const noexcept;
 
+        /**
+         * Add a requirement to the pass associated with this instance
+         * which means that such requirement pass must already be registered
+         * on the pass manager in order for the associated pass to be registered.
+         */
         template<PassLike T>
         bool addRequirement() {
             return this->requirements.add(&T::id);

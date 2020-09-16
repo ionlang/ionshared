@@ -91,7 +91,7 @@ namespace ionshared {
             return *item;
         }
 
-        void skip(int amount = 1) {
+        void skip(uint32_t amount = 1) {
             if (amount < 1) {
                 throw std::out_of_range("Amount must greater than zero");
             }
@@ -109,6 +109,7 @@ namespace ionshared {
                 return std::nullopt;
             }
 
+            // TODO: operator[] creates a new entry if none exist.
             // Return the next item without altering the index.
             return this->items[this->resolveNextIndex()];
         }

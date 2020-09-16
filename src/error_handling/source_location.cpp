@@ -1,14 +1,14 @@
 #include <ionshared/error_handling/source_location.h>
 
 namespace ionshared {
-    SourceLocation::SourceLocation(uint32_t lineNumber, Span column) :
-        lineNumber(lineNumber),
-        column(column) {
+    SourceLocation::SourceLocation(Span lines, Span columns) :
+        lines(lines),
+        column(columns) {
         //
     }
 
-    uint32_t SourceLocation::getLineNumber() const noexcept {
-        return this->lineNumber;
+    Span SourceLocation::getLines() const noexcept {
+        return this->lines;
     }
 
     Span SourceLocation::getColumn() const noexcept {
