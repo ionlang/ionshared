@@ -32,40 +32,46 @@ namespace ionshared {
 
         [[nodiscard]] std::optional<Diagnostic> getDiagnosticBuffer() const noexcept;
 
+        void setDiagnosticBuffer(std::optional<Diagnostic> diagnosticBuffer) noexcept;
+
         void clearDiagnosticBuffer() noexcept;
 
-        Ptr<DiagnosticBuilder> make(
+        [[nodiscard]] Ptr<DiagnosticBuilder> begin(Diagnostic diagnostic) noexcept;
+
+        [[nodiscard]] Ptr<DiagnosticBuilder> begin(
             NoticeType type,
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        Ptr<DiagnosticBuilder> makeInfo(
+        [[nodiscard]] Ptr<DiagnosticBuilder> beginInfo(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        Ptr<DiagnosticBuilder> makeWarning(
+        [[nodiscard]] Ptr<DiagnosticBuilder> beginWarning(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        Ptr<DiagnosticBuilder>makeError(
+        [[nodiscard]] Ptr<DiagnosticBuilder>beginError(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        Ptr<DiagnosticBuilder> makeFatal(
+        [[nodiscard]] Ptr<DiagnosticBuilder> beginFatal(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        bool internalAssert(bool condition) noexcept;
+        [[nodiscard]] bool internalAssert(bool condition) noexcept;
 
-        Ptr<DiagnosticBuilder> setCode(std::optional<uint32_t> code);
+        [[nodiscard]] Ptr<DiagnosticBuilder> setCode(std::optional<uint32_t> code);
 
-        Ptr<DiagnosticBuilder> setExample(std::optional<std::string> example);
+        [[nodiscard]] Ptr<DiagnosticBuilder> setExample(std::optional<std::string> example);
 
-        bool commit();
+        bool finish();
+
+        bool bootstrap(Diagnostic diagnostic);
     };
 }

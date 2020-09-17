@@ -2,6 +2,11 @@
 #include <ionshared/misc/util.h>
 
 namespace ionshared::util {
+    std::string computeDiagnosticHash(Diagnostic diagnostic) {
+        // TODO
+        throw std::runtime_error("Not yet implemented");
+    }
+
     bool stringStartsWith(std::string subject, std::string value) {
         return subject.rfind(value, 0) == 0;
     }

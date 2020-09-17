@@ -26,45 +26,47 @@ namespace ionshared {
         return this->diagnosticBuffer;
     }
 
+    void DiagnosticBuilder::setDiagnosticBuffer(std::optional<Diagnostic> diagnosticBuffer) noexcept {
+        this->diagnosticBuffer = diagnosticBuffer;
+    }
+
     void DiagnosticBuilder::clearDiagnosticBuffer() noexcept {
         this->diagnosticBuffer = std::nullopt;
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::make(NoticeType type, std::string message, std::optional<SourceLocation> location) noexcept {
-        this->diagnosticBuffer = Diagnostic{
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::begin(Diagnostic diagnostic) noexcept {
+        // TODO: Overwrites the SourceLocation field on the current buffer.
+        this->setDiagnosticBuffer(diagnostic);
+
+        return this->shared_from_this();
+    }
+
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::begin(NoticeType type, std::string message, std::optional<SourceLocation> location) noexcept {
+        return this->begin(Diagnostic{
             Notice(type, message, location)
-        };
-
-        return this->shared_from_this();
+        });
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::makeInfo(std::string message, std::optional<SourceLocation> location) noexcept {
-        this->make(NoticeType::Info, message, location);
-
-        return this->shared_from_this();
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginInfo(std::string message, std::optional<SourceLocation> location) noexcept {
+        return this->begin(NoticeType::Info, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::makeWarning(std::string message, std::optional<SourceLocation> location) noexcept {
-        this->make(NoticeType::Warning, message, location);
-
-        return this->shared_from_this();
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginWarning(std::string message, std::optional<SourceLocation> location) noexcept {
+        return this->begin(NoticeType::Warning, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::makeError(std::string message, std::optional<SourceLocation> location) noexcept {
-        this->make(NoticeType::Error, message, location);
-
-        return this->shared_from_this();
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginError(std::string message, std::optional<SourceLocation> location) noexcept {
+        return this->begin(NoticeType::Error, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::makeFatal(std::string message, std::optional<SourceLocation> location) noexcept {
-        this->make(NoticeType::Fatal, message, location);
-
-        return this->shared_from_this();
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginFatal(std::string message, std::optional<SourceLocation> location) noexcept {
+        return this->begin(NoticeType::Fatal, message, location);
     }
 
     bool DiagnosticBuilder::internalAssert(bool condition) noexcept {
         if (!condition) {
-            this->make(NoticeType::InternalError, "Internal assertion failed");
+            this->begin(NoticeType::InternalError, "Internal assertion failed")
+                ->finish();
         }
 
         return condition;
@@ -84,7 +86,9 @@ namespace ionshared {
         return this->shared_from_this();
     }
 
-    bool DiagnosticBuilder::commit() {
+    bool DiagnosticBuilder::finish() {
+        // TODO: Should it clear buffer after finish?
+
         if (util::hasValue(this->noticeStack)) {
             this->assertDiagnosticBufferSet();
 
@@ -93,5 +97,10 @@ namespace ionshared {
         }
 
         return false;
+    }
+
+    bool DiagnosticBuilder::bootstrap(Diagnostic diagnostic) {
+        return this->begin(diagnostic)
+            ->finish();
     }
 }

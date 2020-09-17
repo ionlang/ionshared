@@ -7,32 +7,35 @@
 #include <regex>
 #include <string_view>
 #include <cmath>
+#include <ionshared/error_handling/diagnostic_builder.h>
 #include <ionshared/tracking/symbol_table.h>
 #include "helpers.h"
 
 namespace ionshared::util {
     constexpr std::string_view specialChars{"{}$^.?\\[]()*+|<>-&"};
 
-    bool stringStartsWith(std::string subject, std::string value);
+    [[nodiscard]] std::string computeDiagnosticHash(Diagnostic diagnostic);
 
-    std::string escapeRegex(std::string subject);
+    [[nodiscard]] bool stringStartsWith(std::string subject, std::string value);
+
+    [[nodiscard]] std::string escapeRegex(std::string subject);
 
     /**
      * Create a Regex instance containing a string literal as its value.
      * Escapes any special characters that may be present in the value.
      */
-    std::regex createPureRegex(std::string value);
+    [[nodiscard]] std::regex createPureRegex(std::string value);
 
-    bool withinRange(long value, long from, long to);
+    [[nodiscard]] bool withinRange(long value, long from, long to);
 
-    std::string joinStringVector(std::vector<std::string> vector);
+    [[nodiscard]] std::string joinStringVector(std::vector<std::string> vector);
 
     /**
      * Returns the number of binary digits, called bits, necessary
      * to represent an integer as a binary number. See more information
      * at: https://en.wikipedia.org/wiki/Bit-length.
      */
-    uint32_t calculateBitLength(int64_t number);
+    [[nodiscard]] uint32_t calculateBitLength(int64_t number);
 
     /**
      * Trim a string from the end (right).
@@ -50,12 +53,12 @@ namespace ionshared::util {
     [[nodiscard]] std::string trim(std::string subject);
 
     template<typename T, typename U>
-    bool instanceOf(T *value) {
+    [[nodiscard]] bool instanceOf(T *value) {
         return dynamic_cast<U *>(value) != nullptr;
     }
 
     template<typename T>
-    std::optional<uint32_t> locateInVector(std::vector<T> vector, T item) {
+    [[nodiscard]] std::optional<uint32_t> locateInVector(std::vector<T> vector, T item) {
         auto iterator = std::find(vector.begin(), vector.end(), item);
 
         if (iterator != vector.cend()) {
@@ -66,12 +69,12 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    bool vectorContains(std::vector<T> vector, T item) {
+    [[nodiscard]] bool vectorContains(std::vector<T> vector, T item) {
         return util::locateInVector(vector, item) != std::nullopt;
     }
 
     template<typename ... Args>
-    std::optional<std::string> formatString(const std::string &format, Args ... args) {
+    [[nodiscard]] std::optional<std::string> formatString(const std::string &format, Args ... args) {
         // Extra space for '\0'.
         size_t size = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1;
 
@@ -100,12 +103,12 @@ namespace ionshared::util {
     }
 
     template<typename ... Args>
-    std::optional<std::string> formatStringA(std::string format, Args &&...args) {
+    [[nodiscard]] std::optional<std::string> formatStringA(std::string format, Args &&...args) {
         return util::formatString(format, util::convertString(std::forward<Args>(args))...);
     }
 
     template<typename ... Args>
-    std::runtime_error quickError(std::string format, Args &&...args) {
+    [[nodiscard]] std::runtime_error quickError(std::string format, Args &&...args) {
         auto formattedString = util::formatStringA(format, args...);
 
         if (!formattedString.has_value()) {
@@ -116,7 +119,7 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    std::vector<T> sliceVector(std::vector<T> subject, uint32_t start, uint32_t length) {
+    [[nodiscard]] std::vector<T> sliceVector(std::vector<T> subject, uint32_t start, uint32_t length) {
         uint32_t end = start + length;
 
         if (subject->getSize() < end) {
@@ -127,12 +130,12 @@ namespace ionshared::util {
     }
 
     template<typename TKey, typename TValue>
-    bool mapContains(std::map<TKey, TValue> map, TKey key) {
+    [[nodiscard]] bool mapContains(std::map<TKey, TValue> map, TKey key) {
         return map.find(key) != map.end();
     }
 
     template<typename T>
-    std::vector<T> mergeVectors(std::vector<T> a, std::vector<T> b) {
+    [[nodiscard]] std::vector<T> mergeVectors(std::vector<T> a, std::vector<T> b) {
         for (const auto item : b) {
             a.push_back(item);
         }
@@ -141,7 +144,7 @@ namespace ionshared::util {
     }
 
     template<typename TKey, typename TValue>
-    std::map<TValue, TKey> flipMap(std::map<TKey, TValue> map) {
+    [[nodiscard]] std::map<TValue, TKey> flipMap(std::map<TKey, TValue> map) {
         // TODO: What about if different keys contain the same value? Maybe report an error.
         std::map<TValue, TKey> flippedMap = {};
 
@@ -153,27 +156,27 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    bool hasValue(OptPtr<T> pointer) noexcept {
+    [[nodiscard]] bool hasValue(OptPtr<T> pointer) noexcept {
         return pointer.has_value() && *pointer != nullptr;
     }
 
     template<typename T>
-    bool hasValue(std::optional<T *> pointer) noexcept {
+    [[nodiscard]] bool hasValue(std::optional<T *> pointer) noexcept {
         return pointer.has_value() && *pointer != nullptr;
     }
 
     template<typename T>
-    PtrSymbolTable<T> makePtrSymbolTable(SymbolTable<Ptr<T>> symbolTable) {
+    [[nodiscard]] PtrSymbolTable<T> makePtrSymbolTable(SymbolTable<Ptr<T>> symbolTable) {
         return std::make_shared<SymbolTable<Ptr<T>>>(symbolTable);
     }
 
     template<typename T>
-    PtrSymbolTable<T> makePtrSymbolTable() {
+    [[nodiscard]] PtrSymbolTable<T> makePtrSymbolTable() {
         return std::make_shared<SymbolTable<Ptr<T>>>();
     }
 
     template<typename T>
-    std::string getPointerAddressString(T *pointer) {
+    [[nodiscard]] std::string getPointerAddressString(T *pointer) {
         std::ostringstream stream;
 
         stream << pointer;
