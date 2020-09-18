@@ -72,6 +72,9 @@ namespace ionshared {
 
         bool finish();
 
-        bool bootstrap(Diagnostic diagnostic);
+        bool bootstrap(
+            Diagnostic diagnostic,
+            std::optional<SourceLocation> sourceLocation = std::nullopt
+        );
     };
 }

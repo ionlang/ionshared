@@ -99,8 +99,16 @@ namespace ionshared {
         return false;
     }
 
-    bool DiagnosticBuilder::bootstrap(Diagnostic diagnostic) {
-        return this->begin(diagnostic)
+    bool DiagnosticBuilder::bootstrap(Diagnostic diagnostic, std::optional<SourceLocation> sourceLocation) {
+        Diagnostic newDiagnostic = diagnostic;
+
+        newDiagnostic.notice = Notice(
+            diagnostic.notice.getType(),
+            diagnostic.notice.getMessage(),
+            sourceLocation
+        );
+
+        return this->begin(newDiagnostic)
             ->finish();
     }
 }
