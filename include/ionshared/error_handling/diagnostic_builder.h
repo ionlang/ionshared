@@ -1,34 +1,30 @@
 #pragma once
 
 #include <string>
-#include "notice.h"
+#include "diagnostic.h"
 
 namespace ionshared {
-    struct Diagnostic {
-        Notice notice;
-
-        std::optional<uint32_t> code;
-
-        std::optional<std::string> example;
-    };
-
     /**
-     * Helper class to easily bootstrap notices and diagnostics.
+     * Helper class to easily build and bootstrap diagnostics.
      */
     class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder> {
     private:
-        OptPtr<NoticeStack> noticeStack;
+        OptPtr<DiagnosticStack> diagnosticStack;
 
         std::optional<Diagnostic> diagnosticBuffer;
 
         void assertDiagnosticBufferSet() const;
 
     public:
-        explicit DiagnosticBuilder(Ptr<NoticeStack> noticeStack);
+        [[nodiscard]] static std::string createTrace(Diagnostic diagnostic) noexcept;
 
-        [[nodiscard]] OptPtr<NoticeStack> getNoticeStack() const noexcept;
+        [[nodiscard]] static std::string findDiagnosticTypeText(DiagnosticType type);
 
-        void setNoticeStack(Ptr<NoticeStack> sourceLocation) noexcept;
+        explicit DiagnosticBuilder(Ptr<DiagnosticStack> diagnosticStack);
+
+        [[nodiscard]] OptPtr<DiagnosticStack> getDiagnosticStack() const noexcept;
+
+        void setDiagnosticStack(Ptr<DiagnosticStack> diagnosticStack) noexcept;
 
         [[nodiscard]] std::optional<Diagnostic> getDiagnosticBuffer() const noexcept;
 
@@ -39,7 +35,7 @@ namespace ionshared {
         [[nodiscard]] Ptr<DiagnosticBuilder> begin(Diagnostic diagnostic) noexcept;
 
         [[nodiscard]] Ptr<DiagnosticBuilder> begin(
-            NoticeType type,
+            DiagnosticType type,
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;

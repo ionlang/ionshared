@@ -2,6 +2,7 @@
 
 #include <ionshared/misc/helpers.h>
 #include "pass_info.h"
+#include "pass_context.h"
 
 #define IONSHARED_PASS_ID static constexpr char id = 0
 
@@ -14,7 +15,19 @@ namespace ionshared {
 
     template<typename T>
     class BasePass {
+    private:
+        ionshared::Ptr<PassContext> context;
+
     public:
+        explicit BasePass(ionshared::Ptr<PassContext> context) :
+            context(context) {
+            //
+        }
+
+        [[nodiscard]] ionshared::Ptr<PassContext> getPassContext() const noexcept {
+            return this->context;
+        }
+
         virtual void initialize(PassInfo &info) {
             //
         }

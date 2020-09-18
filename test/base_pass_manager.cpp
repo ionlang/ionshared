@@ -9,11 +9,21 @@ typedef int TestConstruct;
 class Pass : public BasePass<TestConstruct> {
 public:
     IONSHARED_PASS_ID;
+
+    Pass() :
+        BasePass<TestConstruct>(nullptr) {
+        //
+    }
 };
 
 class PassWithRequirement : public BasePass<TestConstruct> {
 public:
     IONSHARED_PASS_ID;
+
+    PassWithRequirement() :
+        BasePass<TestConstruct>(nullptr) {
+        //
+    }
 
     void initialize(PassInfo &info) override {
         info.addRequirement<Pass>();
