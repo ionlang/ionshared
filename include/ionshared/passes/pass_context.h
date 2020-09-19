@@ -6,17 +6,19 @@
 namespace ionshared {
     class PassContext {
     private:
-        ionshared::Ptr<ionshared::DiagnosticStack> diagnosticStack;
+        Ptr<DiagnosticStack> diagnosticStack;
 
-        ionshared::Ptr<ionshared::DiagnosticBuilder> diagnosticBuilder;
+        Ptr<DiagnosticBuilder> diagnosticBuilder;
 
     public:
         explicit PassContext(
-            const ionshared::Ptr<ionshared::DiagnosticStack> &diagnosticStack
+            const Ptr<DiagnosticStack> &diagnosticStack
         );
 
-        [[nodiscard]] ionshared::Ptr<ionshared::DiagnosticStack> getDiagnosticStack() const noexcept;
+        PassContext();
 
-        [[nodiscard]] ionshared::Ptr<ionshared::DiagnosticBuilder> getDiagnosticBuilder() const noexcept;
+        [[nodiscard]] Ptr<DiagnosticStack> getDiagnosticStack() const noexcept;
+
+        [[nodiscard]] Ptr<DiagnosticBuilder> getDiagnosticBuilder() const noexcept;
     };
 }

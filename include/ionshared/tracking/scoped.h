@@ -77,7 +77,7 @@ namespace ionshared {
             std::optional<T> result = std::nullopt;
 
             this->traverseScopes([&, this](Scoped<T> &scope) -> bool {
-                    ionshared::OptPtr<T> symbol = scope.getSymbolTable()->lookup(key);
+                    OptPtr<T> symbol = scope.getSymbolTable()->lookup(key);
 
                     if (util::hasValue(symbol)) {
                         result = symbol;

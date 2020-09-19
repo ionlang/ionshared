@@ -16,15 +16,15 @@ namespace ionshared {
     template<typename T>
     class BasePass {
     private:
-        ionshared::Ptr<PassContext> context;
+        Ptr<PassContext> context;
 
     public:
-        explicit BasePass(ionshared::Ptr<PassContext> context) :
+        explicit BasePass(Ptr<PassContext> context) :
             context(context) {
             //
         }
 
-        [[nodiscard]] ionshared::Ptr<PassContext> getPassContext() const noexcept {
+        [[nodiscard]] Ptr<PassContext> getPassContext() const noexcept {
             return this->context;
         }
 
