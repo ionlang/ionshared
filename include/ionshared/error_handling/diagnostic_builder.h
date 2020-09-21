@@ -9,7 +9,7 @@ namespace ionshared {
      */
     class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder> {
     private:
-        OptPtr<DiagnosticStack> diagnosticStack;
+        Ptr<DiagnosticStack> diagnosticStack;
 
         std::optional<Diagnostic> diagnosticBuffer;
 
@@ -22,7 +22,9 @@ namespace ionshared {
 
         explicit DiagnosticBuilder(Ptr<DiagnosticStack> diagnosticStack);
 
-        [[nodiscard]] OptPtr<DiagnosticStack> getDiagnosticStack() const noexcept;
+        DiagnosticBuilder();
+
+        [[nodiscard]] Ptr<DiagnosticStack> getDiagnosticStack() const noexcept;
 
         void setDiagnosticStack(Ptr<DiagnosticStack> diagnosticStack) noexcept;
 

@@ -1,16 +1,16 @@
 #include <ionshared/misc/named.h>
 
 namespace ionshared {
-    Named::Named(std::string id) :
-        id(id) {
+    Named::Named(std::string name) :
+        name(name) {
         //
     }
 
-    std::string Named::getId() const noexcept {
-        return this->id;
+    std::string Named::getName() const noexcept {
+        return this->name;
     }
 
-    void Named::setId(std::string id) noexcept {
-        this->id = id;
+    void Named::setName(std::string name) noexcept {
+        this->name = name;
     }
 }

@@ -49,7 +49,13 @@ namespace ionshared {
          */
         template<typename TLike>
         [[nodiscard]] Ptr<TLike> staticCast() {
-            return std::static_pointer_cast<TLike>(this->shared_from_this());
+            Ptr<TLike> result = std::static_pointer_cast<TLike>(this->shared_from_this());
+
+            if (result == nullptr) {
+                throw std::runtime_error("Static pointer cast failed");
+            }
+
+            return result;
         }
 
         /**
@@ -59,7 +65,13 @@ namespace ionshared {
          */
         template<class TLike>
         [[nodiscard]] Ptr<TLike> dynamicCast() {
-            return std::dynamic_pointer_cast<TLike>(this->shared_from_this());
+            Ptr<TLike> result = std::dynamic_pointer_cast<TLike>(this->shared_from_this());
+
+            if (result == nullptr) {
+                throw std::runtime_error("Dynamic pointer cast failed");
+            }
+
+            return result;
         }
 
         [[nodiscard]] Ptr<TConstruct> nativeCast() {

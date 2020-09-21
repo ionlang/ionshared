@@ -5,13 +5,13 @@
 namespace ionshared {
     class Named {
     private:
-        std::string id;
+        std::string name;
 
     public:
-        explicit Named(std::string id);
+        explicit Named(std::string name);
 
-        [[nodiscard]] std::string getId() const noexcept;
+        [[nodiscard]] std::string getName() const noexcept;
 
-        void setId(std::string id) noexcept;
+        void setName(std::string name) noexcept;
     };
 }

@@ -61,7 +61,12 @@ namespace ionshared {
         //
     }
 
-    OptPtr<DiagnosticStack> DiagnosticBuilder::getDiagnosticStack() const noexcept {
+    DiagnosticBuilder::DiagnosticBuilder() :
+        DiagnosticBuilder(std::make_shared<DiagnosticStack>()) {
+        //
+    }
+
+    Ptr<DiagnosticStack> DiagnosticBuilder::getDiagnosticStack() const noexcept {
         return this->diagnosticStack;
     }
 
@@ -138,10 +143,8 @@ namespace ionshared {
     bool DiagnosticBuilder::finish() {
         // TODO: Should it clear buffer after finish?
 
-        if (util::hasValue(this->diagnosticStack)) {
-            this->assertDiagnosticBufferSet();
-            this->diagnosticStack->get()->push(*this->diagnosticBuffer);
-        }
+        this->assertDiagnosticBufferSet();
+        this->diagnosticStack->push(*this->diagnosticBuffer);
 
         return false;
     }
