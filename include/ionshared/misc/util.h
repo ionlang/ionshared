@@ -7,14 +7,11 @@
 #include <regex>
 #include <string_view>
 #include <cmath>
-#include <ionshared/error_handling/diagnostic_builder.h>
 #include <ionshared/tracking/symbol_table.h>
 #include "helpers.h"
 
 namespace ionshared::util {
     constexpr std::string_view specialChars{"{}$^.?\\[]()*+|<>-&"};
-
-    [[nodiscard]] std::string computeDiagnosticHash(Diagnostic diagnostic);
 
     [[nodiscard]] bool stringStartsWith(std::string subject, std::string value);
 

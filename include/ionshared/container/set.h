@@ -13,18 +13,7 @@ namespace ionshared {
         }
 
         bool add(T item) {
-            if (this->contains(item)) {
-                return false;
-            }
-
-            /**
-             * TODO: std::set's native insert() method returns
-             * a pair (and possibly nullptr if it failed)? If so,
-             * determine result through it.
-             */
-            this->value.insert(item);
-
-            return true;
+            return this->value.insert(item).second;
         }
 
         bool remove(T item) {

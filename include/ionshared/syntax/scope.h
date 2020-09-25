@@ -10,12 +10,8 @@ namespace ionshared {
     };
 
     class Scope : public Wrapper<Ptr<Construct>> {
-    private:
-        ScopeKind kind;
+        const ScopeKind kind;
 
-    public:
         Scope(Ptr<Construct> value, ScopeKind kind);
-
-        ScopeKind getKind() const;
     };
 }

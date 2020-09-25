@@ -5,43 +5,18 @@
 
 namespace ionshared {
     template<typename T>
-    class BaseToken {
+    struct BaseToken {
     private:
-        T kind;
+        const T kind;
 
-        std::string value;
+        const std::string value;
 
-        uint32_t startPosition;
+        const uint32_t startPosition = 0;
 
-        uint32_t lineNumber;
-
-    public:
-        BaseToken(T kind, std::string value, uint32_t startPosition = 0, uint32_t lineNumber = 0) :
-            kind(kind),
-            value(value),
-            startPosition(startPosition),
-            lineNumber(lineNumber) {
-            //
-        }
-
-        [[nodiscard]] T getKind() const noexcept {
-            return this->kind;
-        }
-
-        [[nodiscard]] std::string getValue() const noexcept {
-            return this->value;
-        }
-
-        [[nodiscard]] uint32_t getStartPosition() const noexcept {
-            return this->startPosition;
-        }
+        const uint32_t lineNumber = 0;
 
         [[nodiscard]] uint32_t getEndPosition() const noexcept {
             return this->startPosition + this->value.length();
-        }
-
-        [[nodiscard]] uint32_t getLineNumber() const noexcept {
-            return this->lineNumber;
         }
 
         bool operator==(const BaseToken<T> &other) const {

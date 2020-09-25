@@ -1,24 +1,12 @@
 #pragma once
 
-#include <ionshared/error_handling/diagnostic.h>
-#include <ionshared/error_handling/diagnostic_builder.h>
+#include <ionshared/diagnostics/diagnostic.h>
+#include <ionshared/diagnostics/diagnostic_builder.h>
 
 namespace ionshared {
-    class PassContext {
-    private:
-        Ptr<DiagnosticStack> diagnosticStack;
+    struct PassContext {
+        const Ptr<Set<Diagnostic>> diagnosticsSet;
 
-        Ptr<DiagnosticBuilder> diagnosticBuilder;
-
-    public:
-        explicit PassContext(
-            const Ptr<DiagnosticStack> &diagnosticStack
-        );
-
-        PassContext();
-
-        [[nodiscard]] Ptr<DiagnosticStack> getDiagnosticStack() const noexcept;
-
-        [[nodiscard]] Ptr<DiagnosticBuilder> getDiagnosticBuilder() const noexcept;
+        const Ptr<DiagnosticBuilder> diagnosticBuilder;
     };
 }

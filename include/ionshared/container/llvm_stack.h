@@ -5,8 +5,7 @@
 
 namespace ionshared {
     template<typename T>
-    class LlvmStack : public Stack<T *> {
-    public:
+    struct LlvmStack : public Stack<T *> {
         template<typename TResult>
         [[nodiscard]] TResult *popAs() {
             return llvm::dyn_cast<TResult>(this->pop());

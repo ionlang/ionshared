@@ -51,20 +51,18 @@ namespace ionshared {
 
         std::string message;
 
-        std::optional<SourceLocation> location;
+        std::optional<SourceLocation> location = std::nullopt;
 
         /**
          * The unique identifying diagnostic code. Used to uniquely
          * identify certain diagnostics from others.
          */
-        std::optional<uint32_t> code;
+        std::optional<uint32_t> code = std::nullopt;
 
         /**
          * An optional example of what happened and why it happened, and
          * possibly how to fix/address the problem.
          */
-        std::optional<std::string> example;
+        std::optional<std::string> example = std::nullopt;
     };
-
-    typedef Stack<Diagnostic> DiagnosticStack;
 }

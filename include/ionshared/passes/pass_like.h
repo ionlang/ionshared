@@ -8,13 +8,13 @@ namespace ionshared {
 
     template<typename T>
     concept PassLike = requires(T t, PassInfo &info) {
-        T::id;
+        T::passId;
 
         /**
         * Ensure that member 'id' is usable in a context that requires
         * a constexpr.
         */
-        typename constexprHelper<T::id>;
+        typename constexprHelper<T::passId>;
 
         //        std::derived_from<T, BasePass<TConstruct>>;
 
@@ -22,7 +22,7 @@ namespace ionshared {
          * Specify that T must have a member named 'id' and require
          * that the type of member 'id' is const char.
          */
-//        { T::id } -> std::same_as<const char>;
+//        { T::passId } -> std::same_as<const char>;
 
         { t.initialize(info) } -> std::same_as<void>;
 

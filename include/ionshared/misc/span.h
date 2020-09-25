@@ -3,20 +3,12 @@
 #include <string>
 
 namespace ionshared {
-    class Span {
-    private:
-        uint32_t startPosition;
+    struct Span {
+        const uint32_t startPosition = 0;
 
-        uint32_t length;
-
-    public:
-        Span(uint32_t startPosition, uint32_t length);
-
-        [[nodiscard]] uint32_t getStartPosition() const noexcept;
+        const uint32_t length = 0;
 
         [[nodiscard]] uint32_t getEndPosition() const noexcept;
-
-        [[nodiscard]] uint32_t getLength() const noexcept;
 
         [[nodiscard]] bool overlapsWith(Span span) const;
 

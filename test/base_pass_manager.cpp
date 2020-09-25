@@ -6,18 +6,20 @@ using namespace ionshared;
 
 typedef int TestConstruct;
 
-class Pass : public BasePass<TestConstruct> {
-public:
+struct Pass : public BasePass<TestConstruct> {
     IONSHARED_PASS_ID;
 
     Pass() :
         BasePass<TestConstruct>(nullptr) {
         //
     }
+
+    void visit(Ptr<int> node) override {
+        //
+    }
 };
 
-class PassWithRequirement : public BasePass<TestConstruct> {
-public:
+struct PassWithRequirement : public BasePass<TestConstruct> {
     IONSHARED_PASS_ID;
 
     PassWithRequirement() :
@@ -28,6 +30,10 @@ public:
     void initialize(PassInfo &info) override {
         info.addRequirement<Pass>();
     }
+
+    void visit(Ptr<int> node) override {
+        //
+    }
 };
 
 typedef BasePassManager<BasePass<TestConstruct>, TestConstruct> TestBasePassManager;
@@ -37,7 +43,7 @@ TEST(BasePassManagerTest, RegisterPassWithoutInit) {
 
     basePassManager.registerPassWithoutInit(std::make_shared<Pass>());
 
-    EXPECT_EQ(basePassManager.getPasses().size(), 1);
+    EXPECT_EQ(basePassManager.passes.size(), 1);
 }
 
 TEST(BasePassManagerTest, RegisterPassWithoutInitMultipleTimes) {
@@ -45,7 +51,7 @@ TEST(BasePassManagerTest, RegisterPassWithoutInitMultipleTimes) {
 
     EXPECT_TRUE(basePassManager.registerPassWithoutInit(std::make_shared<Pass>()));
     EXPECT_FALSE(basePassManager.registerPassWithoutInit(std::make_shared<Pass>()));
-    EXPECT_EQ(basePassManager.getPasses().size(), 1);
+    EXPECT_EQ(basePassManager.passes.size(), 1);
 }
 
 TEST(BasePassManagerTest, RegisterPassWithRequirements) {
@@ -53,12 +59,12 @@ TEST(BasePassManagerTest, RegisterPassWithRequirements) {
 
     // First, test that the pass won't be registered without its requirement present.
     EXPECT_FALSE(basePassManager.registerPass(std::make_shared<PassWithRequirement>()));
-    EXPECT_EQ(basePassManager.getPasses().size(), 0);
+    EXPECT_EQ(basePassManager.passes.size(), 0);
 
     // Then, register its requirement first then the pass.
     EXPECT_TRUE(basePassManager.registerPass(std::make_shared<Pass>()));
     EXPECT_TRUE(basePassManager.registerPass(std::make_shared<PassWithRequirement>()));
-    EXPECT_EQ(basePassManager.getPasses().size(), 2);
+    EXPECT_EQ(basePassManager.passes.size(), 2);
 }
 
 TEST(BasePassManagerTest, IsRegistered) {
@@ -67,5 +73,5 @@ TEST(BasePassManagerTest, IsRegistered) {
     EXPECT_FALSE(basePassManager.isRegistered<Pass>());
     EXPECT_TRUE(basePassManager.registerPassWithoutInit(std::make_shared<Pass>()));
     EXPECT_TRUE(basePassManager.isRegistered<Pass>());
-    EXPECT_EQ(basePassManager.getPasses().size(), 1);
+    EXPECT_EQ(basePassManager.passes.size(), 1);
 }

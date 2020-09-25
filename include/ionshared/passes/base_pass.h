@@ -4,7 +4,7 @@
 #include "pass_info.h"
 #include "pass_context.h"
 
-#define IONSHARED_PASS_ID static constexpr char id = 0
+#define IONSHARED_PASS_ID static constexpr char passId = 0
 
 namespace ionshared {
     // TODO: Circular.
@@ -14,19 +14,16 @@ namespace ionshared {
 //    };
 
     template<typename T>
-    class BasePass {
-    private:
-        Ptr<PassContext> context;
-
+    struct BasePass {
     public:
+        const Ptr<PassContext> context;
+
         explicit BasePass(Ptr<PassContext> context) :
             context(context) {
             //
         }
 
-        [[nodiscard]] Ptr<PassContext> getPassContext() const noexcept {
-            return this->context;
-        }
+        virtual void visit(Ptr<T> node) = 0;
 
         virtual void initialize(PassInfo &info) {
             //
@@ -44,11 +41,6 @@ namespace ionshared {
          */
         virtual void finish() {
             //
-        }
-
-        virtual void visit(Ptr<T> node) {
-            // TODO: Node must use generic constraints somehow to bind the accept function.
-//            node->accept(*this);
         }
     };
 }

@@ -7,33 +7,67 @@
 #include <ionshared/passes/base_pass.h>
 
 namespace ionshared {
+    template<typename T>
+    using Ast = std::vector<Ptr<T>>;
+
+    template<typename T>
+    using TraversalCallback = std::function<bool(T)>;
+
     template<typename TConstruct, typename TConstructKind>
     class BaseConstruct : public std::enable_shared_from_this<BaseConstruct<TConstruct, TConstructKind>> {
     private:
-        TConstructKind constructKind;
+        typedef BaseConstruct<TConstruct, TConstructKind> This;
 
     public:
-        explicit BaseConstruct(TConstructKind kind) :
-            constructKind(kind) {
-            //
-        }
+        const TConstructKind constructKind;
 
-        virtual void accept(BasePass<TConstruct> visitor) = 0;
+        std::optional<Ptr<TConstruct>> parent = std::nullopt;
 
-        [[nodiscard]] virtual bool equals(Ptr<BaseConstruct<TConstruct, TConstructKind>> other) {
+        virtual void accept(BasePass<TConstruct> &visitor) = 0;
+
+        [[nodiscard]] virtual bool equals(Ptr<This> other) {
             return other == this->shared_from_this();
         }
 
+        [[nodiscard]] virtual Ast<TConstruct> getChildrenNodes() {
+            // By default, construct contains no children.
+            return {};
+        }
+
+        [[nodiscard]] bool isRootNode() noexcept {
+            return util::hasValue(this->parent);
+        }
+
         [[nodiscard]] bool isLeafNode() {
-            // TODO
-            //return this->getChildNodes().empty();
-
-            throw std::runtime_error("Not implemented");
+            return this->getChildrenNodes().empty();
         }
 
-        [[nodiscard]] TConstructKind getConstructKind() const {
-            return this->constructKind;
-        }
+        // TODO
+//        void traverseChildren(TraversalCallback<Ptr<This>> callback) {
+//            std::queue<Ptr<This>> childrenQueue = {};
+//            Ast<This> primeChildren = this->getChildrenNodes();
+//
+//            // Begin with this construct's children nodes.
+//            for (const auto child : primeChildren) {
+//                childrenQueue.push(primeChildren);
+//            }
+//
+//            while (!childrenQueue.empty()) {
+//                Ptr<This> child = childrenQueue.front();
+//                Ast<This> children = child->getChildrenNodes();
+//
+//                childrenQueue.pop();
+//
+//                for (const auto &childOfChild : children) {
+//                    childrenQueue.push(childOfChild);
+//                }
+//
+//                // Invoke the callback, and do not continue if it returns false.
+//                if (!callback(child)) {
+//                    return;
+//                }
+//            }
+//        }
 
         [[nodiscard]] Ptr<BaseConstruct<TConstruct, TConstructKind>> getBarePtr() {
             return this->shared_from_this();
@@ -81,7 +115,4 @@ namespace ionshared {
 
     template<typename TDerived, typename TConstruct, typename TConstructKind>
     concept BaseConstructLike = std::derived_from<TDerived, BaseConstruct<TConstruct, TConstructKind>>;
-
-    template<typename T>
-    using Ast = std::vector<Ptr<T>>;
 }

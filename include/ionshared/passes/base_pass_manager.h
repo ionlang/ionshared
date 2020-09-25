@@ -37,8 +37,6 @@ namespace ionshared {
     private:
         Set<PassId> registeredPasses;
 
-        std::vector<Item> passes;
-
     public:
         struct Item {
             Ptr<TPass> pass;
@@ -48,24 +46,18 @@ namespace ionshared {
             PassPriority priority;
         };
 
+        std::vector<Item> passes;
+
         BasePassManager() :
             passes(),
             registeredPasses() {
             //
         }
 
-        [[nodiscard]] const std::vector<Item> &getPasses() const noexcept {
-            return this->passes;
-        }
-
-        void setPasses(std::vector<Item> passes) noexcept {
-            this->passes = passes;
-        }
-
         template<PassLike T>
             requires std::derived_from<T, TPass>
         [[nodiscard]] bool isRegistered() const {
-            return this->registeredPasses.contains(&T::id);
+            return this->registeredPasses.contains(&T::passId);
         }
 
         /**
@@ -75,11 +67,11 @@ namespace ionshared {
         template<PassLike T>
             requires std::derived_from<T, TPass>
         bool registerPassWithoutInit(Ptr<T> pass, PassPriority priority = PassPriority::Normal) {
-            if (this->registeredPasses.contains(&T::id)) {
+            if (this->registeredPasses.contains(&T::passId)) {
                 return false;
             }
 
-            this->registeredPasses.add(&T::id);
+            this->registeredPasses.add(&T::passId);
 
             this->passes.push_back(Item{
                 pass,
@@ -101,7 +93,7 @@ namespace ionshared {
 
             pass->initialize(info);
 
-            std::set<PassId> requirements = info.getRequirements().unwrap();
+            std::set<PassId> requirements = info.requirements.unwrapConst();
 
             for (const auto &requirement : requirements) {
                 if (!this->registeredPasses.contains(requirement)) {
