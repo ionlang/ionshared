@@ -21,9 +21,18 @@ namespace ionshared {
     public:
         const TConstructKind constructKind;
 
-        std::optional<Ptr<TConstruct>> parent = std::nullopt;
+        std::optional<Ptr<TConstruct>> parent;
 
-        virtual void accept(BasePass<TConstruct> &visitor) = 0;
+        explicit BaseConstruct(
+            TConstructKind kind,
+            OptPtr<TConstruct> parent = std::nullopt
+        ) :
+            constructKind(kind),
+            parent(parent) {
+            //
+        }
+
+//        virtual void accept(TPass visitor) = 0;
 
         [[nodiscard]] virtual bool equals(Ptr<This> other) {
             return other == this->shared_from_this();
@@ -69,7 +78,7 @@ namespace ionshared {
 //            }
 //        }
 
-        [[nodiscard]] Ptr<BaseConstruct<TConstruct, TConstructKind>> getBarePtr() {
+        [[nodiscard]] Ptr<This> getBarePtr() {
             return this->shared_from_this();
         }
 

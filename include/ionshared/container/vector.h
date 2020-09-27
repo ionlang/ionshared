@@ -19,7 +19,7 @@ namespace ionshared {
             //
         }
 
-        T operator[](uint32_t index) {
+        T operator[](size_t index) {
             if (!this->value.empty() && this->value.size() > index) {
                 return this->value[index];
             }
@@ -35,6 +35,14 @@ namespace ionshared {
 
         bool contains(T item) {
             return util::vectorContains(this->value, item);
+        }
+
+        size_t getSize() const noexcept {
+            return this->value.size();
+        }
+
+        bool isEmpty() const noexcept {
+            return this->value.empty();
         }
     };
 }

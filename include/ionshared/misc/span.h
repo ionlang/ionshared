@@ -4,9 +4,9 @@
 
 namespace ionshared {
     struct Span {
-        const uint32_t startPosition = 0;
+        uint32_t startPosition = 0;
 
-        const uint32_t length = 0;
+        uint32_t length = 0;
 
         [[nodiscard]] uint32_t getEndPosition() const noexcept;
 

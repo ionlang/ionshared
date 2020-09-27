@@ -5,8 +5,13 @@
 
 namespace ionshared {
     struct PassContext {
-        const Ptr<Set<Diagnostic>> diagnosticsSet;
+        const Ptr<Vector<Diagnostic>> diagnostics;
 
         const Ptr<DiagnosticBuilder> diagnosticBuilder;
+
+        explicit PassContext(
+            Ptr<Vector<Diagnostic>> diagnostics =
+                std::make_shared<Vector<Diagnostic>>()
+        );
     };
 }

@@ -6,14 +6,26 @@
 namespace ionshared {
     template<typename T>
     struct BaseToken {
-    private:
-        const T kind;
+        T kind;
 
-        const std::string value;
+        std::string value;
 
-        const uint32_t startPosition = 0;
+        uint32_t startPosition;
 
-        const uint32_t lineNumber = 0;
+        uint32_t lineNumber;
+
+        BaseToken(
+            T kind,
+            std::string value,
+            uint32_t startPosition = 0,
+            uint32_t lineNumber = 0
+        ) :
+            kind(kind),
+            value(value),
+            startPosition(startPosition),
+            lineNumber(lineNumber) {
+            //
+        }
 
         [[nodiscard]] uint32_t getEndPosition() const noexcept {
             return this->startPosition + this->value.length();

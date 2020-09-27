@@ -4,8 +4,8 @@
 
 namespace ionshared {
     struct SourceLocation {
-        const Span lines;
+        Span lines;
 
-        const Span column;
+        Span column;
     };
 }

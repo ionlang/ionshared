@@ -38,10 +38,10 @@ TEST(ScopedTest, SetHasAndGetParent) {
     TestScoped parentScope = TestScoped();
     TestScoped scope = TestScoped();
 
-    scope.setParentScope(parentScope);
+    scope.parentScope = parentScope;
 
     EXPECT_TRUE(parentScope.hasParentScope());
-    EXPECT_EQ(&scope.getParentScope().value().get(), &parentScope);
+    EXPECT_EQ(&scope.parentScope.value().get(), &parentScope);
 }
 
 TEST(ScopedTest, TraverseParents) {
@@ -49,7 +49,7 @@ TEST(ScopedTest, TraverseParents) {
     TestScoped scope = TestScoped();
     bool prime = true;
 
-    scope.setParentScope(parentScope);
+    scope.parentScope = parentScope;
 
     scope.traverseScopes([&](TestScoped &scope) -> bool {
         if (prime) {

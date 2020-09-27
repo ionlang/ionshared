@@ -13,40 +13,22 @@ namespace ionshared {
 
     // TODO: Implement concepts to ensure T is or derives of Construct.
     template<typename T>
-    class Scoped {
-    private:
+    struct Scoped {
         PtrSymbolTable<T> symbolTable;
 
-        OptRef<Scoped<T>> parent;
+        OptRef<Scoped<T>> parentScope;
 
-    public:
         explicit Scoped(
             PtrSymbolTable<T> symbolTable = util::makePtrSymbolTable<T>(),
             OptRef<Scoped<T>> parent = std::nullopt
         ) :
             symbolTable(symbolTable),
-            parent(parent) {
+            parentScope(parent) {
             //
         }
 
-        virtual PtrSymbolTable<T> getSymbolTable() const {
-            return this->symbolTable;
-        }
-
-        virtual void setSymbolTable(PtrSymbolTable<T> symbolTable) {
-            this->symbolTable = symbolTable;
-        }
-
-        [[nodiscard]] OptRef<Scoped<T>> getParentScope() const noexcept {
-            return this->parent;
-        }
-
-        void setParentScope(OptRef<Scoped<T>> parent) noexcept {
-            this->parent = parent;
-        }
-
         [[nodiscard]] bool hasParentScope() const noexcept {
-            return this->parent.has_value();
+            return this->parentScope.has_value();
         }
 
         /**
@@ -68,7 +50,7 @@ namespace ionshared {
                     break;
                 }
                 else if (scope.hasParentScope()) {
-                    queue.push(scope.getParentScope().value());
+                    queue.push(scope.parentScope.value());
                 }
             }
         }

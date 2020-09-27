@@ -49,13 +49,18 @@ namespace ionshared::util {
      */
     [[nodiscard]] std::string trim(std::string subject);
 
+    template<typename T>
+    [[nodiscard]] bool indexExistsInVector(size_t index, std::vector<T> vector) {
+        return !vector.empty() && index < vector.size();
+    }
+
     template<typename T, typename U>
     [[nodiscard]] bool instanceOf(T *value) {
         return dynamic_cast<U *>(value) != nullptr;
     }
 
     template<typename T>
-    [[nodiscard]] std::optional<uint32_t> locateInVector(std::vector<T> vector, T item) {
+    [[nodiscard]] std::optional<size_t> locateInVector(std::vector<T> vector, T item) {
         auto iterator = std::find(vector.begin(), vector.end(), item);
 
         if (iterator != vector.cend()) {

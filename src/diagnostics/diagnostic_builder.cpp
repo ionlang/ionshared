@@ -19,13 +19,7 @@ namespace ionshared {
     }
 
     void DiagnosticBuilder::setDiagnosticBuffer(std::optional<Diagnostic> diagnosticBuffer) noexcept {
-        if (diagnosticBuffer.has_value()) {
-            this->diagnosticBuffer.emplace(*diagnosticBuffer);
-
-            return;
-        }
-
-        this->diagnosticBuffer.reset();
+        this->diagnosticBuffer = diagnosticBuffer;
     }
 
     void DiagnosticBuilder::clearDiagnosticBuffer() noexcept {
