@@ -1,5 +1,6 @@
 #include <iostream>
 #include <llvm/Support/raw_os_ostream.h>
+#include <llvm/Bitcode/BitcodeWriter.h>
 #include <ionshared/llvm/llvm_module.h>
 
 namespace ionshared {
@@ -31,21 +32,42 @@ namespace ionshared {
         return this->context;
     }
 
-    std::string LlvmModule::getAsString() const {
+    std::string LlvmModule::makeIr() const {
         std::string result;
-        llvm::raw_string_ostream OS(result);
 
-        OS << *this->value;
-        OS.flush();
+        llvm::raw_string_ostream rawStringOutputStream =
+            llvm::raw_string_ostream(result);
+
+        rawStringOutputStream << *this->value;
+        rawStringOutputStream.flush();
 
         return result;
     }
 
-    void LlvmModule::print() {
-        std::cout << this->getAsString();
+    std::string LlvmModule::makeBitcode() {
+        // TODO: Returning a binary representation as string is just awfully wrong.
+        std::string result;
+
+        llvm::raw_string_ostream rawStringStream =
+            llvm::raw_string_ostream(result);
+        // TODO
+//        std::error_code errorCode;
+//
+//        llvm::raw_fd_ostream stream =
+//            llvm::raw_fd_ostream("mod", errorCode,);
+
+        // TODO: Might need to check for error.
+        llvm::WriteBitcodeToFile(*this->value, rawStringStream);
+        rawStringStream.flush();
+
+        return result;
     }
 
-    void LlvmModule::printToLlvmErrs() const {
+    void LlvmModule::printIr() {
+        std::cout << this->makeIr();
+    }
+
+    void LlvmModule::printIrToLlvmErrs() const {
         this->value->print(llvm::errs(), nullptr);
     }
 }

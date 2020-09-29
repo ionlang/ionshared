@@ -5,6 +5,9 @@ project(ionshared VERSION 1.0.0 LANGUAGES CXX)
 # Setup compiler flag(s) & standard(s).
 set(CMAKE_CXX_STANDARD 20)
 
+# Fix issue with Google tests adapter VSCode extension not loading test, as well as the dynamic lib. error when running executables (tests).
+#set(CMAKE_EXE_LINKER_FLAGS "-static")
+
 # General project information.
 set(PROJECT_URL "https://github.com/ionlang/ionshared")
 

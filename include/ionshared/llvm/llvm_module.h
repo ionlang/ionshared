@@ -23,11 +23,18 @@ namespace ionshared {
 
         [[nodiscard]] LlvmContext *getContext() const;
 
-        [[nodiscard]] std::string getAsString() const;
+        [[nodiscard]] std::string makeIr() const;
 
-        void print();
+        /**
+         * Get LLVM Bitcode from the module. Please note that LLVM
+         * Bitcode is a binary representation of LLVM IR, and not object
+         * code.
+         */
+        [[nodiscard]] std::string makeBitcode();
 
-        void printToLlvmErrs() const;
+        void printIr();
+
+        void printIrToLlvmErrs() const;
     };
 
     typedef std::vector<LlvmModule> LlvmProgram;
