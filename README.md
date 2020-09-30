@@ -11,8 +11,9 @@ IonIR, and ILC projects.
 * [Mingw64](http://mingw-w64.org/doku.php/download)² (Windows only)
 
 ---
-1. _A different, close version of LLVM might work, but you will need to modify
-`CMakeLists.txt`, specifically where `find_package(LLVM X.0.0 REQUIRED CONFIG)` occurs._
+1. _LLVM must be built from source on Windows. A different, close version of LLVM
+might work, but you will need to modify `CMakeLists.txt`, specifically where
+`find_package(LLVM X.0.0 REQUIRED CONFIG)` occurs._
 
 2. _Mingw64's GCC version is 8 and not 10, so you might have to use
 [WinBuild](http://win-builds.org/doku.php)'s GCC 10 along with Mingw64 on Windows._
@@ -22,7 +23,7 @@ IonIR, and ILC projects.
 ```shell
 # Clone the repository.¹
 $ git clone https://github.com/ionshared
-$ cd ionlang
+$ cd ionshared
 
 # Generate Makefiles and build.
 $ mkdir build
@@ -35,7 +36,7 @@ $ cmake --install .
 ```
 
 ---
-1. _Make sure you've selected the correct branch you're intending to
+1. _Make sure you've selected the correct branch that you're intending to
 build (`dev` for latest changes, `master` for stable), and initialized
 git submodules after cloning the repository and prior to building._
 
