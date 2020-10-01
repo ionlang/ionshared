@@ -11,7 +11,6 @@ namespace ionshared {
      */
     class DiagnosticBuilder : public std::enable_shared_from_this<DiagnosticBuilder> {
     private:
-
         std::optional<Diagnostic> diagnosticBuffer;
 
         void assertDiagnosticBufferSet() const;
@@ -33,7 +32,7 @@ namespace ionshared {
         [[nodiscard]] Ptr<DiagnosticBuilder> begin(Diagnostic diagnostic) noexcept;
 
         [[nodiscard]] Ptr<DiagnosticBuilder> begin(
-            DiagnosticType type,
+            DiagnosticKind type,
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
@@ -62,9 +61,15 @@ namespace ionshared {
 
         [[nodiscard]] Ptr<DiagnosticBuilder> setMessage(std::string message);
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setLocation(SourceLocation location);
+        [[nodiscard]] Ptr<DiagnosticBuilder> setSourceLocation(
+            std::optional<SourceLocation> location
+        );
 
         [[nodiscard]] Ptr<DiagnosticBuilder> setCode(std::optional<uint32_t> code);
+
+        [[nodiscard]] Ptr<DiagnosticBuilder> setAdditionalInformation(
+            std::optional<std::string> additionalInformation
+        );
 
         [[nodiscard]] Ptr<DiagnosticBuilder> setExample(
             std::optional<std::string> example
@@ -79,6 +84,8 @@ namespace ionshared {
          */
         template<typename ...Args>
         [[nodiscard]] Ptr<DiagnosticBuilder> formatMessage(Args &&...args) {
+            this->assertDiagnosticBufferSet();
+
             std::optional<std::string> formattedMessage = util::formatStringA(
                 this->diagnosticBuffer->message,
                 util::convertString(std::forward<Args>(args))...

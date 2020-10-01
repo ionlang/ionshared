@@ -21,13 +21,17 @@ namespace ionshared {
     public:
         const TConstructKind constructKind;
 
+        std::optional<ionshared::SourceLocation> sourceLocation;
+
         std::optional<Ptr<TConstruct>> parent;
 
         explicit BaseConstruct(
             TConstructKind kind,
+            std::optional<ionshared::SourceLocation> sourceLocation = std::nullopt,
             OptPtr<TConstruct> parent = std::nullopt
         ) :
             constructKind(kind),
+            sourceLocation(sourceLocation),
             parent(parent) {
             //
         }

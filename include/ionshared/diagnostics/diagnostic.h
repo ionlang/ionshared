@@ -7,7 +7,7 @@
 #include "source_location.h"
 
 namespace ionshared {
-    enum class DiagnosticType {
+    enum class DiagnosticKind {
         /**
          * An internal error of the compiler. These errors are meant
          * to be debugged and fixed by the compiler developer(s).
@@ -47,11 +47,11 @@ namespace ionshared {
      * location, and other various informational fields.
      */
     struct Diagnostic {
-        DiagnosticType type;
+        DiagnosticKind kind;
 
         std::string message;
 
-        std::optional<SourceLocation> location = std::nullopt;
+        std::optional<SourceLocation> sourceLocation = std::nullopt;
 
         /**
          * The unique identifying diagnostic code. Used to uniquely
@@ -60,9 +60,17 @@ namespace ionshared {
         std::optional<uint32_t> code = std::nullopt;
 
         /**
-         * An optional example of what happened and why it happened, and
-         * possibly how to fix/address the problem.
+         * An optional example of what happened and why it happened,
+         * and possibly a brief explanation of how to fix/address the
+         * problem or situation.
          */
         std::optional<std::string> example = std::nullopt;
+
+        /**
+         * Any additional information to understand the problem or
+         * situation, which may have been omitted from the original
+         * message for simplicity.
+         */
+        std::optional<std::string> additionalInformation;
     };
 }

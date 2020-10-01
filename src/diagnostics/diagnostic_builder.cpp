@@ -34,7 +34,7 @@ namespace ionshared {
     }
 
     Ptr<DiagnosticBuilder> DiagnosticBuilder::begin(
-        DiagnosticType type,
+        DiagnosticKind type,
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
@@ -49,33 +49,33 @@ namespace ionshared {
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
-        return this->begin(DiagnosticType::Info, message, location);
+        return this->begin(DiagnosticKind::Info, message, location);
     }
 
     Ptr<DiagnosticBuilder> DiagnosticBuilder::beginWarning(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
-        return this->begin(DiagnosticType::Warning, message, location);
+        return this->begin(DiagnosticKind::Warning, message, location);
     }
 
     Ptr<DiagnosticBuilder> DiagnosticBuilder::beginError(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
-        return this->begin(DiagnosticType::Error, message, location);
+        return this->begin(DiagnosticKind::Error, message, location);
     }
 
     Ptr<DiagnosticBuilder> DiagnosticBuilder::beginFatal(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
-        return this->begin(DiagnosticType::Fatal, message, location);
+        return this->begin(DiagnosticKind::Fatal, message, location);
     }
 
     bool DiagnosticBuilder::internalAssert(bool condition) noexcept {
         if (!condition) {
-            this->begin(DiagnosticType::InternalError, "Internal assertion failed")
+            this->begin(DiagnosticKind::InternalError, "Internal assertion failed")
                 ->finish();
         }
 
@@ -89,9 +89,9 @@ namespace ionshared {
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setLocation(SourceLocation location) {
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::setSourceLocation(std::optional<SourceLocation> location) {
         this->assertDiagnosticBufferSet();
-        this->diagnosticBuffer->location.emplace(location);
+        this->diagnosticBuffer->sourceLocation = location;
 
         return this->shared_from_this();
     }
@@ -99,6 +99,15 @@ namespace ionshared {
     Ptr<DiagnosticBuilder> DiagnosticBuilder::setCode(std::optional<uint32_t> code) {
         this->assertDiagnosticBufferSet();
         this->diagnosticBuffer->code = code;
+
+        return this->shared_from_this();
+    }
+
+    Ptr<DiagnosticBuilder> DiagnosticBuilder::setAdditionalInformation(
+        std::optional<std::string> additionalInformation
+    ) {
+        this->assertDiagnosticBufferSet();
+        this->diagnosticBuffer->additionalInformation = additionalInformation;
 
         return this->shared_from_this();
     }
@@ -122,7 +131,7 @@ namespace ionshared {
         std::optional<SourceLocation> sourceLocation
     ) {
         Diagnostic newDiagnostic = Diagnostic{
-            diagnostic.type,
+            diagnostic.kind,
             diagnostic.message,
             sourceLocation,
             diagnostic.code,
