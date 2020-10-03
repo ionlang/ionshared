@@ -49,6 +49,8 @@ namespace ionshared::util {
      */
     [[nodiscard]] std::string trim(std::string subject);
 
+    [[nodiscard]] std::string makeSpaces(uint32_t count) noexcept;
+
     template<typename T>
     [[nodiscard]] bool indexExistsInVector(size_t index, std::vector<T> vector) {
         return !vector.empty() && index < vector.size();

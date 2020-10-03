@@ -64,4 +64,15 @@ namespace ionshared::util {
          */
         return floor(log2(number + 1));
     }
+
+    std::string makeSpaces(uint32_t count) noexcept {
+        std::stringstream result;
+        uint32_t counter = 0;
+
+        while (counter++ != count) {
+            result << " ";
+        }
+
+        return result.str();
+    }
 }
