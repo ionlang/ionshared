@@ -67,7 +67,7 @@ namespace ionshared {
          * on the Stream. A Stream always contains at least one item.
          */
         virtual bool hasNext() const override {
-            return this->index < this->size - 1;
+            return this->index < this->items.size() - 1;
         }
 
         virtual std::optional<T> tryNext() override {

@@ -8,13 +8,8 @@
 namespace ionshared {
     template<typename T>
     struct Vector : Wrapper<std::vector<T>> {
-        explicit Vector(std::initializer_list<T> list) noexcept :
+        explicit Vector(std::initializer_list<T> list = {}) noexcept :
             Wrapper<std::vector<T>>(list) {
-            //
-        }
-
-        Vector() noexcept :
-            Vector({}) {
             //
         }
 

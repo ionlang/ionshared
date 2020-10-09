@@ -11,9 +11,14 @@ namespace ionshared {
 
         Map<TSecond, TFirst> secondMap;
 
-        explicit BiMap(std::map<TFirst, TSecond> value = {}) :
+        explicit BiMap(std::map<TFirst, TSecond> value = {}) noexcept :
             firstMap(Map<TFirst, TSecond>(value)),
             secondMap(Map<TSecond, TFirst>(util::flipMap<TFirst, TSecond>(value))) {
+            //
+        }
+
+        explicit BiMap(std::initializer_list<std::pair<const TFirst, TSecond>> list) noexcept :
+            BiMap(std::map<TFirst, TSecond>(list)) {
             //
         }
 
@@ -42,7 +47,7 @@ namespace ionshared {
             return this->secondMap.contains(second);
         }
 
-        BiMap<TFirst, TSecond> merge(BiMap<TFirst, TSecond> other) {
+        BiMap<TFirst, TSecond> merge(BiMap<TFirst, TSecond> other) const {
             BiMap<TFirst, TSecond> firstMap = BiMap<TFirst, TSecond>();
 
             // TODO: Check for existing keys in both maps.

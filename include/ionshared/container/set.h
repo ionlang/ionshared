@@ -6,8 +6,13 @@
 namespace ionshared {
     template<typename T>
     struct Set : Wrapper<std::set<T>> {
-        explicit Set(std::set<T> value = {}) :
+        explicit Set(std::set<T> value = {}) noexcept :
             Wrapper<std::set<T>>(value) {
+            //
+        }
+
+        explicit Set(std::initializer_list<T> list) noexcept :
+            Set(std::set<T>(list)) {
             //
         }
 

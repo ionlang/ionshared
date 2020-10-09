@@ -6,10 +6,14 @@
 
 namespace ionshared {
     template<typename TKey, typename TValue>
-    class Map : public Wrapper<std::map<TKey, TValue>> {
-    public:
-        explicit Map(std::map<TKey, TValue> value = {}) :
+    struct Map : Wrapper<std::map<TKey, TValue>> {
+        explicit Map(std::map<TKey, TValue> value = {}) noexcept :
             Wrapper<std::map<TKey, TValue>>(value) {
+            //
+        }
+
+        explicit Map(std::initializer_list<std::pair<const TKey, TValue>> list) noexcept :
+            Map(std::map<TKey, TValue>(list)) {
             //
         }
 

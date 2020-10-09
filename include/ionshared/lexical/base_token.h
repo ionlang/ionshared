@@ -6,7 +6,7 @@
 namespace ionshared {
     template<typename T>
     struct BaseToken {
-        const T kind;
+        T kind;
 
         std::string value;
 

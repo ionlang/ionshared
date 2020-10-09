@@ -10,8 +10,13 @@
 namespace ionshared {
     template<typename T>
     struct Stack : Wrapper<std::stack<T>> {
-        explicit Stack(std::stack<T> value = std::stack<T>()) :
+        explicit Stack(std::stack<T> value = {}) :
             Wrapper<std::stack<T>>(value) {
+            //
+        }
+
+        explicit Stack(std::initializer_list<T> list) noexcept :
+            Stack(std::stack<T>(list)) {
             //
         }
 
