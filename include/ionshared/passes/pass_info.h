@@ -4,7 +4,7 @@
 #include "pass_like.h"
 
 namespace ionshared {
-    typedef const char * PassId;
+    typedef const char* PassId;
 
     struct PassInfo {
         // TODO: What if that PassId (T::passId) goes out of scope, and the memory is freed? Will it ever 'go out of scope' if it's a static member?

@@ -5,9 +5,8 @@
 #include <ionshared/misc/safe_wrapper.h>
 
 namespace ionshared {
-    class LlvmInst : public SafeWrapper<llvm::Instruction *> {
-    public:
-        explicit LlvmInst(llvm::Instruction *value);
+    struct LlvmInst : SafeWrapper<llvm::Instruction*> {
+        explicit LlvmInst(llvm::Instruction* value);
 
         std::string getId() const;
     };

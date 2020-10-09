@@ -7,15 +7,16 @@ namespace ionshared {
         T value;
 
     public:
-        explicit Wrapper(T value) : value(value) {
+        explicit Wrapper(T value) :
+            value(value) {
             //
         }
 
-        virtual T &unwrap() {
+        virtual T& unwrap() {
             return this->value;
         }
 
-        virtual const T &unwrapConst() const {
+        virtual const T& unwrapConst() const {
             return this->value;
         }
     };

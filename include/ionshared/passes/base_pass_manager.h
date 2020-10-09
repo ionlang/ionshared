@@ -48,7 +48,7 @@ namespace ionshared {
 
         std::vector<Item> passes;
 
-        BasePassManager() :
+        BasePassManager() noexcept :
             passes(),
             registeredPasses() {
             //

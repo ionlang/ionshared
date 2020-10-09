@@ -5,8 +5,7 @@
 
 namespace ionshared {
     template<typename T>
-    class Set : public Wrapper<std::set<T>> {
-    public:
+    struct Set : Wrapper<std::set<T>> {
         explicit Set(std::set<T> value = {}) :
             Wrapper<std::set<T>>(value) {
             //

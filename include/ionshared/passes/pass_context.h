@@ -12,6 +12,6 @@ namespace ionshared {
         explicit PassContext(
             Ptr<Vector<Diagnostic>> diagnostics =
                 std::make_shared<Vector<Diagnostic>>()
-        );
+        ) noexcept;
     };
 }

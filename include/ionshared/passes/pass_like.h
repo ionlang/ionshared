@@ -24,7 +24,7 @@ namespace ionshared {
          */
 //        { T::passId } -> std::same_as<const char>;
 
-        { t.initialize(info) } -> std::same_as<void>;
+        { t.initialize(info) } -> std::same_as<bool>;
 
 //        { t.visit(t) } -> std::same_as<void>;
     };

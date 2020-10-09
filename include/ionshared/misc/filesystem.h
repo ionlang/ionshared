@@ -8,16 +8,16 @@ namespace ionshared::fs {
      * Resolves a path relative to the root directory of
      * the project.
      */
-    [[nodiscard]] std::string resolvePath(const std::string &path);
+    [[nodiscard]] std::string resolvePath(const std::string& path);
 
-    [[nodiscard]] std::string resolveTestPath(const std::string &path);
+    [[nodiscard]] std::string resolveTestPath(const std::string& path);
 
     /**
      * Join two paths with a directory separator character.
      */
     [[nodiscard]] std::string joinPaths(
-        const std::string &pathA,
-        const std::string &pathB
+        const std::string& pathA,
+        const std::string& pathB
     );
 
     /**
@@ -25,15 +25,15 @@ namespace ionshared::fs {
      * returns null.
      */
     [[nodiscard]] std::optional<std::string> readFileContents(
-        const std::string &path
+        const std::string& path
     );
 
     [[nodiscard]] std::optional<std::string> readTestFile(
-        const std::string &filePath
+        const std::string& filePath
     );
 
     /**
      * Determines whether a file path exists.
      */
-    [[nodiscard]] bool exists(const std::string &filename);
+    [[nodiscard]] bool exists(const std::string& filename);
 }

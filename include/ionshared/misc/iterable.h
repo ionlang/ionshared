@@ -13,13 +13,11 @@ namespace ionshared {
         /**
          * Signifies the current item position of the list.
          */
-        size_t index{};
+        size_t index;
 
         std::vector<T> items;
 
-        size_t size{};
-
-        size_t resolveNextIndex() {
+        [[nodiscard]] size_t resolveNextIndex() {
             return this->resolveIndex(this->index + 1);
         }
 
@@ -31,33 +29,32 @@ namespace ionshared {
             return this->index;
         }
 
-        size_t resolveIndex(size_t index) {
-            // Index cannot be negative.
-            if (index < 0) {
-                throw std::runtime_error("Index cannot be negative");
-            }
-                // Provided index is within bounds.
-            else if (this->size > index) {
+        [[nodiscard]] size_t resolveIndex(size_t index) {
+            size_t size = this->items.size();
+
+            // Provided index is within bounds.
+            if (size > index) {
                 return index;
             }
 
             // Index is out-of-bounds, return the last valid index.
-            return this->size - 1;
+            return size - 1;
         }
 
-        size_t setIndex(size_t index) {
+        size_t updateIndex(size_t index) {
             this->index = this->resolveIndex(index);
 
             return this->index;
         }
 
     public:
-        explicit Iterable(std::vector<T> items) {
+        explicit Iterable(std::vector<T> items) :
+            index(0),
+            items() {
             this->items = items;
-            this->size = this->items.size();
 
             // Ensure items array contains at least one item.
-            if (this->size == 0) {
+            if (this->items.size() == 0) {
                 throw std::runtime_error("Items array cannot be empty");
             }
 
@@ -81,7 +78,7 @@ namespace ionshared {
             return this->items[nextIndex];
         }
 
-        virtual T next() {
+        [[nodiscard]] virtual T next() {
             std::optional<T> item = this->tryNext();
 
             if (!item.has_value()) {
@@ -96,14 +93,14 @@ namespace ionshared {
                 throw std::out_of_range("Amount must greater than zero");
             }
 
-            this->setIndex(this->index + amount);
+            this->updateIndex(this->index + amount);
         }
 
         /**
          * Access the next item (if any) without altering the
          * index.
          */
-        virtual std::optional<T> peek() {
+        [[nodiscard]] virtual std::optional<T> peek() {
             // No more items to process.
             if (!this->hasNext()) {
                 return std::nullopt;
@@ -125,7 +122,7 @@ namespace ionshared {
          * Retrieve the current item on the Stream by
          * the current index.
          */
-        T get() const {
+        [[nodiscard]] T get() const noexcept {
             // Return the item at the current index.
             return this->items[this->index];
         }
@@ -134,22 +131,22 @@ namespace ionshared {
          * Retrieve the index of the Stream. Indicates the location
          * of the current item.
          */
-        size_t getIndex() const {
+        [[nodiscard]] size_t getIndex() const noexcept {
             return this->index;
         }
 
         /**
-         * The amount of items in the Stream.
+         * Returns the total amount of items.
          */
-        size_t getSize() const {
-            return this->size;
+        [[nodiscard]] size_t getSize() const noexcept {
+            return this->items.size();
         }
 
         std::optional<uint32_t> locate(T item) const {
             return util::locateInVector(this->items, item);
         }
 
-        std::vector<T> slice(uint32_t start, uint32_t length) {
+        [[nodiscard]] std::vector<T> slice(uint32_t start, uint32_t length) {
             return util::sliceVector<T>(this, start, length);
         }
     };

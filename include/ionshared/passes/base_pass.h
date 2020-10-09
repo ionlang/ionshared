@@ -15,7 +15,6 @@ namespace ionshared {
 
     template<typename T>
     struct BasePass {
-    public:
         const Ptr<PassContext> context;
 
         explicit BasePass(Ptr<PassContext> context) :
@@ -25,8 +24,13 @@ namespace ionshared {
 
         virtual void visit(Ptr<T> node) = 0;
 
-        virtual void initialize(PassInfo &info) {
-            //
+        /**
+         * Initialize the pass and register it's constraints. Returns
+         * whether the pass was successfully initialized and may be registered
+         * by the pass manager or not.
+         */
+        virtual bool initialize(PassInfo &info) {
+            return true;
         }
 
         /**

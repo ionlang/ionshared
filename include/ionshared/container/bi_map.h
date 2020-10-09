@@ -6,13 +6,11 @@
 
 namespace ionshared {
     template<typename TFirst, typename TSecond>
-    class BiMap {
-    private:
+    struct BiMap {
         Map<TFirst, TSecond> firstMap;
 
         Map<TSecond, TFirst> secondMap;
 
-    public:
         explicit BiMap(std::map<TFirst, TSecond> value = {}) :
             firstMap(Map<TFirst, TSecond>(value)),
             secondMap(Map<TSecond, TFirst>(util::flipMap<TFirst, TSecond>(value))) {
@@ -42,14 +40,6 @@ namespace ionshared {
 
         [[nodiscard]] bool contains(TSecond second) const {
             return this->secondMap.contains(second);
-        }
-
-        [[nodiscard]] const Map<TFirst, TSecond> &getFirstMap() const {
-            return this->firstMap;
-        }
-
-        [[nodiscard]] const Map<TSecond, TFirst> &getSecondMap() const {
-            return this->secondMap;
         }
 
         BiMap<TFirst, TSecond> merge(BiMap<TFirst, TSecond> other) {

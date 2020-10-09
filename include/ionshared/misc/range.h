@@ -4,8 +4,8 @@
 
 namespace ionshared {
     struct Range {
-        const uint32_t start;
+        uint32_t start;
 
-        const uint32_t length;
+        uint32_t length;
     };
 }

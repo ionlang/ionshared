@@ -9,7 +9,7 @@ namespace ionshared {
         Block
     };
 
-    class Scope : public Wrapper<Ptr<Construct>> {
+    struct Scope : Wrapper<Ptr<Construct>> {
         const ScopeKind kind;
 
         Scope(Ptr<Construct> value, ScopeKind kind);

@@ -9,17 +9,17 @@
 #include "llvm_inst.h"
 
 namespace ionshared {
-    class LlvmBlock : public SafeWrapper<llvm::BasicBlock *> {
+    class LlvmBlock : public SafeWrapper<llvm::BasicBlock*> {
     private:
         OptPtr<IrBuilder> cachedBuilder;
 
     public:
-        explicit LlvmBlock(llvm::BasicBlock *value);
+        explicit LlvmBlock(llvm::BasicBlock* value) noexcept;
 
-        Ptr<IrBuilder> getBuilder();
+        [[nodiscard]] Ptr<IrBuilder> getBuilder();
 
-        OptPtr<LlvmInst> findTerminatorInst() const;
+        [[nodiscard]] OptPtr<LlvmInst> findTerminatorInst() const;
 
-        OptPtr<LlvmInst> findInstById(std::string id);
+        [[nodiscard]] OptPtr<LlvmInst> findInstById(std::string id);
     };
 }

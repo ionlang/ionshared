@@ -7,14 +7,13 @@
 
 namespace ionshared {
     template<typename T>
-    class Vector : public Wrapper<std::vector<T>> {
-    public:
-        explicit Vector(std::initializer_list<T> list) :
+    struct Vector : Wrapper<std::vector<T>> {
+        explicit Vector(std::initializer_list<T> list) noexcept :
             Wrapper<std::vector<T>>(list) {
             //
         }
 
-        Vector() :
+        Vector() noexcept :
             Vector({}) {
             //
         }
@@ -37,11 +36,11 @@ namespace ionshared {
             return util::vectorContains(this->value, item);
         }
 
-        size_t getSize() const noexcept {
+        [[nodiscard]] size_t getSize() const noexcept {
             return this->value.size();
         }
 
-        bool isEmpty() const noexcept {
+        [[nodiscard]] bool isEmpty() const noexcept {
             return this->value.empty();
         }
     };

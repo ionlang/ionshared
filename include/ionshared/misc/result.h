@@ -6,13 +6,11 @@
 
 namespace ionshared {
     template<typename TValue, typename TError>
-    class Result {
-    private:
+    struct Result {
         std::variant<TValue, TError> valueOrError;
 
-    public:
         template<typename T>
-        Result(T value) :
+        explicit Result(T value) noexcept :
             valueOrError(value) {
             //
         }
@@ -32,10 +30,6 @@ namespace ionshared {
 
         TValue operator*() {
             return *this->getValue();
-        }
-
-        [[nodiscard]] std::variant<TValue, TError> getValueOrError() const noexcept {
-            return this->valueOrError;
         }
 
         [[nodiscard]] std::optional<TValue> getValue() const {

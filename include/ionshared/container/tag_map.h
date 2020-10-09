@@ -23,7 +23,7 @@ namespace ionshared {
         }
 
     public:
-        TagMap() :
+        TagMap() noexcept :
             entries() {
             //
         }

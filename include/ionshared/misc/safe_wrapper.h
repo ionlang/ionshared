@@ -14,6 +14,7 @@ namespace ionshared {
         explicit SafeWrapper(T value) :
             Wrapper<T>(value) {
             if (value == nullptr) {
+                // TODO: Can you catch
                 throw std::runtime_error("Cannot construct LLVM entity wrapper with a null value");
             }
         }

@@ -6,14 +6,14 @@
 #include "llvm_context.h"
 
 namespace ionshared {
-    class LlvmModule : public Wrapper<llvm::Module *> {
+    class LlvmModule : public Wrapper<llvm::Module*> {
     private:
-        LlvmContext *context;
+        LlvmContext* context;
 
     public:
-        LlvmModule(llvm::Module *module, LlvmContext *context);
+        LlvmModule(llvm::Module* module, LlvmContext* context);
 
-        explicit LlvmModule(llvm::Module *module);
+        explicit LlvmModule(llvm::Module* module);
 
         ~LlvmModule();
 
@@ -21,7 +21,7 @@ namespace ionshared {
 
         void setId(std::string id);
 
-        [[nodiscard]] LlvmContext *getContext() const;
+        [[nodiscard]] LlvmContext* getContext() const;
 
         [[nodiscard]] std::string makeIr() const;
 
@@ -39,7 +39,7 @@ namespace ionshared {
 
     typedef std::vector<LlvmModule> LlvmProgram;
 
-    typedef std::vector<llvm::Module *> LlvmNativeProgram;
+    typedef std::vector<llvm::Module*> LlvmNativeProgram;
 
     /**
      * String representing emitted LLVM IR code.

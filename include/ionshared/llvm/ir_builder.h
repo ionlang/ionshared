@@ -4,8 +4,7 @@
 #include <ionshared/misc/wrapper.h>
 
 namespace ionshared {
-    class IrBuilder : public Wrapper<llvm::IRBuilder<>> {
-    public:
-        explicit IrBuilder(llvm::IRBuilder<> value);
+    struct IrBuilder : Wrapper<llvm::IRBuilder<>> {
+        explicit IrBuilder(llvm::IRBuilder<> value) noexcept;
     };
 }

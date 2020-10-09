@@ -57,7 +57,7 @@ namespace ionshared::util {
     }
 
     template<typename T, typename U>
-    [[nodiscard]] bool instanceOf(T *value) {
+    [[nodiscard]] bool instanceOf(T* value) {
         return dynamic_cast<U *>(value) != nullptr;
     }
 
@@ -78,7 +78,7 @@ namespace ionshared::util {
     }
 
     template<typename ... Args>
-    [[nodiscard]] std::optional<std::string> formatString(const std::string &format, Args ... args) {
+    [[nodiscard]] std::optional<std::string> formatString(const std::string& format, Args ... args) {
         // Extra space for '\0'.
         size_t size = std::snprintf(nullptr, 0, format.c_str(), args ...) + 1;
 
@@ -107,12 +107,12 @@ namespace ionshared::util {
     }
 
     template<typename ... Args>
-    [[nodiscard]] std::optional<std::string> formatStringA(std::string format, Args &&...args) {
+    [[nodiscard]] std::optional<std::string> formatStringA(std::string format, Args&& ...args) {
         return util::formatString(format, util::convertString(std::forward<Args>(args))...);
     }
 
     template<typename ... Args>
-    [[nodiscard]] std::runtime_error quickError(std::string format, Args &&...args) {
+    [[nodiscard]] std::runtime_error quickError(std::string format, Args&& ...args) {
         auto formattedString = util::formatStringA(format, args...);
 
         if (!formattedString.has_value()) {
@@ -165,7 +165,7 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    [[nodiscard]] bool hasValue(std::optional<T *> pointer) noexcept {
+    [[nodiscard]] bool hasValue(std::optional<T*> pointer) noexcept {
         return pointer.has_value() && *pointer != nullptr;
     }
 
@@ -180,7 +180,7 @@ namespace ionshared::util {
     }
 
     template<typename T>
-    [[nodiscard]] std::string getPointerAddressString(T *pointer) {
+    [[nodiscard]] std::string getPointerAddressString(T* pointer) {
         std::ostringstream stream;
 
         stream << pointer;

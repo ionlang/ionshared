@@ -9,8 +9,7 @@ namespace ionshared {
      * guaranteed to do so.
      */
     template<typename T>
-    class Generator {
-    public:
+    struct Generator {
         virtual ~Generator() = default;
 
         virtual bool hasNext() const = 0;

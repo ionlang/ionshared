@@ -27,8 +27,10 @@ struct PassWithRequirement : public BasePass<TestConstruct> {
         //
     }
 
-    void initialize(PassInfo &info) override {
+    bool initialize(PassInfo &info) override {
         info.addRequirement<Pass>();
+
+        return true;
     }
 
     void visit(Ptr<int> node) override {

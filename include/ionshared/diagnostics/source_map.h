@@ -12,7 +12,7 @@ namespace ionshared {
         Map<SourceLocation, T> sourceLocationToConstructMap;
 
     public:
-        SourceMap() :
+        SourceMap() noexcept :
             constructToSourceLocationMap(),
             sourceLocationToConstructMap() {
             //
