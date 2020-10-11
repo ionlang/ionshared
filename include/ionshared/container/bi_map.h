@@ -47,20 +47,29 @@ namespace ionshared {
             return this->secondMap.contains(second);
         }
 
-        BiMap<TFirst, TSecond> merge(BiMap<TFirst, TSecond> other) const {
-            BiMap<TFirst, TSecond> firstMap = BiMap<TFirst, TSecond>();
+        /**
+         * Attempt to merge the local entries with another map's
+         * entries. Returns std::nullopt if duplicate keys or values
+         * were encountered.
+         */
+        std::optional<BiMap<TFirst, TSecond>> merge(BiMap<TFirst, TSecond> other) const {
+            BiMap<TFirst, TSecond> newMap = BiMap<TFirst, TSecond>();
 
             // TODO: Check for existing keys in both maps.
 
             for (const auto [key, value] : this->firstMap.unwrapConst()) {
-                firstMap.insert(key, value);
+                if (!newMap.insert(key, value)) {
+                    return std::nullopt;
+                }
             }
 
             for (const auto [key, value] : other.firstMap.unwrapConst()) {
-                firstMap.insert(key, value);
+                if (!newMap.insert(key, value)) {
+                    return std::nullopt;
+                }
             }
 
-            return BiMap<TFirst, TSecond>(firstMap);
+            return newMap;
         }
     };
 }
