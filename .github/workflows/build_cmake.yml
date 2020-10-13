@@ -94,8 +94,6 @@ jobs:
               -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
               -G Ninja
               -D CMAKE_MAKE_PROGRAM=ninja
-              -D CMAKE_C_COMPILER_LAUNCHER=ccache
-              -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
             RESULT_VARIABLE result
           )
           if (NOT result EQUAL 0)
@@ -122,8 +120,6 @@ jobs:
           if ("${{ matrix.config.cxx }}" STREQUAL "cl")
             set(ENV{CCACHE_MAXSIZE} "600M")
           endif()
-          execute_process(COMMAND ccache -p)
-          execute_process(COMMAND ccache -z)
           execute_process(
             COMMAND cmake --build build
             RESULT_VARIABLE result
