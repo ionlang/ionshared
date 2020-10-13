@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: get-cmake
+      - name: Install CMake
         uses: lukka/get-cmake@v3.18.3
       
 #       - name: run-cmake
@@ -62,7 +62,7 @@ jobs:
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
       - name: Checkout Git submodules
-        uses: textbook/git-checkout-submodule-action@master
+        run: git submodule update --init --recursive
 
       - name: Configure
         shell: cmake -P {0}
