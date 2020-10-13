@@ -28,9 +28,9 @@ jobs:
             cc: "gcc", cxx: "g++"
           }
           - {
-            name: "Ubuntu Latest GCC", artifact: "Linux.7z",
+            name: "Ubuntu Latest Clang", artifact: "Linux.7z",
             os: ubuntu-latest,
-            cc: "gcc", cxx: "g++"
+            cc: "clang", cxx: "clang++", CMAKE_CXX_FLAGS: -L~/.clang
           }
           - {
             name: "macOS Latest Clang", artifact: "macOS.7z",
@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: get-cmake
+      - name: Install CMake
         uses: lukka/get-cmake@v3.18.3
       
 #       - name: run-cmake
@@ -60,6 +60,10 @@ jobs:
           version: "10.0"
           directory: ~/.clang
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
+
+      - name: Checkout Git submodules
+#       run: git submodule update --init --recursive
+        run: git submodule add --force https://github.com/google/googletest libs/googletest && git submodule add --force https://github.com/ionlang/llvm-c libs/llvm-c
 
       - name: Configure
         shell: cmake -P {0}
@@ -90,8 +94,6 @@ jobs:
               -D CMAKE_BUILD_TYPE=$ENV{BUILD_TYPE}
               -G Ninja
               -D CMAKE_MAKE_PROGRAM=ninja
-              -D CMAKE_C_COMPILER_LAUNCHER=ccache
-              -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
             RESULT_VARIABLE result
           )
           if (NOT result EQUAL 0)
@@ -118,8 +120,6 @@ jobs:
           if ("${{ matrix.config.cxx }}" STREQUAL "cl")
             set(ENV{CCACHE_MAXSIZE} "600M")
           endif()
-          execute_process(COMMAND ccache -p)
-          execute_process(COMMAND ccache -z)
           execute_process(
             COMMAND cmake --build build
             RESULT_VARIABLE result
@@ -133,7 +133,6 @@ jobs:
             message("::error::${error_message}")
             message(FATAL_ERROR "Build failed")
           endif()
-          execute_process(COMMAND ccache -s)
       - name: Run tests
         shell: cmake -P {0}
         run: |
