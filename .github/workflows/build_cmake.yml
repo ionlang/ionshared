@@ -30,7 +30,7 @@ jobs:
           - {
             name: "Ubuntu Latest Clang", artifact: "Linux.7z",
             os: ubuntu-latest,
-            cc: "clang", cxx: "clang++"
+            cc: "clang", cxx: "clang++", CMAKE_CXX_FLAGS: -L~/.clang
           }
           - {
             name: "macOS Latest Clang", artifact: "macOS.7z",
