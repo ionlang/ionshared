@@ -16,27 +16,27 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {
-            name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
-            os: windows-latest,
-            cc: "cl", cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
-          }
-          - {
-            name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-            os: windows-latest,
-            cc: "gcc", cxx: "g++"
-          }
+#           - {
+#             name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
+#             os: windows-latest,
+#             cc: "cl", cxx: "cl",
+#             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+#           }
+#           - {
+#             name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
+#             os: windows-latest,
+#             cc: "gcc", cxx: "g++"
+#           }
           - {
             name: "Ubuntu Latest Clang", artifact: "Linux.7z",
             os: ubuntu-latest,
             cc: "clang", cxx: "clang++", CMAKE_CXX_FLAGS: -L~/.clang
           }
-          - {
-            name: "macOS Latest Clang", artifact: "macOS.7z",
-            os: macos-latest,
-            cc: "clang", cxx: "clang++"
-          }
+#           - {
+#             name: "macOS Latest Clang", artifact: "macOS.7z",
+#             os: macos-latest,
+#             cc: "clang", cxx: "clang++"
+#           }
 
     steps:
       - uses: actions/checkout@v1
