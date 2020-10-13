@@ -1,5 +1,7 @@
 ### ionshared
 
+![CMake Build Matrix](https://github.com/ionlang/ionshared/workflows/CMake%20Build%20Matrix/badge.svg?branch=dev)
+
 A library containing shared utilities and classes used by IonLang,
 IonIR, and ILC projects.
 
