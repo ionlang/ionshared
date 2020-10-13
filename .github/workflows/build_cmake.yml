@@ -61,6 +61,9 @@ jobs:
           directory: ~/.clang
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
+      - name: Checkout Git submodules
+        uses: textbook/git-checkout-submodule-action@master
+
       - name: Configure
         shell: cmake -P {0}
         run: |
