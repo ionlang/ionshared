@@ -28,9 +28,9 @@ jobs:
             cc: "gcc", cxx: "g++"
           }
           - {
-            name: "Ubuntu Latest GCC", artifact: "Linux.7z",
+            name: "Ubuntu Latest Clang", artifact: "Linux.7z",
             os: ubuntu-latest,
-            cc: "gcc", cxx: "g++"
+            cc: "clang", cxx: "clang++"
           }
           - {
             name: "macOS Latest Clang", artifact: "macOS.7z",
