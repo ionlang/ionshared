@@ -27,19 +27,19 @@ set(BIN_DIR ${CMAKE_CURRENT_BINARY_DIR})
 # Option to use MD.
 option(USE_MD "Use MD instead of MTd" OFF)
 
-if (USE_MD)
+if(USE_MD)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
     message(STATUS "Using /MD flag")
-endif (USE_MD)
+endif(USE_MD)
 
 # Options.
 option(USE_CLANG "Use Clang and Clang++ as compilers")
 
-if (USE_CLANG)
+if(USE_CLANG)
     # TODO
     set(T "")
-endif (USE_CLANG)
+endif(USE_CLANG)
 
 # Setup versioning.
 set(VERSION_MAJOR "1")
@@ -94,10 +94,10 @@ target_link_libraries("${PROJECT_NAME}" LLVM)
 # Setup unit testing using Google Test (GTest) if applicable. This binds the CMakeLists.txt on the test project.
 option(BUILD_TESTS "Build tests" OFF)
 
-if (BUILD_TESTS)
+if(BUILD_TESTS)
     add_subdirectory(libs/googletest)
     add_subdirectory(test)
-endif ()
+endif()
 
 # Setup install target.
 install(
