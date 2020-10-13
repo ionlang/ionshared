@@ -43,27 +43,24 @@ jobs:
 
       - name: get-cmake
         uses: lukka/get-cmake@v3.18.3
+      
+#       - name: run-cmake
+#         uses: lukka/run-cmake@v3.1
 
-      - name: Download ccache
-        id: ccache
-        shell: cmake -P {0}
-        run: |
-          set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_VERSION}/${{ runner.os }}.tar.xz")
-          file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
-      - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
-        shell: cmake -P {0}
-        run: |
-          string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
-          message("::set-output name=timestamp::${current_date}")
-      - name: ccache cache files
-        uses: actions/cache@v1.1.0
+      - name: Cache LLVM
+        id: cache-llvm
+        uses: actions/cache@v2
         with:
-          path: .ccache
-          key: ${{ matrix.config.name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-          restore-keys: |
-            ${{ matrix.config.name }}-ccache-
+          path: ~/.clang
+          key: llvm-10.0
+
+      - name: Install LLVM
+        uses: KyleMayes/install-llvm-action@v1.0.0
+        with:
+          version: "10.0"
+          directory: ~/.clang
+          cached: ${{ steps.cache-llvm.outputs.cache-hit }}
+
       - name: Configure
         shell: cmake -P {0}
         run: |
