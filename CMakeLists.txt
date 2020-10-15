@@ -31,15 +31,7 @@ if(USE_MD)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
     message(STATUS "Using /MD flag")
-endif(USE_MD)
-
-# Options.
-option(USE_CLANG "Use Clang and Clang++ as compilers")
-
-if(USE_CLANG)
-    # TODO
-    set(T "")
-endif(USE_CLANG)
+endif()
 
 # Setup versioning.
 set(VERSION_MAJOR "1")
@@ -92,9 +84,9 @@ llvm_map_components_to_libnames(llvm_libs all)
 target_link_libraries("${PROJECT_NAME}" LLVM)
 
 # Setup unit testing using Google Test (GTest) if applicable. This binds the CMakeLists.txt on the test project.
-option(BUILD_TESTS "Build tests" OFF)
+option(IONSHARED_BUILD_TESTS "Build tests" ON)
 
-if(BUILD_TESTS)
+if(IONSHARED_BUILD_TESTS)
     add_subdirectory(libs/googletest)
     add_subdirectory(test)
 endif()
