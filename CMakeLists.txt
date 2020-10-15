@@ -62,15 +62,21 @@ file(
 # Specify that this project is a library.
 add_library("${PROJECT_NAME}" ${SOURCES})
 
+# Set VERSION property. Optional, but good practice.
+set_target_properties("${PROJECT_NAME}" PROPERTIES VERSION ${PROJECT_VERSION})
+
 # Link .libs (same functionality handled by llvm_map_components_to_libnames().)
 #target_link_libraries(${PROJECT_NAME} ${LIB_SOURCES})
+
+# Linux installation support.
+include(GNUInstallDirs)
 
 # Provide include directories to be used in the build command. Position in file matters.
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+#    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
     # Comment out as it's causing cannot find included file '/project_name'.
     #$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
@@ -83,8 +89,9 @@ llvm_map_components_to_libnames(llvm_libs all)
 # Link against LLVM libraries.
 target_link_libraries("${PROJECT_NAME}" LLVM)
 
-# Setup unit testing using Google Test (GTest) if applicable. This binds the CMakeLists.txt on the test project.
-option(IONSHARED_BUILD_TESTS "Build tests" ON)
+# Setup unit testing using Google Test (GTest) if applicable.
+# This binds the CMakeLists.txt on the test directory.
+option(IONSHARED_BUILD_TESTS "Build tests" OFF)
 
 if(IONSHARED_BUILD_TESTS)
     add_subdirectory(libs/googletest)
