@@ -74,17 +74,23 @@ include(GNUInstallDirs)
 # Provide include directories to be used in the build command. Position in file matters.
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
-#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
     # Comment out as it's causing cannot find included file '/project_name'.
-    #$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
 )
 
-# Find the libraries that correspond to the LLVM components
-# that we wish to use.
-llvm_map_components_to_libnames(llvm_libs all)
+# Determine whether to link against LLVM static libraries
+# or dynamic library (libLLVM.dll).
+if(BUILD_SHARED_LIBS)
+    # Find the libraries that correspond to the LLVM components
+    # that we wish to use.
+    llvm_map_components_to_libnames(llvm_libs all)
+else()
+    set(llvm_libs LLVM)
+endif()
 
 # Link against LLVM libraries.
 target_link_libraries("${PROJECT_NAME}" ${llvm_libs})
@@ -94,8 +100,8 @@ target_link_libraries("${PROJECT_NAME}" ${llvm_libs})
 option(IONSHARED_BUILD_TESTS "Build tests" OFF)
 
 if(IONSHARED_BUILD_TESTS)
-    add_subdirectory(libs/googletest)
-    add_subdirectory(test)
+    add_subdirectory(./libs/googletest)
+    add_subdirectory(./test)
 endif()
 
 # Setup install target.
@@ -107,7 +113,7 @@ install(
 
 install(
     EXPORT ${PROJECT_NAME}-config
-    NAMESPACE ${PROJECT_NAME}::
+#    NAMESPACE ${PROJECT_NAME}::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
