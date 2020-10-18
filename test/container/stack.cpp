@@ -38,7 +38,7 @@ TEST(StackTest, Pop) {
 
     int result;
 
-    EXPECT_NO_THROW(result = stack.pop());
+    EXPECT_NO_THROW(result = stack.forcePop());
     EXPECT_EQ(result, 0);
     EXPECT_TRUE(stack.isEmpty());
 }
@@ -46,7 +46,7 @@ TEST(StackTest, Pop) {
 TEST(StackTest, PopThrows) {
     Stack<int> stack = Stack<int>();
 
-    EXPECT_THROW(stack.pop(), std::out_of_range);
+    EXPECT_THROW(stack.forcePop(), std::out_of_range);
 }
 
 TEST(StackTest, Clear) {

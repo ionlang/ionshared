@@ -10,7 +10,7 @@
 namespace ionshared {
     template<typename T>
     struct Stack : Wrapper<std::stack<T>> {
-        explicit Stack(std::stack<T> value = {}) :
+        explicit Stack(std::stack<T> value = {}) noexcept :
             Wrapper<std::stack<T>>(value) {
             //
         }
@@ -29,7 +29,48 @@ namespace ionshared {
             this->value.push(item);
         }
 
-        T pop() {
+        // TODO: Is this being returned as reference or not?
+        std::optional<T> tryGetTopItem() {
+            if (this->value.empty()) {
+                return std::nullopt;
+            }
+
+            return this->value.top();
+        }
+
+        /**
+         * Forcefully get the top item in the stack. Will throw
+         * a runtime exception if the stack currently contains no
+         * items.
+         */
+        T forceGetTopItem() {
+            std::optional<T> result = this->tryGetTopItem();
+
+            if (!result.has_value()) {
+                throw std::runtime_error("No items in the stack");
+            }
+
+            return *result;
+        }
+
+        // TODO: getBottomItem().
+
+        std::optional<T> tryPop() {
+            std::optional<T> result = this->tryGetTopItem();
+
+            if (result.has_value()) {
+                this->value.pop();
+            }
+
+            return result;
+        }
+
+        /**
+         * Forcefully retrieve the top item on the stack, pop it off
+         * the stack, and return it. Will throw a runtime exception if
+         * the stack does not contain more items.
+         */
+        T forcePop() {
             std::optional<T> result = this->tryPop();
 
             if (!result.has_value()) {
@@ -47,19 +88,6 @@ namespace ionshared {
             }
 
             return alternative;
-        }
-
-        std::optional<T> tryPop() {
-            // Underlying stack contains no more items to pop.
-            if (this->value.empty()) {
-                return std::nullopt;
-            }
-
-            T result = this->value.top();
-
-            this->value.pop();
-
-            return result;
         }
 
         [[nodiscard]] bool isEmpty() const {

@@ -29,7 +29,7 @@ namespace ionshared {
             TConstructKind kind,
             std::optional<ionshared::SourceLocation> sourceLocation = std::nullopt,
             OptPtr<TConstruct> parent = std::nullopt
-        ) :
+        ) noexcept :
             constructKind(kind),
             sourceLocation(sourceLocation),
             parent(parent) {
@@ -81,6 +81,26 @@ namespace ionshared {
 //                }
 //            }
 //        }
+
+        [[nodiscard]] Ptr<This> fetchRoot() {
+            if (!util::hasValue(this->parent)) {
+                return this->shared_from_this();
+            }
+
+            std::queue<Ptr<This>> parentQueue{*this->parent};
+
+            while (!parentQueue.empty()) {
+                Ptr<This> parent = parentQueue.front();
+
+                parentQueue.pop();
+
+                if (!util::hasValue(parent->parent)) {
+                    return parent;
+                }
+
+                parentQueue.push(*parent->parent);
+            }
+        }
 
         [[nodiscard]] Ptr<This> getBarePtr() {
             return this->shared_from_this();
