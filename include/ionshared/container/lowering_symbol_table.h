@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <memory>
 #include <ionshared/container/map.h>
 
@@ -29,6 +30,7 @@ namespace ionshared {
 
         // TODO: Require that T is a pointer? Since pointer casts occur.
         template<typename T = TLowerConstruct>
+//            require std::derived_from<T, TLowerConstruct>
         [[nodiscard]] std::optional<std::shared_ptr<T>> find(
             TConstruct construct,
             bool useDynamicCast = true

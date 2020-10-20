@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include <concepts>
 #include <stdexcept>
 #include <memory>
@@ -87,7 +88,9 @@ namespace ionshared {
                 return this->shared_from_this();
             }
 
-            std::queue<Ptr<This>> parentQueue{*this->parent};
+            std::queue<Ptr<This>> parentQueue{};
+
+            parentQueue.push(*this->parent);
 
             while (!parentQueue.empty()) {
                 Ptr<This> parent = parentQueue.front();
