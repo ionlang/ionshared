@@ -16,7 +16,7 @@ namespace ionshared {
     public:
         explicit LlvmBlock(llvm::BasicBlock* value) noexcept;
 
-        [[nodiscard]] Ptr<IrBuilder> getBuilder();
+        [[nodiscard]] std::shared_ptr<IrBuilder> getBuilder();
 
         [[nodiscard]] OptPtr<LlvmInst> findTerminatorInst() const;
 

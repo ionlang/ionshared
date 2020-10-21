@@ -27,7 +27,7 @@ namespace ionshared::test::compare {
     [[nodiscard]] bool ir(std::string output, const std::string &fileName);
 
     [[nodiscard]] bool ir(
-        const Ptr<LlvmLoweringPass> &llvmCodegenPass,
+        const std::shared_ptr<LlvmLoweringPass> &llvmCodegenPass,
         const std::string &fileName
     );
 

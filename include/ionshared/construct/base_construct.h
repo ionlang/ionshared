@@ -9,7 +9,7 @@
 
 namespace ionshared {
     template<typename T>
-    using Ast = std::vector<Ptr<T>>;
+    using Ast = std::vector<std::shared_ptr<T>>;
 
     template<typename T>
     using TraversalCallback = std::function<bool(T)>;
@@ -24,7 +24,7 @@ namespace ionshared {
 
         std::optional<ionshared::SourceLocation> sourceLocation;
 
-        std::optional<Ptr<TConstruct>> parent;
+        std::optional<std::shared_ptr<TConstruct>> parent;
 
         explicit BaseConstruct(
             TConstructKind kind,
@@ -39,7 +39,7 @@ namespace ionshared {
 
 //        virtual void accept(TPass visitor) = 0;
 
-        [[nodiscard]] virtual bool equals(Ptr<This> other) {
+        [[nodiscard]] virtual bool equals(std::shared_ptr<This> other) {
             return other == this->shared_from_this();
         }
 
@@ -57,8 +57,8 @@ namespace ionshared {
         }
 
         // TODO
-//        void traverseChildren(TraversalCallback<Ptr<This>> callback) {
-//            std::queue<Ptr<This>> childrenQueue = {};
+//        void traverseChildren(TraversalCallback<std::shared_ptr<This>> callback) {
+//            std::queue<std::shared_ptr<This>> childrenQueue = {};
 //            Ast<This> primeChildren = this->getChildrenNodes();
 //
 //            // Begin with this construct's children nodes.
@@ -67,7 +67,7 @@ namespace ionshared {
 //            }
 //
 //            while (!childrenQueue.empty()) {
-//                Ptr<This> child = childrenQueue.front();
+//                std::shared_ptr<This> child = childrenQueue.front();
 //                Ast<This> children = child->getChildrenNodes();
 //
 //                childrenQueue.pop();
@@ -83,17 +83,17 @@ namespace ionshared {
 //            }
 //        }
 
-        [[nodiscard]] Ptr<This> fetchRoot() {
+        [[nodiscard]] std::shared_ptr<This> fetchRoot() {
             if (!util::hasValue(this->parent)) {
                 return this->shared_from_this();
             }
 
-            std::queue<Ptr<This>> parentQueue{};
+            std::queue<std::shared_ptr<This>> parentQueue{};
 
             parentQueue.push(*this->parent);
 
             while (!parentQueue.empty()) {
-                Ptr<This> parent = parentQueue.front();
+                std::shared_ptr<This> parent = parentQueue.front();
 
                 parentQueue.pop();
 
@@ -105,11 +105,11 @@ namespace ionshared {
             }
         }
 
-        [[nodiscard]] Ptr<This> getBarePtr() {
+        [[nodiscard]] std::shared_ptr<This> getBarePtr() {
             return this->shared_from_this();
         }
 
-        [[nodiscard]] Ptr<TConstruct> getPtr() {
+        [[nodiscard]] std::shared_ptr<TConstruct> getPtr() {
             return this->nativeCast();
         }
 
@@ -118,8 +118,8 @@ namespace ionshared {
          * void* to the appropriate type.
          */
         template<typename TLike>
-        [[nodiscard]] Ptr<TLike> staticCast() {
-            Ptr<TLike> result = std::static_pointer_cast<TLike>(this->shared_from_this());
+        [[nodiscard]] std::shared_ptr<TLike> staticCast() {
+            std::shared_ptr<TLike> result = std::static_pointer_cast<TLike>(this->shared_from_this());
 
             if (result == nullptr) {
                 throw std::runtime_error("Static pointer cast failed");
@@ -134,8 +134,8 @@ namespace ionshared {
          * up or down an inheritance chain (inheritance hierarchy).
          */
         template<class TLike>
-        [[nodiscard]] Ptr<TLike> dynamicCast() {
-            Ptr<TLike> result = std::dynamic_pointer_cast<TLike>(this->shared_from_this());
+        [[nodiscard]] std::shared_ptr<TLike> dynamicCast() {
+            std::shared_ptr<TLike> result = std::dynamic_pointer_cast<TLike>(this->shared_from_this());
 
             if (result == nullptr) {
                 throw std::runtime_error("Dynamic pointer cast failed");
@@ -144,7 +144,7 @@ namespace ionshared {
             return result;
         }
 
-        [[nodiscard]] Ptr<TConstruct> nativeCast() {
+        [[nodiscard]] std::shared_ptr<TConstruct> nativeCast() {
             return this->dynamicCast<TConstruct>();
         }
     };

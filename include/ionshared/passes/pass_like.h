@@ -2,12 +2,12 @@
 
 namespace ionshared {
     // TODO: What if pass_info.h is never included?
-    class PassInfo;
+    struct PassInfo;
 
     template<const char> using constexprHelper = void;
 
     template<typename T>
-    concept PassLike = requires(T t, PassInfo &info) {
+    concept PassLike = requires(T t, PassInfo& info) {
         T::passId;
 
         /**

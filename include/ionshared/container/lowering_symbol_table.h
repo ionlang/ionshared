@@ -2,9 +2,22 @@
 
 #include <concepts>
 #include <memory>
+#include <llvm/Support/Casting.h>
 #include <ionshared/container/map.h>
 
 namespace ionshared {
+    enum class CastKind {
+        None,
+
+        StaticPointerCast,
+
+        DynamicPointerCast,
+
+        LlvmDynamicPointerCast,
+
+        LlvmDynamicPointerOrNullCast
+    };
+
     /**
      * A specialized symbol table (map) container for use with
      * lowering passes to keep track and lookup emitted constructs.
@@ -33,7 +46,7 @@ namespace ionshared {
 //            require std::derived_from<T, TLowerConstruct>
         [[nodiscard]] std::optional<std::shared_ptr<T>> find(
             TConstruct construct,
-            bool useDynamicCast = true
+            CastKind castKind = CastKind::None
         ) {
             if (!this->contains(construct)) {
                 return std::nullopt;
@@ -41,9 +54,46 @@ namespace ionshared {
 
             TLowerConstruct lookupResult = *this->value.lookup(construct);
 
-            std::shared_ptr<T> castResult = useDynamicCast
-                ? std::dynamic_pointer_cast<T>(lookupResult)
-                : std::static_pointer_cast<T>(lookupResult);
+            if (castKind == CastKind::None) {
+                return lookupResult;
+            }
+
+            std::shared_ptr<T> castResult{};
+
+            switch (castKind) {
+                case CastKind::DynamicPointerCast: {
+                    castResult = std::dynamic_pointer_cast<T>(lookupResult);
+
+                    break;
+                }
+
+                case CastKind::StaticPointerCast: {
+                    castResult = std::static_pointer_cast<T>(lookupResult);
+
+                    break;
+                }
+
+                // TODO: Review.
+//                case CastKind::LlvmDynamicPointerCast: {
+//                    castResult = std::shared_ptr<T>(
+//                        llvm::dyn_cast<T>(lookupResult)
+//                    );
+//
+//                    break;
+//                }
+
+//                case CastKind::LlvmDynamicPointerOrNullCast: {
+//                    castResult = std::shared_ptr<T>(
+//                        llvm::dyn_cast_or_null<T>(lookupResult)
+//                    );
+//
+//                    break;
+//                }
+
+                default: {
+                    throw std::runtime_error("Unknown cast kind");
+                }
+            }
 
             if (castResult == nullptr) {
                 throw std::runtime_error("Result cast failed");

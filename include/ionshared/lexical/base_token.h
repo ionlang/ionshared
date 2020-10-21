@@ -31,13 +31,13 @@ namespace ionshared {
             return this->startPosition + this->value.length();
         }
 
-        bool operator==(const BaseToken<T> &other) const {
+        bool operator==(const BaseToken<T>& other) const {
             return this->value == other.value &&
                 this->kind == other.kind &&
                 this->startPosition == other.startPosition;
         }
 
-        bool operator!=(const BaseToken<T> &other) const {
+        bool operator!=(const BaseToken<T>& other) const {
             // Simplifying this causes a SIGSEGV (segmentation fault).
             return !(*this == other);
         }

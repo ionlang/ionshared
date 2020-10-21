@@ -5,12 +5,12 @@
 
 namespace ionshared {
     struct PassContext {
-        const Ptr<Vector<Diagnostic>> diagnostics;
+        const std::shared_ptr<Vector<Diagnostic>> diagnostics;
 
-        const Ptr<DiagnosticBuilder> diagnosticBuilder;
+        const std::shared_ptr<DiagnosticBuilder> diagnosticBuilder;
 
         explicit PassContext(
-            Ptr<Vector<Diagnostic>> diagnostics =
+            std::shared_ptr<Vector<Diagnostic>> diagnostics =
                 std::make_shared<Vector<Diagnostic>>()
         ) noexcept;
     };

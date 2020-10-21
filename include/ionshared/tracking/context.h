@@ -55,7 +55,7 @@ namespace ionshared {
             this->scopes.insert(this->scopes.begin(), scope);
         }
 
-        void appendScope(const Ptr<Scoped<T>> &scopeAnchor) noexcept {
+        void appendScope(const std::shared_ptr<Scoped<T>> &scopeAnchor) noexcept {
             this->appendScope(scopeAnchor->getSymbolTable());
         }
 

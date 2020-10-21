@@ -7,7 +7,7 @@
 #include "source_location.h"
 
 namespace ionshared {
-    enum class DiagnosticKind {
+    enum struct DiagnosticKind {
         /**
          * An internal error of the compiler. These errors are meant
          * to be debugged and fixed by the compiler developer(s).

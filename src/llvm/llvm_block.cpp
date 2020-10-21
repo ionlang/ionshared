@@ -7,7 +7,7 @@ namespace ionshared {
         //
     }
 
-    Ptr<IrBuilder> LlvmBlock::getBuilder() {
+    std::shared_ptr<IrBuilder> LlvmBlock::getBuilder() {
         if (this->cachedBuilder.has_value()) {
             return *this->cachedBuilder;
         }

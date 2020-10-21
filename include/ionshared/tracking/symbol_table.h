@@ -10,7 +10,7 @@ namespace ionshared {
     using SymbolTable = Map<std::string, T>;
 
     template<typename T>
-    using PtrSymbolTable = Ptr<SymbolTable<Ptr<T>>>;
+    using PtrSymbolTable = std::shared_ptr<SymbolTable<std::shared_ptr<T>>>;
 
     template<typename TKey, typename TValue>
     using ScopeListItem = Map<TKey, TValue>;

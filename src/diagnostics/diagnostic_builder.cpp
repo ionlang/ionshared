@@ -8,7 +8,7 @@ namespace ionshared {
         }
     }
 
-    DiagnosticBuilder::DiagnosticBuilder(Ptr<Vector<Diagnostic>> diagnostics) :
+    DiagnosticBuilder::DiagnosticBuilder(std::shared_ptr<Vector<Diagnostic>> diagnostics) :
         diagnostics(diagnostics),
         diagnosticBuffer(std::nullopt) {
         //
@@ -26,14 +26,14 @@ namespace ionshared {
         this->diagnosticBuffer = std::nullopt;
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::begin(Diagnostic diagnostic) noexcept {
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::begin(Diagnostic diagnostic) noexcept {
         // TODO: Overwrites the SourceLocation field on the current buffer.
         this->setDiagnosticBuffer(diagnostic);
 
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::begin(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::begin(
         DiagnosticKind type,
         std::string message,
         std::optional<SourceLocation> location
@@ -45,28 +45,28 @@ namespace ionshared {
         });
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginInfo(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::beginInfo(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
         return this->begin(DiagnosticKind::Info, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginWarning(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::beginWarning(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
         return this->begin(DiagnosticKind::Warning, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginError(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::beginError(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
         return this->begin(DiagnosticKind::Error, message, location);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::beginFatal(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::beginFatal(
         std::string message,
         std::optional<SourceLocation> location
     ) noexcept {
@@ -82,28 +82,28 @@ namespace ionshared {
         return condition;
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setMessage(std::string message) {
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::setMessage(std::string message) {
         this->assertDiagnosticBufferSet();
         this->diagnosticBuffer->message = message;
 
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setSourceLocation(std::optional<SourceLocation> location) {
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::setSourceLocation(std::optional<SourceLocation> location) {
         this->assertDiagnosticBufferSet();
         this->diagnosticBuffer->sourceLocation = location;
 
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setCode(std::optional<uint32_t> code) {
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::setCode(std::optional<uint32_t> code) {
         this->assertDiagnosticBufferSet();
         this->diagnosticBuffer->code = code;
 
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setAdditionalInformation(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::setAdditionalInformation(
         std::optional<std::string> additionalInformation
     ) {
         this->assertDiagnosticBufferSet();
@@ -112,7 +112,7 @@ namespace ionshared {
         return this->shared_from_this();
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::setExample(std::optional<std::string> example) {
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::setExample(std::optional<std::string> example) {
         this->assertDiagnosticBufferSet();
         this->diagnosticBuffer->example = example;
 
@@ -126,7 +126,7 @@ namespace ionshared {
         this->diagnostics->add(*this->diagnosticBuffer);
     }
 
-    Ptr<DiagnosticBuilder> DiagnosticBuilder::bootstrap(
+    std::shared_ptr<DiagnosticBuilder> DiagnosticBuilder::bootstrap(
         Diagnostic diagnostic,
         std::optional<SourceLocation> sourceLocation
     ) {

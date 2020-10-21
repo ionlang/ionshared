@@ -39,7 +39,7 @@ namespace ionshared {
 
     public:
         struct Item {
-            Ptr<TPass> pass;
+            std::shared_ptr<TPass> pass;
 
             PassInfo info;
 
@@ -66,7 +66,7 @@ namespace ionshared {
          */
         template<PassLike T>
             requires std::derived_from<T, TPass>
-        bool registerPassWithoutInit(Ptr<T> pass, PassPriority priority = PassPriority::Normal) {
+        bool registerPassWithoutInit(std::shared_ptr<T> pass, PassPriority priority = PassPriority::Normal) {
             if (this->registeredPasses.contains(&T::passId)) {
                 return false;
             }
@@ -88,7 +88,7 @@ namespace ionshared {
          */
         template<PassLike T>
             requires std::derived_from<T, TPass>
-        bool registerPass(Ptr<T> pass, PassPriority priority = PassPriority::Normal) {
+        bool registerPass(std::shared_ptr<T> pass, PassPriority priority = PassPriority::Normal) {
             PassInfo info = PassInfo();
 
             pass->initialize(info);
@@ -110,7 +110,7 @@ namespace ionshared {
          * Traverse all nodes and visit each one of them, and their
          * child nodes if applicable.
          */
-        void run(const Ast<TConstruct> &ast) {
+        void run(const Ast<TConstruct>& ast) {
             auto compare = [](Item left, Item right) {
                 // TODO: Ensure correct order.
                 return left.priority > right.priority;

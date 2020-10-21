@@ -15,21 +15,21 @@ namespace ionshared {
 
     template<typename T>
     struct BasePass {
-        const Ptr<PassContext> context;
+        const std::shared_ptr<PassContext> context;
 
-        explicit BasePass(Ptr<PassContext> context) :
+        explicit BasePass(std::shared_ptr<PassContext> context) :
             context(context) {
             //
         }
 
-        virtual void visit(Ptr<T> node) = 0;
+        virtual void visit(std::shared_ptr<T> node) = 0;
 
         /**
          * Initialize the pass and register it's constraints. Returns
          * whether the pass was successfully initialized and may be registered
          * by the pass manager or not.
          */
-        virtual bool initialize(PassInfo &info) {
+        virtual bool initialize(PassInfo& info) {
             return true;
         }
 

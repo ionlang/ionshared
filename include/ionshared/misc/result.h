@@ -66,5 +66,5 @@ namespace ionshared {
     };
 
     template<typename TValue, typename TError>
-    using PtrResult = Ptr<Result<TValue, TError>>;
+    using PtrResult = std::shared_ptr<Result<TValue, TError>>;
 }

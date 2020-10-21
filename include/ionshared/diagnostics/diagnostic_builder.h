@@ -18,10 +18,10 @@ namespace ionshared {
         void setDiagnosticBuffer(std::optional<Diagnostic> diagnosticBuffer) noexcept;
 
     public:
-        const Ptr<Vector<Diagnostic>> diagnostics;
+        const std::shared_ptr<Vector<Diagnostic>> diagnostics;
 
         explicit DiagnosticBuilder(
-            Ptr<Vector<Diagnostic>> diagnostics =
+            std::shared_ptr<Vector<Diagnostic>> diagnostics =
                 std::make_shared<Vector<Diagnostic>>()
         );
 
@@ -29,49 +29,49 @@ namespace ionshared {
 
         void clearDiagnosticBuffer() noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> begin(Diagnostic diagnostic) noexcept;
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> begin(Diagnostic diagnostic) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> begin(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> begin(
             DiagnosticKind type,
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> beginInfo(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> beginInfo(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> beginWarning(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> beginWarning(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder>beginError(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder>beginError(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> beginFatal(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> beginFatal(
             std::string message,
             std::optional<SourceLocation> location = std::nullopt
         ) noexcept;
 
         [[nodiscard]] bool internalAssert(bool condition) noexcept;
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setMessage(std::string message);
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> setMessage(std::string message);
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setSourceLocation(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> setSourceLocation(
             std::optional<SourceLocation> location
         );
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setCode(std::optional<uint32_t> code);
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> setCode(std::optional<uint32_t> code);
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setAdditionalInformation(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> setAdditionalInformation(
             std::optional<std::string> additionalInformation
         );
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> setExample(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> setExample(
             std::optional<std::string> example
         );
 
@@ -83,7 +83,7 @@ namespace ionshared {
          * the message will not be changed.
          */
         template<typename ...Args>
-        [[nodiscard]] Ptr<DiagnosticBuilder> formatMessage(Args &&...args) {
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> formatMessage(Args &&...args) {
             this->assertDiagnosticBufferSet();
 
             std::optional<std::string> formattedMessage = util::formatStringA(
@@ -98,7 +98,7 @@ namespace ionshared {
             return this->shared_from_this();
         }
 
-        [[nodiscard]] Ptr<DiagnosticBuilder> bootstrap(
+        [[nodiscard]] std::shared_ptr<DiagnosticBuilder> bootstrap(
             Diagnostic diagnostic,
             std::optional<SourceLocation> sourceLocation = std::nullopt
         );

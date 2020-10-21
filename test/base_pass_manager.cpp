@@ -14,7 +14,7 @@ struct Pass : public BasePass<TestConstruct> {
         //
     }
 
-    void visit(Ptr<int> node) override {
+    void visit(std::shared_ptr<int> node) override {
         //
     }
 };
@@ -33,7 +33,7 @@ struct PassWithRequirement : public BasePass<TestConstruct> {
         return true;
     }
 
-    void visit(Ptr<int> node) override {
+    void visit(std::shared_ptr<int> node) override {
         //
     }
 };

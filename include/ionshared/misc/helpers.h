@@ -12,10 +12,10 @@ namespace ionshared {
     using Ptr = std::shared_ptr<T>;
 
     template<typename T>
-    using ConstPtr = Ptr<const T>;
+    using ConstPtr = std::shared_ptr<const T>;
 
     template<typename T>
-    using OptPtr = std::optional<Ptr<T>>;
+    using OptPtr = std::optional<std::shared_ptr<T>>;
 
     template<typename T>
     using Ref = std::reference_wrapper<T>;

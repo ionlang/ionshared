@@ -9,9 +9,9 @@ namespace ionshared {
         Block
     };
 
-    struct Scope : Wrapper<Ptr<Construct>> {
+    struct Scope : Wrapper<std::shared_ptr<Construct>> {
         const ScopeKind kind;
 
-        Scope(Ptr<Construct> value, ScopeKind kind);
+        Scope(std::shared_ptr<Construct> value, ScopeKind kind);
     };
 }
