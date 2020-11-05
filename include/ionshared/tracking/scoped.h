@@ -12,15 +12,21 @@ namespace ionshared {
     using TraversalCallback = std::function<bool(T)>;
 
     // TODO: Implement concepts to ensure T is or derives of Construct.
-    template<typename T>
+    template<typename TConstruct, typename TConstructKind>
+        // TODO: Used partially in projects (incomplete type).
+//        requires std::derived_from<TConstruct, BaseConstruct<TConstruct, TConstructKind>>
     struct Scoped {
-        PtrSymbolTable<T> symbolTable;
+        typedef Scoped<TConstruct, TConstructKind> Self;
 
-        OptRef<Scoped<T>> parentScope;
+        PtrSymbolTable<TConstruct> symbolTable;
+
+        OptRef<Self> parentScope;
 
         explicit Scoped(
-            PtrSymbolTable<T> symbolTable = util::makePtrSymbolTable<T>(),
-            OptRef<Scoped<T>> parent = std::nullopt
+            PtrSymbolTable<TConstruct> symbolTable =
+                util::makePtrSymbolTable<TConstruct>(),
+
+            OptRef<Self> parent = std::nullopt
         ) :
             symbolTable(symbolTable),
             parentScope(parent) {
@@ -35,13 +41,13 @@ namespace ionshared {
          * Traverses parent scopes starting from the nearest one, and
          * including itself.
          */
-        void traverseScopes(TraversalCallback<Scoped<T> &> callback) {
-            std::queue<Ref<Scoped<T>>> queue = {};
+        void traverseScopes(TraversalCallback<Self&> callback) {
+            std::queue<Ref<Self>> queue = {};
 
             queue.push(*this);
 
             while (!queue.empty()) {
-                Scoped<T> &scope = queue.front();
+                Self& scope = queue.front();
 
                 queue.pop();
 
@@ -55,21 +61,41 @@ namespace ionshared {
             }
         }
 
-        [[nodiscard]] std::optional<T> findNearestSymbol(std::string key) {
-            std::optional<T> result = std::nullopt;
+        [[nodiscard]] std::optional<TConstruct> findNearestSymbol(std::string name) {
+            std::optional<TConstruct> result = std::nullopt;
 
-            this->traverseScopes([&, this](Scoped<T> &scope) -> bool {
-                    OptPtr<T> symbol = scope.getSymbolTable()->lookup(key);
+            this->traverseScopes([&, this](Self& scope) -> bool {
+                OptPtr<TConstruct> symbol = scope.getSymbolTable()->lookup(name);
+                bool hasValue = util::hasValue(symbol);
 
-                    if (util::hasValue(symbol)) {
-                        result = symbol;
-
-                        return false;
-                    }
-
-                    return true;
+                if (hasValue) {
+                    result = symbol;
                 }
-            );
+
+                return hasValue;
+            });
+
+            return result;
+        }
+
+        [[nodiscard]] std::optional<TConstruct> findNearestSymbol(
+            std::string name,
+            TConstructKind constructKind
+        ) {
+            std::optional<TConstruct> result = std::nullopt;
+
+            this->traverseScopes([&, this](Self& scope) -> bool {
+                OptPtr<TConstruct> symbol = scope.getSymbolTable()->lookup(name);
+
+                if (util::hasValue(symbol)
+                    && symbol->get()->constructKind == constructKind) {
+                    result = symbol;
+
+                    return false;
+                }
+
+                return true;
+            });
 
             return result;
         }

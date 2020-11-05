@@ -1,7 +1,7 @@
 #pragma once
 
 namespace ionshared {
-    enum class VisibilityModifier {
+    enum struct VisibilityModifier {
         Private,
 
         Protected,

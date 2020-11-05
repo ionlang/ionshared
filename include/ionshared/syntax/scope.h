@@ -5,7 +5,7 @@
 #include <ionshared/misc/helpers.h>
 
 namespace ionshared {
-    enum class ScopeKind {
+    enum struct ScopeKind {
         Block
     };
 

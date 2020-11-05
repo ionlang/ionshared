@@ -8,7 +8,7 @@
 #include "pass_info.h"
 
 namespace ionshared {
-    enum class PassPriority {
+    enum struct PassPriority {
         /**
          * Highest priority. This precedence will be executed first.
          */
@@ -123,7 +123,7 @@ namespace ionshared {
             > runQueue(compare);
 
             // Push pass manager items onto the queue, thus ordering them.
-            for (const auto &item : this->passes) {
+            for (const auto& item : this->passes) {
                 runQueue.push(item);
             }
 

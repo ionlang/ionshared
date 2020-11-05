@@ -6,7 +6,7 @@
 #include <ionshared/container/map.h>
 
 namespace ionshared {
-    enum class CastKind {
+    enum struct CastKind {
         None,
 
         StaticPointerCast,
@@ -44,7 +44,7 @@ namespace ionshared {
         // TODO: Require that T is a pointer? Since pointer casts occur.
         template<typename T = TLowerConstruct>
 //            require std::derived_from<T, TLowerConstruct>
-        [[nodiscard]] std::optional<std::shared_ptr<T>> find(
+        [[nodiscard]] std::optional<std::shared_ptr<T>> lookup(
             TConstruct construct,
             CastKind castKind = CastKind::None
         ) {

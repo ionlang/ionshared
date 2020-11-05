@@ -17,7 +17,7 @@ namespace ionshared {
     template<typename TConstruct, typename TConstructKind>
     class BaseConstruct : public std::enable_shared_from_this<BaseConstruct<TConstruct, TConstructKind>> {
     private:
-        typedef BaseConstruct<TConstruct, TConstructKind> This;
+        typedef BaseConstruct<TConstruct, TConstructKind> Self;
 
     public:
         const TConstructKind constructKind;
@@ -39,7 +39,7 @@ namespace ionshared {
 
 //        virtual void accept(TPass visitor) = 0;
 
-        [[nodiscard]] virtual bool equals(std::shared_ptr<This> other) {
+        [[nodiscard]] virtual bool equals(std::shared_ptr<Self> other) {
             return other == this->shared_from_this();
         }
 
@@ -48,10 +48,18 @@ namespace ionshared {
             return {};
         }
 
+        /**
+         * Determine whether this construct has no parent and is therefore
+         * considered a root node.
+         */
         [[nodiscard]] bool isRootNode() noexcept {
             return util::hasValue(this->parent);
         }
 
+        /**
+         * Determine whether this construct has no children and is therefore
+         * considered a leaf node.
+         */
         [[nodiscard]] bool isLeafNode() {
             return this->getChildrenNodes().empty();
         }
@@ -83,17 +91,17 @@ namespace ionshared {
 //            }
 //        }
 
-        [[nodiscard]] std::shared_ptr<This> fetchRoot() {
+        [[nodiscard]] std::shared_ptr<Self> fetchRoot() {
             if (!util::hasValue(this->parent)) {
                 return this->shared_from_this();
             }
 
-            std::queue<std::shared_ptr<This>> parentQueue{};
+            std::queue<std::shared_ptr<Self>> parentQueue{};
 
             parentQueue.push(*this->parent);
 
             while (!parentQueue.empty()) {
-                std::shared_ptr<This> parent = parentQueue.front();
+                std::shared_ptr<Self> parent = parentQueue.front();
 
                 parentQueue.pop();
 
@@ -105,7 +113,7 @@ namespace ionshared {
             }
         }
 
-        [[nodiscard]] std::shared_ptr<This> getBarePtr() {
+        [[nodiscard]] std::shared_ptr<Self> getBarePtr() {
             return this->shared_from_this();
         }
 
@@ -146,6 +154,14 @@ namespace ionshared {
 
         [[nodiscard]] std::shared_ptr<TConstruct> nativeCast() {
             return this->dynamicCast<TConstruct>();
+        }
+
+        std::shared_ptr<TConstruct> forceGetParent() {
+            if (!ionshared::util::hasValue(this->parent)) {
+                throw std::runtime_error("Parent is unset or nullptr");
+            }
+
+            return *this->parent;
         }
     };
 

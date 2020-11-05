@@ -33,6 +33,14 @@ if(USE_MD)
     message(STATUS "Using /MD flag")
 endif()
 
+option(IONSHARED_BUILD_STATIC_LIB "Build static library" OFF)
+
+if (IONSHARED_BUILD_STATIC_LIB)
+    set(IONSHARED_OPTION_LIB_TYPE STATIC)
+else()
+    set(IONSHARED_OPTION_LIB_TYPE SHARED)
+endif()
+
 # Setup versioning.
 set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
@@ -60,7 +68,7 @@ file(
 )
 
 # Specify that this project is a library.
-add_library("${PROJECT_NAME}" ${SOURCES})
+add_library("${PROJECT_NAME}" ${IONSHARED_OPTION_LIB_TYPE} ${SOURCES})
 
 # Set VERSION property. Optional, but good practice.
 set_target_properties("${PROJECT_NAME}" PROPERTIES VERSION ${PROJECT_VERSION})

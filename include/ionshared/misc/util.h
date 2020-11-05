@@ -181,7 +181,7 @@ namespace ionshared::util {
 
     template<typename T>
     [[nodiscard]] std::string getPointerAddressString(T* pointer) {
-        std::ostringstream stream;
+        std::ostringstream stream{};
 
         stream << pointer;
 

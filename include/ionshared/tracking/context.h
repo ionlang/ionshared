@@ -5,43 +5,26 @@
 #include <ionshared/tracking/scoped.h>
 
 namespace ionshared {
-    template<typename T>
-    using Scope = PtrSymbolTable<T>;
 
     template<typename T>
-    class Context {
-    private:
-        std::vector<Scope<T>> scopes;
+        // TODO: Type constrains for T?
+    struct Context {
+        typedef PtrSymbolTable<T> Scope;
 
-        Scope<T> globalScope;
+        std::vector<Scope> scopes;
 
-    public:
+        Scope globalScope;
+
         explicit Context(
-            Scope<T> globalScope = util::makePtrSymbolTable<T>(),
-            std::vector<Scope<T>> scopes = {}
+            Scope globalScope = util::makePtrSymbolTable<T>(),
+            std::vector<Scope> scopes = {}
         ) :
             globalScope(std::move(globalScope)),
             scopes(std::move(scopes)) {
             //
         }
 
-        [[nodiscard]] std::vector<Scope<T>> getScopes() const noexcept {
-            return this->scopes;
-        }
-
-        void setScopes(std::vector<Scope<T>> scopes) noexcept {
-            this->scopes = std::move(scopes);
-        }
-
-        [[nodiscard]] Scope<T> getGlobalScope() const noexcept {
-            return this->globalScope;
-        }
-
-        void setGlobalScope(Scope<T> globalScope) noexcept {
-            this->globalScope = std::move(globalScope);
-        }
-
-        void appendScope(const Scope<T> &scope) noexcept {
+        void appendScope(const Scope& scope) noexcept {
             // Scope is already on the scopes vector.
             if (util::locateInVector(this->scopes, scope) != std::nullopt) {
                 return;
@@ -55,7 +38,10 @@ namespace ionshared {
             this->scopes.insert(this->scopes.begin(), scope);
         }
 
-        void appendScope(const std::shared_ptr<Scoped<T>> &scopeAnchor) noexcept {
+        template<typename TConstructKind>
+        void appendScope(
+            const std::shared_ptr<Scoped<T, TConstructKind>>& scopeAnchor
+        ) noexcept {
             this->appendScope(scopeAnchor->getSymbolTable());
         }
 
@@ -73,21 +59,21 @@ namespace ionshared {
          * Attempt to locate the nearest (starting from most recent
          * scopes) construct by it's id in the scope symbol tables.
          */
-        [[nodiscard]] OptPtr<T> findNearest(const std::string &id) {
+        [[nodiscard]] OptPtr<T> findNearest(const std::string& name) {
             /**
              * Scopes vector is already in the correct order because
              * whenever a new scope is pushed, it is added at the beginning
              * instead of the end of the scopes vector, essentially reversing
              * the order from last added to first added.
              */
-            for (const auto &scope : this->scopes) {
-                if (scope->contains(id)) {
-                    return scope->lookup(id);
+            for (const auto& scope : this->scopes) {
+                if (scope->contains(name)) {
+                    return scope->lookup(name);
                 }
             }
 
             // Lastly, check the global scope.
-            return this->globalScope->lookup(id);
+            return this->globalScope->lookup(name);
         }
     };
 }

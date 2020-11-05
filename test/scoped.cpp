@@ -4,7 +4,11 @@
 
 using namespace ionshared;
 
-typedef Scoped<char> TestScoped;
+struct TestConstruct : BaseConstruct<TestConstruct, int> {
+    //
+};
+
+typedef Scoped<TestConstruct, int> TestScoped;
 
 TEST(ScopedTest, TraverseOnce) {
     TestScoped scope = TestScoped();
