@@ -5,7 +5,6 @@
 #include <ionshared/tracking/scoped.h>
 
 namespace ionshared {
-
     template<typename T>
         // TODO: Type constrains for T?
     struct Context {
