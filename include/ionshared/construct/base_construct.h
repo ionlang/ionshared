@@ -73,31 +73,54 @@ namespace ionshared {
         }
 
         // TODO
-//        void traverseChildren(TraversalCallback<std::shared_ptr<This>> callback) {
-//            std::queue<std::shared_ptr<This>> childrenQueue = {};
-//            Ast<This> primeChildren = this->getChildrenNodes();
-//
-//            // Begin with this construct's children nodes.
-//            for (const auto child : primeChildren) {
-//                childrenQueue.push(primeChildren);
-//            }
-//
-//            while (!childrenQueue.empty()) {
-//                std::shared_ptr<This> child = childrenQueue.front();
-//                Ast<This> children = child->getChildrenNodes();
-//
-//                childrenQueue.pop();
-//
-//                for (const auto &childOfChild : children) {
-//                    childrenQueue.push(childOfChild);
-//                }
-//
-//                // Invoke the callback, and do not continue if it returns false.
-//                if (!callback(child)) {
-//                    return;
-//                }
-//            }
-//        }
+        void traverseChildren(TraversalCallback<std::shared_ptr<Self>> callback) {
+            std::queue<std::shared_ptr<Self>> childrenQueue = {};
+            Ast<Self> primeChildren = this->getChildrenNodes();
+
+            // Begin with this construct's children nodes.
+            for (const auto child : primeChildren) {
+                childrenQueue.push(primeChildren);
+            }
+
+            while (!childrenQueue.empty()) {
+                std::shared_ptr<Self> child = childrenQueue.front();
+                Ast<Self> children = child->getChildrenNodes();
+
+                childrenQueue.pop();
+
+                for (const auto& childOfChild : children) {
+                    childrenQueue.push(childOfChild);
+                }
+
+                // Invoke the callback, and do not continue if it returns false.
+                if (!callback(child)) {
+                    return;
+                }
+            }
+        }
+
+        void traverseParents(TraversalCallback<std::shared_ptr<Self>> callback) {
+            if (!util::hasValue(this->parent)) {
+                return;
+            }
+
+            std::queue<std::shared_ptr<Self>> parentQueue{};
+
+            parentQueue.push(*this->parent);
+
+            while (!parentQueue.empty()) {
+                std::shared_ptr<Self> parent = parentQueue.front();
+
+                parentQueue.pop();
+
+                if (!callback(parent)) {
+                    return;
+                }
+                else if (util::hasValue(parent->parent)) {
+                    parentQueue.push(*parent->parent);
+                }
+            }
+        }
 
         [[nodiscard]] std::shared_ptr<Self> fetchRoot() {
             if (!util::hasValue(this->parent)) {
