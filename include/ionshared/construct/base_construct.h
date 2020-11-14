@@ -19,12 +19,12 @@ namespace ionshared {
     private:
         typedef BaseConstruct<TConstruct, TConstructKind> Self;
 
+        std::optional<std::shared_ptr<TConstruct>> parent;
+
     public:
         const TConstructKind constructKind;
 
         std::optional<ionshared::SourceLocation> sourceLocation;
-
-        std::optional<std::shared_ptr<TConstruct>> parent;
 
         explicit BaseConstruct(
             TConstructKind kind,
@@ -41,6 +41,14 @@ namespace ionshared {
 
         [[nodiscard]] virtual bool equals(std::shared_ptr<Self> other) {
             return other == this->shared_from_this();
+        }
+
+        [[nodiscard]] virtual std::optional<std::shared_ptr<TConstruct>> getParent() const noexcept {
+            return this->parent;
+        }
+
+        virtual void setParent(std::optional<std::shared_ptr<TConstruct>> parent) noexcept {
+            this->parent = parent;
         }
 
         [[nodiscard]] virtual Ast<TConstruct> getChildrenNodes() {
@@ -143,7 +151,8 @@ namespace ionshared {
          */
         template<class TLike>
         [[nodiscard]] std::shared_ptr<TLike> dynamicCast() {
-            std::shared_ptr<TLike> result = std::dynamic_pointer_cast<TLike>(this->shared_from_this());
+            std::shared_ptr<TLike> result =
+                std::dynamic_pointer_cast<TLike>(this->shared_from_this());
 
             if (result == nullptr) {
                 throw std::runtime_error("Dynamic pointer cast failed");

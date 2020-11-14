@@ -20,13 +20,13 @@ namespace ionshared {
 
         PtrSymbolTable<TConstruct> symbolTable;
 
-        OptRef<Self> parentScope;
+        OptPtr<Self> parentScope;
 
         explicit Scoped(
             PtrSymbolTable<TConstruct> symbolTable =
                 util::makePtrSymbolTable<TConstruct>(),
 
-            OptRef<Self> parent = std::nullopt
+            OptPtr<Self> parent = std::nullopt
         ) :
             symbolTable(symbolTable),
             parentScope(parent) {
@@ -34,29 +34,32 @@ namespace ionshared {
         }
 
         [[nodiscard]] bool hasParentScope() const noexcept {
-            return this->parentScope.has_value();
+            return util::hasValue(this->parentScope);
         }
 
+        // TODO: Hotfix by passing in self shared pointer.
         /**
          * Traverses parent scopes starting from the nearest one, and
          * including itself.
          */
-        void traverseScopes(TraversalCallback<Self&> callback) {
-            std::queue<Ref<Self>> queue = {};
+        void traverseScopes(
+            std::shared_ptr<Self> self,
+            TraversalCallback<std::shared_ptr<Self>> callback
+        ) {
+            std::queue<std::shared_ptr<Self>> queue = {};
 
-            queue.push(*this);
+            queue.push(self);
 
             while (!queue.empty()) {
-                Self& scope = queue.front();
+                std::shared_ptr<Self> scope = queue.front();
 
                 queue.pop();
 
-                // TODO: CRITICAL! Since it's being  passed as
                 if (!callback(scope)) {
                     break;
                 }
-                else if (scope.hasParentScope()) {
-                    queue.push(scope.parentScope.value());
+                else if (scope->hasParentScope()) {
+                    queue.push(*scope->parentScope);
                 }
             }
         }
@@ -64,8 +67,8 @@ namespace ionshared {
         [[nodiscard]] std::optional<TConstruct> findNearestSymbol(std::string name) {
             std::optional<TConstruct> result = std::nullopt;
 
-            this->traverseScopes([&, this](Self& scope) -> bool {
-                OptPtr<TConstruct> symbol = scope.getSymbolTable()->lookup(name);
+            this->traverseScopes([&, this](std::shared_ptr<Self> scope) -> bool {
+                OptPtr<TConstruct> symbol = scope->getSymbolTable()->lookup(name);
                 bool hasValue = util::hasValue(symbol);
 
                 if (hasValue) {
@@ -84,8 +87,8 @@ namespace ionshared {
         ) {
             std::optional<TConstruct> result = std::nullopt;
 
-            this->traverseScopes([&, this](Self& scope) -> bool {
-                OptPtr<TConstruct> symbol = scope.getSymbolTable()->lookup(name);
+            this->traverseScopes([&, this](std::shared_ptr<Self> scope) -> bool {
+                OptPtr<TConstruct> symbol = scope->getSymbolTable()->lookup(name);
 
                 if (util::hasValue(symbol)
                     && symbol->get()->constructKind == constructKind) {

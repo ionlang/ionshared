@@ -58,6 +58,7 @@ namespace ionshared {
         std::optional<T> tryPop() {
             std::optional<T> result = this->tryGetTopItem();
 
+            // TODO: Review. What if result == nullptr?
             if (result.has_value()) {
                 this->value.pop();
             }
