@@ -19,8 +19,6 @@ namespace ionshared {
     private:
         typedef BaseConstruct<TConstruct, TConstructKind> Self;
 
-        std::optional<std::shared_ptr<TConstruct>> parent;
-
     public:
         const TConstructKind constructKind;
 
@@ -28,12 +26,10 @@ namespace ionshared {
 
         explicit BaseConstruct(
             TConstructKind kind,
-            std::optional<ionshared::SourceLocation> sourceLocation = std::nullopt,
-            OptPtr<TConstruct> parent = std::nullopt
+            std::optional<ionshared::SourceLocation> sourceLocation = std::nullopt
         ) noexcept :
             constructKind(kind),
-            sourceLocation(sourceLocation),
-            parent(parent) {
+            sourceLocation(sourceLocation) {
             //
         }
 
@@ -41,14 +37,6 @@ namespace ionshared {
 
         [[nodiscard]] virtual bool equals(std::shared_ptr<Self> other) {
             return other == this->shared_from_this();
-        }
-
-        [[nodiscard]] virtual std::optional<std::shared_ptr<TConstruct>> getParent() const noexcept {
-            return this->parent;
-        }
-
-        virtual void setParent(std::optional<std::shared_ptr<TConstruct>> parent) noexcept {
-            this->parent = parent;
         }
 
         [[nodiscard]] virtual Ast<TConstruct> getChildrenNodes() {
@@ -99,50 +87,50 @@ namespace ionshared {
             }
         }
 
-        void traverseParents(TraversalCallback<std::shared_ptr<Self>> callback) {
-            if (!util::hasValue(this->parent)) {
-                return;
-            }
+//        void traverseParents(TraversalCallback<std::shared_ptr<Self>> callback) {
+//            if (!util::hasValue(this->parent)) {
+//                return;
+//            }
+//
+//            std::queue<std::shared_ptr<Self>> parentQueue{};
+//
+//            parentQueue.push(*this->parent);
+//
+//            while (!parentQueue.empty()) {
+//                std::shared_ptr<Self> parent = parentQueue.front();
+//
+//                parentQueue.pop();
+//
+//                if (!callback(parent)) {
+//                    return;
+//                }
+//                else if (util::hasValue(parent->parent)) {
+//                    parentQueue.push(*parent->parent);
+//                }
+//            }
+//        }
 
-            std::queue<std::shared_ptr<Self>> parentQueue{};
-
-            parentQueue.push(*this->parent);
-
-            while (!parentQueue.empty()) {
-                std::shared_ptr<Self> parent = parentQueue.front();
-
-                parentQueue.pop();
-
-                if (!callback(parent)) {
-                    return;
-                }
-                else if (util::hasValue(parent->parent)) {
-                    parentQueue.push(*parent->parent);
-                }
-            }
-        }
-
-        [[nodiscard]] std::shared_ptr<Self> fetchRoot() {
-            if (!util::hasValue(this->parent)) {
-                return this->shared_from_this();
-            }
-
-            std::queue<std::shared_ptr<Self>> parentQueue{};
-
-            parentQueue.push(*this->parent);
-
-            while (!parentQueue.empty()) {
-                std::shared_ptr<Self> parent = parentQueue.front();
-
-                parentQueue.pop();
-
-                if (!util::hasValue(parent->parent)) {
-                    return parent;
-                }
-
-                parentQueue.push(*parent->parent);
-            }
-        }
+//        [[nodiscard]] std::shared_ptr<Self> fetchRoot() {
+//            if (!util::hasValue(this->parent)) {
+//                return this->shared_from_this();
+//            }
+//
+//            std::queue<std::shared_ptr<Self>> parentQueue{};
+//
+//            parentQueue.push(*this->parent);
+//
+//            while (!parentQueue.empty()) {
+//                std::shared_ptr<Self> parent = parentQueue.front();
+//
+//                parentQueue.pop();
+//
+//                if (!util::hasValue(parent->parent)) {
+//                    return parent;
+//                }
+//
+//                parentQueue.push(*parent->parent);
+//            }
+//        }
 
         [[nodiscard]] std::shared_ptr<Self> getBarePtr() {
             return this->shared_from_this();
